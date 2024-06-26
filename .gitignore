@@ -1,2 +1,8 @@
+# Don't commit my venv with the installed packages.
 my-venv/
+
+# Don't commit my audio files, at least for now.
 *.mp3
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
