@@ -4,5 +4,6 @@ my-venv/
 # Don't commit my audio files, at least for now.
 *.mp3
 
-# Ignore Jupyter Notebook checkpoints
+# Ignore irrelevant files like  Jupyter Notebook checkpoints
 .ipynb_checkpoints/
+.DS_Store
