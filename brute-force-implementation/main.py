@@ -24,7 +24,7 @@ k_b = -1
 # PAA
 # TODO: Normalization missing
 # TODO: Check if this PAA corresponds to the 
-print('log info: paa')
+print('log info: paa 1')
 k = 100   # reduced window size
 data_reduced = np.arange(len(data)*(k/n))
 i = 0
@@ -39,6 +39,16 @@ for i in range(len(data)//n):  # iterate through windows, i is the i-th window
     # break
   # break
 
+# PAA version 2 with pyts package
+print('log info: paa 2')
+from pyts.approximation import PiecewiseAggregateApproximation
+paa = PiecewiseAggregateApproximation(window_size=n)
+data_reshaped = data.reshape(1, -1)
+data_reduced_2 = paa.transform(data_reshaped)
+print(np.shape(data_reduced_2))
+
 print("First 100 data points:", data[0:100], "\n")
 print("First 100 data points reduced representation:", data_reduced[0:20], "\n")
+print("First 100 data points reduced representation with pyts:", data_reduced_2[0:20], "\n")
 print("Last 5 data points reduced representation:", data_reduced[-1], "\n")
+print("Last 5 data points reduced representation with pyts:", data_reduced[-1], "\n")
