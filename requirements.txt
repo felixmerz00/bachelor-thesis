@@ -1,0 +1,6 @@
+# manually maintained requirements
+notebook
+numpy
+matplotlib
+librosa
+pyts
