@@ -5,6 +5,7 @@ import numpy as np
 from pyts.approximation import PiecewiseAggregateApproximation
 
 # PAA custom
+# does paa on a whole audio file with hundreds of windows and segments
 def paa_custom(data, n: int, k: int):
   print('log info: paa 1')
   data_reduced = np.arange(len(data)*(k/n))
