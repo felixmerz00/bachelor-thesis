@@ -1,9 +1,12 @@
-# Don't commit my venv with the installed packages.
+# don't commit my venv with the installed packages
 my-venv/
 
-# Don't commit my audio files, at least for now.
+# don't commit my audio files, at least for now
 *.mp3
 
-# Ignore irrelevant files like  Jupyter Notebook checkpoints
+# ignore irrelevant files like  Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 .DS_Store
+
+# ignore compiled bytecode files for imported modules
+brute-force-implementation/__pycache__/
