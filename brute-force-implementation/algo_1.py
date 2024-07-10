@@ -11,11 +11,14 @@ def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
   # initial windows
   # np.empty((1,500))
   w = [None for _ in range(m)]
+  W = [None for _ in range(m)]
 
   alpha = 0
   while alpha*h <= (len(t_series[0])-n):  # I assume all time series have the same length
 
     for p in range(m):
       w[p] = t_series[p][alpha*h:alpha*h+n]
+      W[p] = (w[p] - np.mean(w[p])) / np.std(w[p])
+
 
     alpha += 1
