@@ -10,3 +10,6 @@ my-venv/
 
 # ignore compiled bytecode files for imported modules
 brute-force-implementation/__pycache__/
+
+# for trying out different functions
+brute-force-implementation/sandbox.py
