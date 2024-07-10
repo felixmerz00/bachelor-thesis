@@ -10,17 +10,14 @@ def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
 
   # initial windows
   # np.empty((1,500))
-  w = [None for _ in range(m)]
+  w = [[] for _ in range(m)]
 
-  buf_idx = n
-  while buf_idx <= (len(t_series[0])-n):  # I assume all time series have the same length
+  alpha = 0
+  while alpha*h <= (len(t_series[0])-n):  # I assume all time series have the same length
 
     for p in range(m):
-      if w[p] is None:  # initialize new window
-        w[p] = t_series[p][:n]
-      else:   # shift existing window
-        buffer = t_series[p][buf_idx:buf_idx+h]
-        w[p] = np.concatenate((w[p][h:], buffer))
+      # This is how it is in the pseude code. But I don't think I need to store all windwos, 
+      # I just need the current window (see next commit).
+      w[p].append(t_series[p][alpha*h:alpha*h+n])
 
-
-    buf_idx += h
+    alpha += 1
