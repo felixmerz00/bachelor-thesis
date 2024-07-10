@@ -1,6 +1,7 @@
 import librosa  # librosa is not compatible with numpy 2
 from algo_1 import algorithm_1
 from paa import paa_custom, paa_pyts
+from time import perf_counter_ns
 
 # load the audio files
 print('log info: loading audio file')
@@ -27,7 +28,10 @@ k_b = 50
 
 
 print('log info: start algorithm 1')
+time_start = perf_counter_ns()
 algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
+time_elapsed = perf_counter_ns()-time_start
+print(f"log info: time for algorithm 1: {time_elapsed/1e6} ms")
 
 
 # test PAA
