@@ -27,7 +27,6 @@ k_e = 250
 k_b = 50
 
 
-print('log info: start algorithm 1')
 # time_start = perf_counter_ns()
 algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
 # time_elapsed = perf_counter_ns()-time_start

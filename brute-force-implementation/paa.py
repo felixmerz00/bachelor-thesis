@@ -4,6 +4,17 @@ import numpy as np
 # print(np.__version__)
 from pyts.approximation import PiecewiseAggregateApproximation
 
+# PAA for two numbers of dimensions with pyts package
+def paa_double_pyts(data, k_s, k_e):
+  data_reshaped = data.reshape(1, -1)   # reshapes to a 2D array with 1 row and as many columns as needed
+  # window_size in this case is what I call segment size
+  paa_s = PiecewiseAggregateApproximation(window_size=k_s)
+  data_reduced_s = paa_s.transform(data_reshaped)
+  paa_e = PiecewiseAggregateApproximation(window_size=k_e)
+  data_reduced_e = paa_e.transform(data_reshaped)
+  return data_reduced_s, data_reduced_e
+
+
 # PAA custom
 # does paa on a whole audio file with hundreds of windows and segments
 def paa_custom(data, n: int, k: int):
@@ -18,6 +29,7 @@ def paa_custom(data, n: int, k: int):
       idx_reduced = int(i*k+j)
       data_reduced[idx_reduced] = np.mean(data[start_idx_seg_k:start_idx_seg_k+seg_len]) # calculate mean of segment
   return data_reduced
+
 
 # PAA with pyts package
 # !!! does only the first window !!!
