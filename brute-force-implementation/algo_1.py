@@ -21,9 +21,9 @@ def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
   while alpha*h <= (len(t_series[0])-n):  # I assume all time series have the same length
 
     for p in range(m):
-      w[p] = t_series[p][alpha*h:alpha*h+n]
-      W[p] = (w[p] - np.mean(w[p])) / np.std(w[p])  # W[p] is a np.ndarray
-      W_s, W_e = paa_double_pyts(W[p], k_s, k_e)
+      w[p] = t_series[p][alpha*h:alpha*h+n]   # shift window
+      W[p] = (w[p] - np.mean(w[p])) / np.std(w[p])  # normalization, W[p] is a np.ndarray
+      W_s, W_e = paa_double_pyts(W[p], k_s, k_e)  # PAA
 
 
     alpha += 1

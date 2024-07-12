@@ -1,4 +1,4 @@
-import librosa  # librosa is not compatible with numpy 2
+import librosa 
 from algo_1 import algorithm_1
 from paa import paa_custom, paa_pyts
 from time import perf_counter_ns

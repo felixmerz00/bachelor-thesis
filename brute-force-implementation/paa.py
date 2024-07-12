@@ -1,7 +1,4 @@
 import numpy as np
-# librosa is not compatible with numpy 2
-# check if I am using a version of numpy < 2
-# print(np.__version__)
 from pyts.approximation import PiecewiseAggregateApproximation
 
 # PAA for two numbers of dimensions with pyts package
