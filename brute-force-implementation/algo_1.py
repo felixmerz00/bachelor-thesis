@@ -11,10 +11,9 @@ def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
   m = len(t_series)   # number of time series
 
   # initial windows
-  # np.empty((1,500))
   w = [None for _ in range(m)]
   W = [None for _ in range(m)]
-  W_s = [None for _ in range(m)]
+  W_s = np.empty((m, k_s))
   W_e = [None for _ in range(m)]
 
   alpha = 0
@@ -23,7 +22,15 @@ def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
     for p in range(m):
       w[p] = t_series[p][alpha*h:alpha*h+n]   # shift window
       W[p] = (w[p] - np.mean(w[p])) / np.std(w[p])  # normalization, W[p] is a np.ndarray
-      W_s, W_e = paa_double_pyts(W[p], k_s, k_e)  # PAA
+      W_s[p], W_e[p] = paa_double_pyts(W[p], n, k_s, k_e)  # PAA
 
+    try: 
+      # u.shape is mxm, s.shape is mx1, v.shape is nxn
+      u, s, v = np.linalg.svd(W_s)
+    except np.linalg.LinAlgError:
+      print("SVD computation does not converge.")
+    # From the output of SVD we choose the first kb dimensions for the bucketing.
+    # From which matrix do they choose the dimensions?
+    break
 
     alpha += 1

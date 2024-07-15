@@ -22,7 +22,7 @@ def paa_double_pyts(data, n: int, k_s: int, k_e: int):
   data_reduced_s = paa_s.transform(data_reshaped)
   paa_e = PiecewiseAggregateApproximation(window_size=n//k_e)
   data_reduced_e = paa_e.transform(data_reshaped)
-  return data_reduced_s, data_reduced_e
+  return data_reduced_s.flatten(), data_reduced_e.flatten()   # Reduce convert 2D array back to 1D 
 
 
 # PAA custom
