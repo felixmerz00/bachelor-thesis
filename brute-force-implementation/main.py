@@ -24,7 +24,7 @@ h = 10   # ideally a divisor of n
 T = 0.75
 k_s = 100
 k_e = 250
-k_b = 50
+k_b = 2
 
 
 # time_start = perf_counter_ns()

@@ -1,6 +1,7 @@
 from math import sqrt
 import numpy as np
 from paa import paa_double_pyts
+from svd import custom_svd
 
 # algorithm 1 Alizade Nikoo
 def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
@@ -23,13 +24,7 @@ def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
       W[p] = (w[p] - np.mean(w[p])) / np.std(w[p])  # normalization, W[p] is a np.ndarray
       W_s[p], W_e[p] = paa_double_pyts(W[p], n, k_s, k_e)  # PAA
 
-    try: 
-      # u.shape is mxm, s.shape is mx1, v.shape is nxn
-      u, s, v = np.linalg.svd(W_s)
-    except np.linalg.LinAlgError:
-      print("SVD computation does not converge.")
-    # From the output of SVD we choose the first kb dimensions for the bucketing.
-    # From which matrix do they choose the dimensions?
-    # break
+    W_b = custom_svd(W_s, k_b)
+    break
 
     alpha += 1
