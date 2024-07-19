@@ -2,6 +2,7 @@ from math import sqrt
 import numpy as np
 from paa import paa_double_pyts
 from svd import custom_svd
+from bucketing_filter import bucketing_filter
 
 # algorithm 1 Alizade Nikoo
 def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
@@ -25,6 +26,8 @@ def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
       W_s[p], W_e[p] = paa_double_pyts(W[p], n, k_s, k_e)  # PAA
 
     W_b = custom_svd(W_s, k_b)
+
+    bucketing_filter(W_b, k_b, epsilon_1)
     break
 
     alpha += 1
