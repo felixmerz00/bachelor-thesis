@@ -3,6 +3,7 @@ import numpy as np
 from paa import paa_double_pyts
 from svd import custom_svd
 from bucketing_filter import bucketing_filter
+from inc_p import incp
 
 # algorithm 1 Alizade Nikoo
 def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
@@ -26,8 +27,16 @@ def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
       W_s[p], W_e[p] = paa_double_pyts(W[p], n, k_s, k_e)  # PAA
 
     W_b = custom_svd(W_s, k_b)
+    C_1 = bucketing_filter(W_b, k_b, epsilon_1)
+    C_2 = set()
 
-    bucketing_filter(W_b, k_b, epsilon_1)
+    for pair in C_1:
+      if np.linalg.norm(W_e[pair[0]] - W_e[pair[1]]) <= epsilon_2:
+        C_2.add(pair)
+    for pair in C_2:
+      corrcoef = incp(W[pair[0]], W[pair[1]], n)
+      if abs(corrcoef) >= T:
+        print(f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with correlation coefficient {corrcoef}.")
     break
 
     alpha += 1
