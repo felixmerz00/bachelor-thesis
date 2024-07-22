@@ -52,7 +52,7 @@ def bucketing_filter(W_b, k_b: int, eps):
   # initialize k_b-dimensional bucketing scheme
   bkt_lwr_bnd = floor_epsilon(np.min(W_b), eps)
   bkt_upr_bnd = ceil_epsilon(np.max(W_b), eps)
-  B = (bkt_upr_bnd - bkt_lwr_bnd)/eps  # number of partitions
+  B = round((bkt_upr_bnd - bkt_lwr_bnd)/eps)  # number of partitions
   BKT_dim = k_b*(int(B),)
   BKT = np.full(BKT_dim, fill_value=None, dtype=object)  # each bucket contains a tuple of time series indices, thus dtype=object
 
