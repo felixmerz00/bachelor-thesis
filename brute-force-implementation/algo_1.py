@@ -4,6 +4,10 @@ from paa import paa_double_pyts
 from svd import custom_svd
 from bucketing_filter import bucketing_filter
 from inc_p import incp
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='report.log', filemode='w', encoding='utf-8', level=logging.INFO)
 
 # algorithm 1 Alizade Nikoo
 def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
@@ -36,7 +40,6 @@ def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
     for pair in C_2:
       corrcoef = incp(W[pair[0]], W[pair[1]], n)
       if abs(corrcoef) >= T:
-        print(f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with correlation coefficient {corrcoef}.")
-    break
+        logger.info(f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with correlation coefficient {corrcoef}.")
 
     alpha += 1
