@@ -38,5 +38,5 @@ def use_financial_data():
   
   algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
 
-use_audio_data()
+# use_audio_data()
 use_financial_data()

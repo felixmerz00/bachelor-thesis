@@ -53,16 +53,42 @@ def load_financial_data():
   print('log info: loading financial data')
   time_series = []
 
-  df_1 = pd.read_csv("./financial-data/AMD.csv")
-  amd_close_prices = df_1["Close"].to_numpy()
+  df_amd = pd.read_csv("./financial-data/AMD.csv")
+  amd_close_prices = df_amd["Close"].to_numpy()
   time_series.append(amd_close_prices)
-  df_2 = pd.read_csv("./financial-data/INTC.csv")
-  intc_close_prices = df_2["Close"].to_numpy()
+
+  df_avgo = pd.read_csv("./financial-data/AVGO.csv")
+  avgo_close_prices = df_avgo["Close"].to_numpy()
+  time_series.append(avgo_close_prices)
+
+  df_ge = pd.read_csv("./financial-data/GE.csv")
+  ge_close_prices = df_ge["Close"].to_numpy()
+  time_series.append(ge_close_prices)
+
+  df_intc = pd.read_csv("./financial-data/INTC.csv")
+  intc_close_prices = df_intc["Close"].to_numpy()
   time_series.append(intc_close_prices)
-  df_3 = pd.read_csv("./financial-data/LLY.csv")
-  lly_close_prices = df_3["Close"].to_numpy()
+
+  df_lly = pd.read_csv("./financial-data/LLY.csv")
+  lly_close_prices = df_lly["Close"].to_numpy()
   time_series.append(lly_close_prices)
-  time_series.append(lly_close_prices)  # duplicate data to find correlation
+  # time_series.append(lly_close_prices)  # duplicate data to find correlation
+
+  df_nvda = pd.read_csv("./financial-data/NVDA.csv")
+  nvda_close_prices = df_nvda["Close"].to_numpy()
+  time_series.append(nvda_close_prices)
+
+  df_v = pd.read_csv("./financial-data/V.csv")
+  v_close_prices = df_v["Close"].to_numpy()
+  time_series.append(v_close_prices)
+
+  df_wmt = pd.read_csv("./financial-data/WMT.csv")
+  wmt_close_prices = df_wmt["Close"].to_numpy()
+  time_series.append(wmt_close_prices)
+
+  df_xom = pd.read_csv("./financial-data/XOM.csv")
+  xom_close_prices = df_xom["Close"].to_numpy()
+  time_series.append(xom_close_prices)
   
   time_series = trim_length(time_series, round_by=100)
   return time_series
