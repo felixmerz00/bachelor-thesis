@@ -84,4 +84,6 @@ def bucketing_filter(W_b, k_b: int, eps):
               if i < j and np.linalg.norm(W_b[i] - W_b[j]) <= eps:
                 C_1.add((i,j))
   
+  join_pruning_rate = 1 - len(C_1)/pow(m, 2)
+  # print("Join pruning rate:", join_pruning_rate)
   return C_1

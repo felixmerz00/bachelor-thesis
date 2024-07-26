@@ -37,6 +37,8 @@ def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
     for pair in C_1:
       if np.linalg.norm(W_e[pair[0]] - W_e[pair[1]]) <= epsilon_2:
         C_2.add(pair)
+    overall_pruning_rate = 1 - len(C_2)/pow(m, 2)
+    # print("Overall pruning rate:", overall_pruning_rate)
     for pair in C_2:
       corrcoef = incp(W[pair[0]], W[pair[1]], n)
       if abs(corrcoef) >= T:
