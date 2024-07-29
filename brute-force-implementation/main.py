@@ -2,7 +2,7 @@ import librosa
 from algo_1 import algorithm_1
 from paa import paa_custom, paa_pyts
 from time import perf_counter_ns
-from load_data import convert_audio_data, load_audio_data, load_automated_financial_data
+from load_data import convert_audio_data, load_audio_data, load_automated_financial_data, load_custom_financial_data
 
 def use_audio_data():
   # convert_audio_data()  # activate this line when you added new mp3 files
@@ -26,7 +26,8 @@ def use_audio_data():
   print(f"log info: time for algorithm 1: {time_elapsed/1e9} s")
 
 def use_financial_data():
-  time_series = load_automated_financial_data(1000)
+  # time_series = load_automated_financial_data(1000)
+  time_series = load_custom_financial_data()
   # print(len(time_series), len(time_series[0]))
   # parameters
   n = 300   # window size

@@ -54,40 +54,40 @@ def load_custom_financial_data():
   print('log info: loading financial data')
   time_series = []
 
-  df_amd = pd.read_csv("./financial-data/AMD.csv")
+  df_amd = pd.read_csv("./financial-data/manual/AMD.csv")
   amd_close_prices = df_amd["Close"].to_numpy()
   time_series.append(amd_close_prices)
 
-  df_avgo = pd.read_csv("./financial-data/AVGO.csv")
+  df_avgo = pd.read_csv("./financial-data/manual/AVGO.csv")
   avgo_close_prices = df_avgo["Close"].to_numpy()
   time_series.append(avgo_close_prices)
 
-  df_ge = pd.read_csv("./financial-data/GE.csv")
+  df_ge = pd.read_csv("./financial-data/manual/GE.csv")
   ge_close_prices = df_ge["Close"].to_numpy()
   time_series.append(ge_close_prices)
 
-  df_intc = pd.read_csv("./financial-data/INTC.csv")
+  df_intc = pd.read_csv("./financial-data/manual/INTC.csv")
   intc_close_prices = df_intc["Close"].to_numpy()
   time_series.append(intc_close_prices)
 
-  df_lly = pd.read_csv("./financial-data/LLY.csv")
+  df_lly = pd.read_csv("./financial-data/manual/LLY.csv")
   lly_close_prices = df_lly["Close"].to_numpy()
   time_series.append(lly_close_prices)
   # time_series.append(lly_close_prices)  # duplicate data to find correlation
 
-  df_nvda = pd.read_csv("./financial-data/NVDA.csv")
+  df_nvda = pd.read_csv("./financial-data/manual/NVDA.csv")
   nvda_close_prices = df_nvda["Close"].to_numpy()
   time_series.append(nvda_close_prices)
 
-  df_v = pd.read_csv("./financial-data/V.csv")
+  df_v = pd.read_csv("./financial-data/manual/V.csv")
   v_close_prices = df_v["Close"].to_numpy()
   time_series.append(v_close_prices)
 
-  df_wmt = pd.read_csv("./financial-data/WMT.csv")
+  df_wmt = pd.read_csv("./financial-data/manual/WMT.csv")
   wmt_close_prices = df_wmt["Close"].to_numpy()
   time_series.append(wmt_close_prices)
 
-  df_xom = pd.read_csv("./financial-data/XOM.csv")
+  df_xom = pd.read_csv("./financial-data/manual/XOM.csv")
   xom_close_prices = df_xom["Close"].to_numpy()
   time_series.append(xom_close_prices)
   
@@ -126,3 +126,13 @@ def load_automated_financial_data(m: int):
   
   time_series = trim_length(time_series, round_by=100)
   return time_series
+
+def load_weather_data():
+  import xarray as xr
+  lon=30
+  lat=10
+
+  # open the file, select the location and write to new netcdf 
+  da=xr.open_dataset('2016_01.nc') 
+  ts=da.sel(x=lon, y=lat, method="nearest")
+  ts.to_netcdf('timeseries.nc')

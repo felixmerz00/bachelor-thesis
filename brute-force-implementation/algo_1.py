@@ -27,7 +27,8 @@ def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
 
     for p in range(m):
       w[p] = t_series[p][alpha*h:alpha*h+n]   # shift window
-      W[p] = (w[p] - np.mean(w[p])) / np.std(w[p])  # normalization, W[p] is a np.ndarray
+      x_bar = np.mean(w[p])
+      W[p] = (w[p] - x_bar) / sqrt(np.sum(pow((w[p]-x_bar), 2)))  # normalization, W[p] is a np.ndarray
       W_s[p], W_e[p] = paa_double_pyts(W[p], n, k_s, k_e)  # PAA
 
     W_b = custom_svd(W_s, k_b)
