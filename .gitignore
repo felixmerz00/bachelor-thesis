@@ -15,3 +15,7 @@ brute-force-implementation/__pycache__/
 
 # for trying out different functions
 brute-force-implementation/sandbox.py
+
+# these files are generated
+financial-data/nasdaqlisted-symbols.txt
+financial-data/automated/

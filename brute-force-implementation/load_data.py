@@ -1,6 +1,7 @@
 import librosa
 import numpy as np
 import pandas as pd
+import os
 
 def trim_length(time_series, round_by: int = 1000):
   min_len = len(time_series[0])
@@ -49,7 +50,7 @@ def load_audio_data():
 
   return time_series
 
-def load_financial_data():
+def load_custom_financial_data():
   print('log info: loading financial data')
   time_series = []
 
@@ -89,6 +90,39 @@ def load_financial_data():
   df_xom = pd.read_csv("./financial-data/XOM.csv")
   xom_close_prices = df_xom["Close"].to_numpy()
   time_series.append(xom_close_prices)
+  
+  time_series = trim_length(time_series, round_by=100)
+  return time_series
+
+def load_automated_financial_data(m: int):
+  """
+  Load the financial data I scraped from Yahoo Finance.
+
+  Parameters:
+  m (int): Number of desired time series.
+
+  Returns:
+  list: A list containing time series for m stocks.
+  """
+  print('log info: loading financial data')
+  time_series = []
+  scraped_symbols = []
+
+  # List all files in the specified directory
+  for filename in os.listdir("financial-data/automated"):
+      if filename.endswith('.csv'):
+          # Extract the ticker symbol by removing the '.csv' extension
+          symbol = filename[:-4]
+          scraped_symbols.append(symbol)
+
+  m = min(m, len(scraped_symbols))
+  for i in range(m):
+    filename = f"./financial-data/automated/{scraped_symbols[i]}.csv"
+    df = pd.read_csv(filename)
+    close_prices = df["Close"].to_numpy()
+    if len(close_prices) >= 2510 and not np.isnan(close_prices).any():
+      time_series.append(close_prices)
+      # print(f"added {scraped_symbols[i]} to the time_series: {len(time_series[-1])}")
   
   time_series = trim_length(time_series, round_by=100)
   return time_series

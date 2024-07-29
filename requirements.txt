@@ -8,3 +8,8 @@ pyts
 itertools
 math
 pandas
+
+# for scraping financial data
+# I couldn't add this package to my conda environment. 
+# I used a separate Python virtual environment for scraping.
+playwright
