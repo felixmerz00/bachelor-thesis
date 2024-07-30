@@ -3,7 +3,6 @@ my-venv/
 
 # don't commit audio files, log files
 *.mp3
-*.npy
 *.log
 
 # ignore irrelevant files like  Jupyter Notebook checkpoints

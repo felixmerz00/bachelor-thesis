@@ -33,7 +33,7 @@ def load_audio_data():
   time_series = []
   time_series.append(np.load("./library/ron-minis-cut-1.npy"))
   # I load this twice to get some correlation
-  time_series.append(np.load("./library/ron-minis-cut-1.npy"))
+  # time_series.append(np.load("./library/ron-minis-cut-1.npy"))
   time_series.append(np.load("./library/ron-minis-cut-2.npy"))
   time_series.append(np.load("./library/ron-minis-cut-0107700.npy"))
   time_series.append(np.load("./library/ron-minis-cut-0143300.npy"))
