@@ -5,17 +5,18 @@ my-venv/
 # don't commit audio files
 *.mp3
 data/ucr-archive-2018
-# these files are generated
-data/finance/nasdaqlisted-symbols.txt
+# generated file
 data/finance/automated/
 
 # ignore irrelevant files like  Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 .DS_Store
 
-# ignore compiled bytecode files for imported modules
-brute-force-implementation/__pycache__/
-
 # for trying out different functions
-brute-force-implementation/sandbox.py
+code/sandbox.py
 
+# generated file
+code/scrape-financial-data/nasdaqlisted-symbols.txt
+
+# ignore compiled bytecode files for imported modules
+code/brute-force-implementation/__pycache__/
