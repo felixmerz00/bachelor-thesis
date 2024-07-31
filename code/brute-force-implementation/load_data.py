@@ -52,40 +52,39 @@ def load_custom_financial_data():
   print('log info: loading financial data')
   time_series = []
 
-  df_amd = pd.read_csv("./financial-data/manual/AMD.csv")
+  df_amd = pd.read_csv("./data/finance/manual/AMD.csv")
   amd_close_prices = df_amd["Close"].to_numpy()
   time_series.append(amd_close_prices)
 
-  df_avgo = pd.read_csv("./financial-data/manual/AVGO.csv")
+  df_avgo = pd.read_csv("./data/finance/manual/AVGO.csv")
   avgo_close_prices = df_avgo["Close"].to_numpy()
   time_series.append(avgo_close_prices)
 
-  df_ge = pd.read_csv("./financial-data/manual/GE.csv")
+  df_ge = pd.read_csv("./data/finance/manual/GE.csv")
   ge_close_prices = df_ge["Close"].to_numpy()
   time_series.append(ge_close_prices)
 
-  df_intc = pd.read_csv("./financial-data/manual/INTC.csv")
+  df_intc = pd.read_csv("./data/finance/manual/INTC.csv")
   intc_close_prices = df_intc["Close"].to_numpy()
   time_series.append(intc_close_prices)
 
-  df_lly = pd.read_csv("./financial-data/manual/LLY.csv")
+  df_lly = pd.read_csv("./data/finance/manual/LLY.csv")
   lly_close_prices = df_lly["Close"].to_numpy()
   time_series.append(lly_close_prices)
-  # time_series.append(lly_close_prices)  # duplicate data to find correlation
 
-  df_nvda = pd.read_csv("./financial-data/manual/NVDA.csv")
+  df_nvda = pd.read_csv("./data/finance/manual/NVDA.csv")
   nvda_close_prices = df_nvda["Close"].to_numpy()
   time_series.append(nvda_close_prices)
 
-  df_v = pd.read_csv("./financial-data/manual/V.csv")
+  df_v = pd.read_csv("./data/finance/manual/V.csv")
   v_close_prices = df_v["Close"].to_numpy()
   time_series.append(v_close_prices)
 
-  df_wmt = pd.read_csv("./financial-data/manual/WMT.csv")
+  df_wmt = pd.read_csv("./data/finance/manual/WMT.csv")
   wmt_close_prices = df_wmt["Close"].to_numpy()
   time_series.append(wmt_close_prices)
 
-  df_xom = pd.read_csv("./financial-data/manual/XOM.csv")
+  df_xom = pd.read_csv("./data/finance/manual/XOM.csv")
   xom_close_prices = df_xom["Close"].to_numpy()
   time_series.append(xom_close_prices)
   
@@ -107,7 +106,7 @@ def load_automated_financial_data(m: int):
   scraped_symbols = []
 
   # List all files in the specified directory
-  for filename in os.listdir("financial-data/automated"):
+  for filename in os.listdir("data/finance/automated"):
       if filename.endswith('.csv'):
           # Extract the ticker symbol by removing the '.csv' extension
           symbol = filename[:-4]
@@ -115,7 +114,7 @@ def load_automated_financial_data(m: int):
 
   m = min(m, len(scraped_symbols))
   for i in range(m):
-    filename = f"./financial-data/automated/{scraped_symbols[i]}.csv"
+    filename = f"./data/finance/automated/{scraped_symbols[i]}.csv"
     df = pd.read_csv(filename)
     close_prices = df["Close"].to_numpy()
     if len(close_prices) >= 2510 and not np.isnan(close_prices).any():
