@@ -21,22 +21,20 @@ def trim_length(time_series, round_by: int = 1000):
 def convert_audio_data():
   # convert the audio data from mp3 files to npy files
   print('log info: converting audio data')
-  np.save("./library/ron-minis-cut-1", librosa.load('./library/ron-minis-cut-1.mp3', sr=None)[0])
-  np.save("./library/ron-minis-cut-2", librosa.load('./library/ron-minis-cut-2.mp3', sr=None)[0])
-  np.save("./library/ron-minis-cut-0107700", librosa.load('./library/ron-minis-cut-0107700.mp3', sr=None)[0])
-  np.save("./library/ron-minis-cut-0143300", librosa.load('./library/ron-minis-cut-0143300.mp3', sr=None)[0])
+  np.save("./data/audio/ron-minis-cut-1", librosa.load('./data/audio/ron-minis-cut-1.mp3', sr=None)[0])
+  np.save("./data/audio/ron-minis-cut-2", librosa.load('./data/audio/ron-minis-cut-2.mp3', sr=None)[0])
+  np.save("./data/audio/ron-minis-cut-0107700", librosa.load('./data/audio/ron-minis-cut-0107700.mp3', sr=None)[0])
+  np.save("./data/audio/ron-minis-cut-0143300", librosa.load('./data/audio/ron-minis-cut-0143300.mp3', sr=None)[0])
 
 
 def load_audio_data():
   # load the audio data
   print('log info: loading audio data')
   time_series = []
-  time_series.append(np.load("./library/ron-minis-cut-1.npy"))
-  # I load this twice to get some correlation
-  # time_series.append(np.load("./library/ron-minis-cut-1.npy"))
-  time_series.append(np.load("./library/ron-minis-cut-2.npy"))
-  time_series.append(np.load("./library/ron-minis-cut-0107700.npy"))
-  time_series.append(np.load("./library/ron-minis-cut-0143300.npy"))
+  time_series.append(np.load("./data/audio/ron-minis-cut-1.npy"))
+  time_series.append(np.load("./data/audio/ron-minis-cut-2.npy"))
+  time_series.append(np.load("./data/audio/ron-minis-cut-0107700.npy"))
+  time_series.append(np.load("./data/audio/ron-minis-cut-0143300.npy"))
   
   min_len = len(time_series[0])
   for ts in time_series:

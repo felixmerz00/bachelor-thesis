@@ -6,8 +6,25 @@ from bucketing_filter import bucketing_filter
 from inc_p import incp
 import logging
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(filename='report.log', filemode='w', encoding='utf-8', level=logging.INFO)
+# Formatting for loggers
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# Create a logger for reporting correlation
+logger = logging.getLogger("main_logger")
+logger.setLevel(logging.INFO)
+main_handler = logging.FileHandler('code/brute-force-implementation/logs/report.log', mode='w', encoding='utf-8')
+main_handler.setLevel(logging.INFO)
+main_handler.setFormatter(formatter)
+logger.addHandler(main_handler)
+
+# Create a second logger for logging the pruning rates
+logger_2 = logging.getLogger('logger_2')
+logger_2.setLevel(logging.INFO)
+handler_2 = logging.FileHandler('code/brute-force-implementation/logs/pruning-rate.log', mode='w', encoding='utf-8')
+handler_2.setLevel(logging.INFO)
+handler_2.setFormatter(formatter)
+logger_2.addHandler(handler_2)
+
 
 # algorithm 1 Alizade Nikoo
 def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
@@ -32,14 +49,14 @@ def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
       W_s[p], W_e[p] = paa_double_pyts(W[p], n, k_s, k_e)  # PAA
 
     W_b = custom_svd(W_s, k_b)
-    C_1 = bucketing_filter(W_b, k_b, epsilon_1)
+    C_1 = bucketing_filter(W_b, k_b, epsilon_1, logger_2)
     C_2 = set()
 
     for pair in C_1:
       if np.linalg.norm(W_e[pair[0]] - W_e[pair[1]]) <= epsilon_2:
         C_2.add(pair)
     overall_pruning_rate = 1 - len(C_2)/pow(m, 2)
-    # print("Overall pruning rate:", overall_pruning_rate)
+    # logger_2.info(f"The overall pruning rate is {overall_pruning_rate}.")
     for pair in C_2:
       corrcoef = incp(W[pair[0]], W[pair[1]], n)
       if abs(corrcoef) >= T:

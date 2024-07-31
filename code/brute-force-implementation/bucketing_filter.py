@@ -35,7 +35,7 @@ def get_neighbors(bkt_cords, k_b: int, B:int):
   neighbors = neighbors[((neighbors>=0)&(neighbors<B)).all(axis=1)]
   return [tuple(row) for row in neighbors]
 
-def bucketing_filter(W_b, k_b: int, eps):
+def bucketing_filter(W_b, k_b: int, eps, logger_2):
   """
   Parameters:
   W_b (numpy.ndarray): Matrix of windows.
@@ -85,5 +85,5 @@ def bucketing_filter(W_b, k_b: int, eps):
                 C_1.add((i,j))
   
   join_pruning_rate = 1 - len(C_1)/pow(m, 2)
-  # print("Join pruning rate:", join_pruning_rate)
+  # logger_2.info(f"The join pruning rate is {join_pruning_rate}.")
   return C_1
