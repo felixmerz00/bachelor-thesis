@@ -1,8 +1,13 @@
 # don't commit my venv with the installed packages
 my-venv/
 
+# data
 # don't commit audio files
 *.mp3
+data/ucr-archive-2018
+# these files are generated
+data/finance/nasdaqlisted-symbols.txt
+data/finance/automated/
 
 # ignore irrelevant files like  Jupyter Notebook checkpoints
 .ipynb_checkpoints/
@@ -14,6 +19,3 @@ brute-force-implementation/__pycache__/
 # for trying out different functions
 brute-force-implementation/sandbox.py
 
-# these files are generated
-financial-data/nasdaqlisted-symbols.txt
-financial-data/automated/
