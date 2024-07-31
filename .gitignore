@@ -16,7 +16,7 @@ data/finance/automated/
 code/sandbox.py
 
 # generated file
-code/scrape-financial-data/nasdaqlisted-symbols.txt
+code/scrape_financial_data/nasdaqlisted-symbols.txt
 
 # ignore compiled bytecode files for imported modules
-code/brute-force-implementation/__pycache__/
+code/brute_force_implementation/__pycache__/
