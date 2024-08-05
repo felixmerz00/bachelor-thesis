@@ -4,7 +4,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
-  filename='financial-data/invalid-symbols.log', 
+  filename='code/scrape_financial_data/invalid-symbols.log', 
   filemode='a', 
   encoding='utf-8', 
   level=logging.INFO,
@@ -21,7 +21,7 @@ def scrape(symbol_list: list):
   print('log info: scrape')
   with sync_playwright() as p:
     # specify the download path
-    download_path = os.path.join(os.getcwd(), "financial-data/automated")
+    download_path = os.path.join(os.getcwd(), "data/finance/automated")
     os.makedirs(download_path, exist_ok=True)
 
     # headless so I see the browser, slow_mo so I see it better
@@ -43,13 +43,43 @@ def scrape(symbol_list: list):
         page.goto(f"https://finance.yahoo.com/quote/{symbol}/history/?period1=1388534400&period2=1704067200")
 
         with page.expect_download(timeout=10000) as download_info:
-          page.click('a[class="subtle-link fin-size-medium yf-13p9sh2"]')
+          print(f"log info: attemting a click for {symbol}")
+          # page.click('a[class="subtle-link fin-size-medium yf-13p9sh2"]')
+          # page.click('a[data-testid="download-link"]')
+          # page.click('a[href*="/v7/finance/download/"]')
+          page.get_by_test_id("download-link").click(timeout=10000)
+
+          # page.goto(f"https://query1.finance.yahoo.com/v7/finance/download/{symbol}?period1=1388534400&amp;period2=1704067200&amp;interval=1d&amp;events=history&amp;includeAdjustedClose=true")
+
+          # HTML element I need to click to download the data
+          # <a 
+          #   class="subtle-link fin-size-medium yf-13p9sh2" 
+          #   data-ylk="elm:download;elmt:link;itc:1;sec:qsp-historical;slk:history-download;subsec:download" 
+          #   href="https://query1.finance.yahoo.com/v7/finance/download/FRSX?period1=1388534400&amp;period2=1704067200&amp;interval=1d&amp;events=history&amp;includeAdjustedClose=true" 
+          #   data-testid="download-link" 
+          #   data-rapid_p="18" 
+          #   data-v9y="1">
+          #   <span class="download-link-wrapper yf-ewueuo">
+          #     <div class="icon fin-icon link-icn sz-x-large yf-7v4gbg">
+          #       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          #         <path d="M19 9h-4V3H9v6H5l7 7zM5 18v2h14v-2z">
+          #         </path>
+          #       </svg>
+          #     </div> 
+          #     <span>Download</span>
+          #   </span> 
+          # </a>
+          
+          # Link of the download looks the same for each ticker symbol
+          # href="https://query1.finance.yahoo.com/v7/finance/download/FORLW?period1=1388534400&amp;period2=1704067200&amp;interval=1d&amp;events=history&amp;includeAdjustedClose=true"
+
 
         download = download_info.value
         download.save_as(os.path.join(download_path, download.suggested_filename))
         print(f"File downloaded to: {os.path.join(download_path, download.suggested_filename)}")
-      except:
+      except Exception as e:
         print(f"ERROR for {symbol}")
+        print(e)
         logger.info(symbol)
 
     browser.close()
@@ -59,8 +89,8 @@ def extract_stock_symbols_nasdaq():
   Extract ticker symbols from stocks traded on the Nasdaq and write them to a new text file.
   """
   print('log info: extract symbols from complete data')
-  input_file_path = 'financial-data/nasdaqlisted.txt'
-  output_file_path = 'financial-data/nasdaqlisted-symbols.txt'
+  input_file_path = 'code/scrape_financial_data/nasdaqlisted.txt'
+  output_file_path = 'code/scrape_financial_data/nasdaqlisted-symbols.txt'
 
   # Open the input file for reading
   with open(input_file_path, 'r') as infile:
@@ -88,7 +118,7 @@ def get_qoute_list(invalid_symbols: list):
   """
   print('log info: read ticker symbols from file')
   out = []
-  input_file_path = 'financial-data/nasdaqlisted-symbols.txt'
+  input_file_path = 'code/scrape_financial_data/nasdaqlisted-symbols.txt'
   with open(input_file_path, 'r') as infile:
     for line in infile:
       symbol = line.strip()
@@ -105,7 +135,7 @@ def get_invalid_symbols():
   """
   print('log info: read invalid ticker symbols from logs')
   out = []
-  input_file_path = 'financial-data/invalid-symbols.log'
+  input_file_path = 'code/scrape_financial_data/invalid-symbols.log'
   with open(input_file_path, 'r') as infile:
     for line in infile:
       out.append(line.strip())
@@ -121,7 +151,7 @@ def get_already_scraped_symbols():
   print('log info: read already scraped ticker symbols')
   out = []
   # List all files in the specified directory
-  for filename in os.listdir("financial-data/automated"):
+  for filename in os.listdir("data/finance/automated"):
       if filename.endswith('.csv'):
           # Extract the ticker symbol by removing the '.csv' extension
           symbol = filename[:-4]
