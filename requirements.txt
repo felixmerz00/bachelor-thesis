@@ -8,8 +8,12 @@ pyts
 itertools
 math
 pandas
+# Used for opening weather
+xarray
+cftime
 
 # for scraping financial data
 # I couldn't add this package to my conda environment. 
 # I used a separate Python virtual environment for scraping.
 playwright
+
