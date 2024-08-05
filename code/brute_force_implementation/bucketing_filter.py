@@ -17,7 +17,7 @@ def ceil_epsilon(number, eps):
 def get_neighbors(bkt_cords, k_b: int, B:int):
   """
   Generate the coordinates for each neighbor of bucket of bkt.
-  I start from bkt_cords and generating all moves to an adjacent 
+  I start from bkt_cords and generating all moves to an adjacent
   bucket. The result is the list of moves added to the bkt_cords.
 
   Parameters:
@@ -41,14 +41,15 @@ def bucketing_filter(W_b, k_b: int, eps, logger_2):
   W_b (numpy.ndarray): Matrix of windows.
   k_b (int): number of dimensions.
   eps (float): distance threshold ε
-  
+
   Returns:
   C_1 (set of tuples): Candidate set of indices of likely correlated pairs of windows.
+  join_pruning_rate (float): The pruning rate from the bucketing filter.
   """
   m = len(W_b)
   # C_1 = np.empty((pow(m, 2), 2), dtype=int)
   C_1 = set()
-  
+
   # initialize k_b-dimensional bucketing scheme
   bkt_lwr_bnd = floor_epsilon(np.min(W_b), eps)
   bkt_upr_bnd = ceil_epsilon(np.max(W_b), eps)
@@ -83,7 +84,7 @@ def bucketing_filter(W_b, k_b: int, eps, logger_2):
             for j in BKT[nb_idx]:
               if i < j and np.linalg.norm(W_b[i] - W_b[j]) <= eps:
                 C_1.add((i,j))
-  
+
   join_pruning_rate = 1 - len(C_1)/pow(m, 2)
   # logger_2.info(f"The join pruning rate is {join_pruning_rate}.")
-  return C_1
+  return C_1, join_pruning_rate

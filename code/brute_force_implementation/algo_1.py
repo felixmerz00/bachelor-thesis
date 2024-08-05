@@ -12,7 +12,7 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 # Create a logger for reporting correlation
 logger = logging.getLogger("main_logger")
 logger.setLevel(logging.INFO)
-main_handler = logging.FileHandler('code/brute-force-implementation/logs/report.log', mode='w', encoding='utf-8')
+main_handler = logging.FileHandler('code/brute_force_implementation/logs/report.log', mode='w', encoding='utf-8')
 main_handler.setLevel(logging.INFO)
 main_handler.setFormatter(formatter)
 logger.addHandler(main_handler)
@@ -20,14 +20,14 @@ logger.addHandler(main_handler)
 # Create a second logger for logging the pruning rates
 logger_2 = logging.getLogger('logger_2')
 logger_2.setLevel(logging.INFO)
-handler_2 = logging.FileHandler('code/brute-force-implementation/logs/pruning-rate.log', mode='w', encoding='utf-8')
+handler_2 = logging.FileHandler('code/brute_force_implementation/logs/pruning-rate.log', mode='w', encoding='utf-8')
 handler_2.setLevel(logging.INFO)
 handler_2.setFormatter(formatter)
 logger_2.addHandler(handler_2)
 
 
 # algorithm 1 Alizade Nikoo
-def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
+def algorithm_1(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
   print('log info: algorithm 1')
   epsilon_1 = sqrt(2*k_s*(1-T)/n)
   epsilon_2 = sqrt(2*k_e*(1-T)/n)
@@ -49,7 +49,7 @@ def algorithm_1(t_series, n: int, h: int, T: int, k_s: int, k_e: int, k_b: int):
       W_s[p], W_e[p] = paa_double_pyts(W[p], n, k_s, k_e)  # PAA
 
     W_b = custom_svd(W_s, k_b)
-    C_1 = bucketing_filter(W_b, k_b, epsilon_1, logger_2)
+    C_1, _ = bucketing_filter(W_b, k_b, epsilon_1, logger_2)
     C_2 = set()
 
     for pair in C_1:
