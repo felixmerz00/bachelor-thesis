@@ -29,8 +29,8 @@ def algorithm_1(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int
   # initial windows
   w = [None for _ in range(m)]
   W = [None for _ in range(m)]
-  W_s = np.empty((m, k_s))
-  W_e = np.empty((m, k_e))
+  # W_s = np.empty((m, k_s))
+  # W_e = np.empty((m, k_e))
 
   alpha = 0
   while alpha*h <= (len(t_series[0])-n):  # I assume all time series have the same length
@@ -44,7 +44,7 @@ def algorithm_1(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int
 
     # W_b = custom_svd(W_s, k_b)
     # C_1, _ = bucketing_filter(W_b, k_b, epsilon_1, logger_2)
-    C_2 = set()
+    # C_2 = set()
 
     # Eucledian distance filter
     # for pair in C_1:
