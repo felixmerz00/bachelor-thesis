@@ -5,6 +5,7 @@ my-venv/
 # don't commit audio files
 *.mp3
 data/ucr-archive-2018
+data/weather
 # generated file
 data/finance/automated/
 
