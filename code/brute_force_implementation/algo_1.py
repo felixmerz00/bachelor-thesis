@@ -53,6 +53,7 @@ def algorithm_1(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int
     C_1, _ = bucketing_filter(W_b, k_b, epsilon_1, logger_2)
     C_2 = set()
 
+    # Eucledian distance filter
     for pair in C_1:
       # if incp(W_e[pair[0]], W_e[pair[1]], len(W_e[pair[0]])) <= epsilon_2:
       if np.linalg.norm(W_e[pair[0]] - W_e[pair[1]]) <= epsilon_2:
