@@ -32,6 +32,7 @@ def algorithm_1(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int
   epsilon_1 = sqrt(2*k_s*(1-T)/n)
   epsilon_2 = sqrt(2*k_e*(1-T)/n)
   m = len(t_series)   # number of time series
+  num_corr_pairs = 0
 
   # initial windows
   w = [None for _ in range(m)]
@@ -60,9 +61,13 @@ def algorithm_1(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int
         C_2.add(pair)
     overall_pruning_rate = 1 - len(C_2)/pow(m, 2)
     # logger_2.info(f"The overall pruning rate is {overall_pruning_rate}.")
+    # Actual Pearson correlation comparison
     for pair in C_2:
       corrcoef = incp(W[pair[0]], W[pair[1]], n)
       if abs(corrcoef) >= T:
+        num_corr_pairs += 1
         logger.info(f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with correlation coefficient {corrcoef}.")
 
     alpha += 1
+
+  logger.info(f"Report: In total the data contains {num_corr_pairs} correlated window pairs.")
