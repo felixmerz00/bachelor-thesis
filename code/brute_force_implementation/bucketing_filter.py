@@ -1,6 +1,8 @@
 import numpy as np
 from math import floor, ceil
 import itertools
+# Brute force test if I don't filter too many pairs
+from inc_p import incp
 
 def floor_epsilon(number, eps):
   """
@@ -74,6 +76,7 @@ def bucketing_filter(W_b, k_b: int, eps, logger_2):
       # same bucket
       for i in bkt:
         for j in bkt:
+          # if i < j and incp(W_b[i], W_b[j], len(W_b[i])) <= eps:
           if i < j and np.linalg.norm(W_b[i] - W_b[j]) <= eps:
             C_1.add((i,j))
       # neighboring buckets
@@ -82,6 +85,7 @@ def bucketing_filter(W_b, k_b: int, eps, logger_2):
         if not BKT[nb_idx] is None:
           for i in bkt:
             for j in BKT[nb_idx]:
+              # if i < j and incp(W_b[i], W_b[j], len(W_b[i])) <= eps:
               if i < j and np.linalg.norm(W_b[i] - W_b[j]) <= eps:
                 C_1.add((i,j))
 
