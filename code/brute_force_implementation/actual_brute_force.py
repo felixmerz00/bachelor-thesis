@@ -4,6 +4,7 @@ from math import sqrt
 import numpy as np
 from inc_p import incp
 import logging
+from typing import List
 
 # Formatting for loggers
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -19,7 +20,7 @@ logger.addHandler(main_handler)
 # Copy from algo_1.py
 # I deleted everything related to dimensionality reduction/filtering:
 # PAA, SVD, bucketing filter, Eucledian distance filter
-def algorithm_1(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
+def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
   print('log info: algorithm 1')
   epsilon_1 = sqrt(2*k_s*(1-T)/n)
   epsilon_2 = sqrt(2*k_e*(1-T)/n)
@@ -27,8 +28,8 @@ def algorithm_1(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int
   num_corr_pairs = 0  # Output
 
   # initial windows
-  w = [None for _ in range(m)]
-  W = [None for _ in range(m)]
+  w = np.empty((m, n))
+  W = np.empty((m, n))
   # W_s = np.empty((m, k_s))
   # W_e = np.empty((m, k_e))
 
