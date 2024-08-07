@@ -22,8 +22,8 @@ logger.addHandler(main_handler)
 # PAA, SVD, bucketing filter, Eucledian distance filter
 def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
   print('log info: algorithm 1')
-  epsilon_1 = sqrt(2*k_s*(1-T)/n)
-  epsilon_2 = sqrt(2*k_e*(1-T)/n)
+  # epsilon_1 = sqrt(2*k_s*(1-T)/n)
+  # epsilon_2 = sqrt(2*k_e*(1-T)/n)
   m = len(t_series)   # number of time series
   num_corr_pairs = 0  # Output
 
