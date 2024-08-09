@@ -61,7 +61,7 @@ def bucketing_filter(W_b, k_b: int, eps, logger_2):
 
   # assign W_b[p] to a bucket
   for p in range(m):
-    bkt = ()
+    bkt = ()  # Coordinates of the bucket which I assign W_b[p] to
     for w in W_b[p]:
       dim_bkt = floor((w-bkt_lwr_bnd)/eps)
       bkt += (dim_bkt,)

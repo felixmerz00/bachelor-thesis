@@ -15,6 +15,7 @@ data/finance/automated/
 
 # for trying out different functions
 code/sandbox.py
+code/brute_force_implementation/sandbox.py
 
 # generated file
 code/scrape_financial_data/nasdaqlisted-symbols.txt
