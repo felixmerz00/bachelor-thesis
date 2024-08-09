@@ -80,8 +80,9 @@ def algorithm_1(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int
     # Eucledian distance filter
     for pair in C_1:
       # if incp(W_e[pair[0]], W_e[pair[1]], len(W_e[pair[0]])) <= epsilon_2:
+      if incp(W[pair[0]], W[pair[1]], len(W[pair[0]])) >= T:
       # if np.linalg.norm(W_e[pair[0]] - W_e[pair[1]]) <= epsilon_2:
-      if np.linalg.norm(W[pair[0]] - W[pair[1]]) <= epsilon_2:  # For run without PAA
+      # if np.linalg.norm(W[pair[0]] - W[pair[1]]) <= epsilon_2:  # For run without PAA
         C_2.add(pair)
     overall_pruning_rate = 1 - len(C_2)/pow(m, 2)
     # logger_2.info(f"The overall pruning rate is {overall_pruning_rate}.")
