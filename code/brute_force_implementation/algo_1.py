@@ -50,7 +50,7 @@ def get_all_pairs(m: int):
 def algorithm_1(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
   print('log info: algorithm 1')
   epsilon_1 = sqrt(2*k_s*(1-T)/n)
-  epsilon_2 = sqrt(2*k_e*(1-T)/n)
+  epsilon_2 = sqrt(2*n*(1-T)/n)
   m = len(t_series)   # number of time series
   num_corr_pairs = 0
 
