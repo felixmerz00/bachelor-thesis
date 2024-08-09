@@ -48,16 +48,18 @@ def algorithm_1(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int
       w[p] = t_series[p][alpha*h:alpha*h+n]   # shift window
       x_bar = np.mean(w[p])
       W[p] = (w[p] - x_bar) / sqrt(np.sum(pow((w[p]-x_bar), 2)))  # normalization, W[p] is a np.ndarray
-      W_s[p], W_e[p] = paa_double_pyts(W[p], n, k_s, k_e)  # PAA
+      # W_s[p], W_e[p] = paa_double_pyts(W[p], n, k_s, k_e)  # PAA
 
-    W_b = custom_svd(W_s, k_b)
+    # W_b = custom_svd(W_s, k_b)
+    W_b = custom_svd(W, k_b)  # For run without PAA
     C_1, _ = bucketing_filter(W_b, k_b, epsilon_1, logger_2)
     C_2 = set()
 
     # Eucledian distance filter
     for pair in C_1:
       # if incp(W_e[pair[0]], W_e[pair[1]], len(W_e[pair[0]])) <= epsilon_2:
-      if np.linalg.norm(W_e[pair[0]] - W_e[pair[1]]) <= epsilon_2:
+      # if np.linalg.norm(W_e[pair[0]] - W_e[pair[1]]) <= epsilon_2:
+      if np.linalg.norm(W[pair[0]] - W[pair[1]]) <= epsilon_2:  # For run without PAA
         C_2.add(pair)
     overall_pruning_rate = 1 - len(C_2)/pow(m, 2)
     # logger_2.info(f"The overall pruning rate is {overall_pruning_rate}.")
