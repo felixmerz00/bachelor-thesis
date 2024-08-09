@@ -49,8 +49,10 @@ def get_all_pairs(m: int):
 # algorithm 1 Alizade Nikoo
 def algorithm_1(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
   print('log info: algorithm 1')
-  epsilon_1 = sqrt(2*k_s*(1-T)/n)
-  epsilon_2 = sqrt(2*n*(1-T)/n)
+  # epsilon_1 = sqrt(2*k_s*(1-T)/n)
+  epsilon_1 = sqrt(2*n*(1-T)/n)   # For run without PAA
+  # epsilon_2 = sqrt(2*k_e*(1-T)/n)
+  epsilon_2 = sqrt(2*n*(1-T)/n)   # For run without PAA
   m = len(t_series)   # number of time series
   num_corr_pairs = 0
 
@@ -71,18 +73,18 @@ def algorithm_1(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int
       # W_s[p], W_e[p] = paa_double_pyts(W[p], n, k_s, k_e)  # PAA
 
     # W_b = custom_svd(W_s, k_b)
-    # W_b = custom_svd(W, k_b)  # For run without PAA
-    # C_1, _ = bucketing_filter(W_b, k_b, epsilon_1, logger_2)
+    W_b = custom_svd(W, k_b)  # For run without PAA
+    C_1, _ = bucketing_filter(W_b, k_b, epsilon_1, logger_2)
     # C_1, _ = bucketing_filter(W, n, epsilon_1, logger_2)  # For run without SVD
-    C_1 = get_all_pairs(m)  # For run without SVD
+    # C_1 = get_all_pairs(m)  # For run without SVD
     C_2 = set()
 
     # Eucledian distance filter
     for pair in C_1:
       # if incp(W_e[pair[0]], W_e[pair[1]], len(W_e[pair[0]])) <= epsilon_2:
-      if incp(W[pair[0]], W[pair[1]], len(W[pair[0]])) >= T:
+      # if incp(W[pair[0]], W[pair[1]], len(W[pair[0]])) >= T:
       # if np.linalg.norm(W_e[pair[0]] - W_e[pair[1]]) <= epsilon_2:
-      # if np.linalg.norm(W[pair[0]] - W[pair[1]]) <= epsilon_2:  # For run without PAA
+      if np.linalg.norm(W[pair[0]] - W[pair[1]]) <= epsilon_2:  # For run without PAA
         C_2.add(pair)
     overall_pruning_rate = 1 - len(C_2)/pow(m, 2)
     # logger_2.info(f"The overall pruning rate is {overall_pruning_rate}.")
