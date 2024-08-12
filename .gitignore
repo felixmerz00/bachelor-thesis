@@ -6,6 +6,7 @@ my-venv/
 *.mp3
 data/ucr-archive-2018
 data/weather
+!data/weather/us-state-capitals-wo-alaska-hawaii.csv
 # generated file
 data/finance/automated/
 

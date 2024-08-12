@@ -6,6 +6,18 @@ import pandas as pd
 import glob
 from statsmodels.tsa.seasonal import seasonal_decompose
 
+def get_state_capital_coordinates():
+  """
+  Extract latitudes and longitudes of all US state capitals except for Alaska and Hawaii from a csv file.
+
+  Returns:
+
+  """
+  df = pd.read_csv('data/weather/us-state-capitals-wo-alaska-hawaii.csv')
+  latitudes = df['latitude'].to_numpy()
+  longitudes = df['longitude'].to_numpy()
+  return latitudes, longitudes
+
 def read_nc_file(file_path: str, lon_point: float, lat_point: float):
   """
   Read a NetCDF file and extract data for a specific point.
@@ -94,6 +106,8 @@ folder_path = 'data/weather/precipitation-dataset-insitu-gridded-observations-gl
 # Specify the longitude and latitude of the point you are interested in
 lon_point = -75.0  # Example longitude
 lat_point = 40.0   # Example latitude
+# With this line I get the coordinates for all state capitals
+lon_points, lat_points = get_state_capital_coordinates()
 
 # List all .nc files in the folder, each file contains data for one year
 nc_files = glob.glob(os.path.join(folder_path, '*.nc'))
@@ -104,7 +118,7 @@ all_pr_points = []
 
 # Initialize lists to store aggregated time and precipitation data for the grid
 all_times_grid = []
-all_pr_grid = []
+# all_pr_grid = []
 
 # Read data from each .nc file
 for file_path in nc_files:
@@ -112,25 +126,25 @@ for file_path in nc_files:
   all_times.append(time)
   all_pr_points.append(pr_point)
 
-  time_grid, lon_grid, lat_grid, pr_grid = read_nc_file_grid(file_path)
-  all_times_grid.append(time_grid)
-  all_pr_grid.append(pr_grid)
+  # time_grid, lon_grid, lat_grid, pr_grid = read_nc_file_grid(file_path)
+  # all_times_grid.append(time_grid)
+  # all_pr_grid.append(pr_grid)
 
 # Concatenate all times and precipitation data
 all_times = np.concatenate(all_times)
 all_pr_points = np.concatenate(all_pr_points)
 
-all_times_grid = np.concatenate(all_times_grid)
-all_pr_grid = np.concatenate(all_pr_grid, axis=0)
+# all_times_grid = np.concatenate(all_times_grid)
+# all_pr_grid = np.concatenate(all_pr_grid, axis=0)
 
 # Sort the data by time
 sorted_indices = np.argsort(all_times)
 all_times = all_times[sorted_indices]
 all_pr_points = all_pr_points[sorted_indices]
 
-sorted_indices_grid = np.argsort(all_times_grid)
-all_times_grid = all_times_grid[sorted_indices_grid]
-all_pr_grid = all_pr_grid[sorted_indices_grid, :, :]
+# sorted_indices_grid = np.argsort(all_times_grid)
+# all_times_grid = all_times_grid[sorted_indices_grid]
+# all_pr_grid = all_pr_grid[sorted_indices_grid, :, :]
 
 # Save the data points to a CSV file
 data = {
@@ -174,15 +188,15 @@ plt.savefig('data/weather/decomposed_time_series.png')
 plt.show()
 
 # Calculate the time-averaged precipitation for the grid
-avg_pr_grid = np.nanmean(all_pr_grid, axis=0)
+# avg_pr_grid = np.nanmean(all_pr_grid, axis=0)
 
 # Plotting the heatmap of the time-averaged precipitation data
-plt.figure(figsize=(12, 8))
-plt.contourf(lon_grid, lat_grid, avg_pr_grid, cmap='viridis', levels=100)
-plt.colorbar(label='Precipitation (mm/day)')
-plt.xlabel('Longitude')
-plt.ylabel('Latitude')
-plt.grid(True)
-plt.title('Time-Averaged Daily Precipitation Heatmap')
-plt.savefig('data/weather/time_averaged_precipitation_heatmap.png')
-plt.show()
+# plt.figure(figsize=(12, 8))
+# plt.contourf(lon_grid, lat_grid, avg_pr_grid, cmap='viridis', levels=100)
+# plt.colorbar(label='Precipitation (mm/day)')
+# plt.xlabel('Longitude')
+# plt.ylabel('Latitude')
+# plt.grid(True)
+# plt.title('Time-Averaged Daily Precipitation Heatmap')
+# plt.savefig('data/weather/time_averaged_precipitation_heatmap.png')
+# plt.show()
