@@ -5,6 +5,7 @@ import numpy as np
 from inc_p import incp
 import logging
 from typing import List
+from sandbox import euc_dist_manual
 
 # Formatting for loggers
 formatter = logging.Formatter(
@@ -60,10 +61,17 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
           # corrcoef = incp(W[i], W[j], n)
           # if abs(corrcoef) >= T:
           euc_d = np.linalg.norm(W[i] - W[j])
+          euc_d_man = euc_dist_manual(W[i], W[j])
           if euc_d <= epsilon_2:
             num_corr_pairs += 1
             logger.info(
               f"Report ({i}, {j}, {alpha}): Window {alpha} of time series {i} and {j} are correlated with euclidean distance {euc_d}."
+            )
+          # Check difference between numpy and manual Euclidean distance
+          # The difference should be less than 1/1000
+          if abs(euc_d - euc_d_man) > 1e-3:
+            logger.info(
+              f"Report i: {i}, j: {j}, alpha:{alpha}, np: {euc_d}, manual: {euc_dist_manual}."
             )
 
     alpha += 1
