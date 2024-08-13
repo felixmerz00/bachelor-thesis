@@ -61,8 +61,7 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float, k_s: int, 
     for i in range(m):
       for j in range(m):
         if i < j:
-          # corrcoef = incp(W[i], W[j], n)
-          corrcoef = incp(w[i], w[j], n)
+          corrcoef = incp(W[i], W[j], n)
           if abs(corrcoef) >= T:
             num_corr_pairs += 1
             logger.info(f"Report ({i}, {j}, {alpha}): Window {alpha} of time series {i} and {i} are correlated with correlation coefficient {corrcoef}.")
