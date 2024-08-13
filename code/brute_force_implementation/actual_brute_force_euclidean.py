@@ -69,7 +69,7 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
             )
           # Check difference between numpy and manual Euclidean distance
           # The difference should be less than 1/1000
-          if abs(euc_d - euc_d_man) > 1e-3:
+          if abs(euc_d - euc_d_man) > 1e-6:
             logger.info(
               f"Report i: {i}, j: {j}, alpha:{alpha}, np: {euc_d}, manual: {euc_dist_manual}."
             )
