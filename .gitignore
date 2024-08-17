@@ -1,5 +1,8 @@
-# don't commit my venv with the installed packages
+# venv files with the installed packages
 my-venv/
+
+# PyCharm files
+.idea
 
 # data
 # don't commit audio files
