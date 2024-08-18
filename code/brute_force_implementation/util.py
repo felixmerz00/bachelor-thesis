@@ -13,4 +13,4 @@ def corr_euc_d(norm_x, norm_y):
   Returns:
     float: The Pearson correlation between x and y.
   """
-  return 1-(1/2)*np.linalg.norm(norm_x - norm_y)
+  return 1-(1/2)*pow(np.linalg.norm(norm_x - norm_y), 2)

@@ -5,6 +5,7 @@ import numpy as np
 from inc_p import incp
 import logging
 from typing import List
+from util import corr_euc_d
 
 # Formatting for loggers
 formatter = logging.Formatter(
@@ -55,7 +56,8 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
       for j in range(m):
         if i < j:
           # corrcoef = incp(W[i], W[j], n)
-          corrcoef = incp(w[i], w[j], n)
+          # corrcoef = incp(w[i], w[j], n)
+          corrcoef = corr_euc_d(W[i], W[j])
           if abs(corrcoef) >= T:
             num_corr_pairs += 1
             logger.info(
