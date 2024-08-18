@@ -1,21 +1,6 @@
-import numpy as np
-
-from inc_p import incp
 from test_setup import get_first_normalized_window_audio_data, get_first_window_audio_data
-
-def corr_euc_d(norm_x, norm_y):
-  """
-  Calculate the Pearson correlation between x and y based on the Euclidean
-  distance between normalized x and normalized y.
-
-  Parameters:
-    norm_x, norm_y (array-like): The normalized version of two vectors x and
-    y.
-
-  Returns:
-    float: The Pearson correlation between x and y.
-  """
-  return 1-(1/2)*np.linalg.norm(norm_x - norm_y)
+from inc_p import incp
+from util import corr_euc_d
 
 
 def test_compare_inc_p_euc_d():
