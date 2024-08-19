@@ -6,7 +6,7 @@ from typing import List
 # Third-party imports
 import numpy as np
 # Local imports
-from load_data import load_audio_data, load_custom_financial_data
+from load_data import load_audio_data, load_custom_financial_data, load_short_custom_financial_data
 from inc_p import incp
 from util import get_audio_params_1, get_financial_params_1, corr_euc_d
 
@@ -91,5 +91,12 @@ def use_financial_data():
 
   algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
 
-use_audio_data()
+def use_short_financial_data():
+  time_series = load_short_custom_financial_data()
+  n = len(time_series[0])
+  h = n
+  algorithm_1(time_series, n, h, 0.75, -1, -1, -1)
+
+# use_audio_data()
 # use_financial_data()
+use_short_financial_data()
