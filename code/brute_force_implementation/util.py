@@ -1,4 +1,9 @@
+# Standard library imports
+from typing import List
+from math import sqrt
+# Third-party imports
 import numpy as np
+# Local imports
 
 
 def get_audio_params_1():
@@ -27,6 +32,10 @@ def get_financial_params_1():
   """
   return 300, 10, 0.85, 15, 30, 3
 
+
+# I don't use the following functions in my acutal correlation join algorithm.
+# They are used for comparisons and tests.
+
 def corr_euc_d(norm_x, norm_y):
   """
   Calculate the Pearson correlation between x and y based on the Euclidean
@@ -40,3 +49,18 @@ def corr_euc_d(norm_x, norm_y):
     float: The Pearson correlation between x and y.
   """
   return 1-(1/2)*pow(np.linalg.norm(norm_x - norm_y), 2)
+
+def euc_dist_manual(x: List, y: List):
+  """
+  Calculate Euclidean distance manually according to Alizade Nikoo.
+
+  Parameters:
+    x, y: Two vectors of same length to compare to each other.
+
+  Returns:
+    The euclidean distance between x and y.
+  """
+  diff = np.subtract(x, y)   # Subtract arguments, element-wise.
+  sq = diff ** 2  # Square each element
+  s = np.sum(sq)
+  return sqrt(s)
