@@ -1,8 +1,9 @@
-import librosa 
+import librosa
 from algo_1 import algorithm_1
 from paa import paa_custom, paa_pyts
 from time import perf_counter_ns
 from load_data import convert_audio_data, load_audio_data, load_automated_financial_data, load_custom_financial_data
+from util import get_financial_params_1
 
 def use_audio_data():
   # convert_audio_data()  # activate this line when you added new mp3 files
@@ -28,17 +29,8 @@ def use_audio_data():
 def use_financial_data():
   # time_series = load_automated_financial_data(1000)
   time_series = load_custom_financial_data()
-  # print(len(time_series), len(time_series[0]))
-  # parameters
-  n = 300   # window size
-  h = 10   # ideally a divisor of n
-  T = 0.85
-  # TODO: handle if h, k_s, k_e, k_b are not divisors of n
-  k_s = 15  # dimensions for svd
-  k_e = 30  # dimensions for which I calculate the Eucledian distance
-  k_b = 3
-  
+  n, h, T, k_s, k_e, k_b = get_financial_params_1()
   algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
 
-use_audio_data()
-# use_financial_data()
+# use_audio_data()
+use_financial_data()

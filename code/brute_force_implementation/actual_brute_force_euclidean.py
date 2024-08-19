@@ -1,4 +1,4 @@
-from load_data import load_audio_data
+from load_data import load_audio_data, load_custom_financial_data
 from time import perf_counter_ns
 from math import sqrt
 import numpy as np
@@ -6,6 +6,7 @@ from inc_p import incp
 import logging
 from typing import List
 from sandbox import euc_dist_manual
+from util import get_financial_params_1
 
 # Formatting for loggers
 formatter = logging.Formatter(
@@ -98,4 +99,13 @@ def use_audio_data():
 
   algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
 
-use_audio_data()
+# Copy from main.py (adjusted)
+def use_financial_data():
+  # time_series = load_automated_financial_data(1000)
+  time_series = load_custom_financial_data()
+  n, h, T, k_s, k_e, k_b = get_financial_params_1()
+
+  algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
+
+# use_audio_data()
+use_financial_data()
