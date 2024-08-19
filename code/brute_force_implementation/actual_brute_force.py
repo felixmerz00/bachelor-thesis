@@ -1,16 +1,19 @@
-from load_data import load_audio_data, load_custom_financial_data
+# Standard library imports
 from time import perf_counter_ns
 from math import sqrt
-import numpy as np
-from inc_p import incp
 import logging
 from typing import List
-from util import corr_euc_d, get_financial_params_1
+# Third-party imports
+import numpy as np
+# Local imports
+from load_data import load_audio_data, load_custom_financial_data
+from inc_p import incp
+from util import get_audio_params_1, get_financial_params_1, corr_euc_d
+
 
 # Formatting for loggers
 formatter = logging.Formatter(
-  '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+  '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 # Create a logger for reporting correlation
 logger = logging.getLogger("main_logger")
@@ -55,9 +58,9 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
     for i in range(m):
       for j in range(m):
         if i < j:
-          # corrcoef = incp(W[i], W[j], n)
+          corrcoef = incp(W[i], W[j], n)
           # corrcoef = incp(w[i], w[j], n)
-          corrcoef = corr_euc_d(W[i], W[j])
+          # corrcoef = corr_euc_d(W[i], W[j])
           if abs(corrcoef) >= T:
             num_corr_pairs += 1
             logger.info(
@@ -76,20 +79,9 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
 def use_audio_data():
   # Convert_audio_data()  # activate this line when you added new mp3 files
   time_series = load_audio_data()
+  n, h, T, k_s, k_e, k_b = get_audio_params_1()
 
-  # Parameters
-  m = len(time_series)   # Number of data streams
-  n = 500   # Window size
-  h = 10   # Ideally a divisor of n
-  T = 0.75
-  k_s = 100
-  k_e = 250
-  k_b = 2
-
-  time_start = perf_counter_ns()
   algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
-  time_elapsed = perf_counter_ns()-time_start
-  print(f"log info: time for algorithm 1: {time_elapsed/1e9} s")
 
 # Copy from main.py (adjusted)
 def use_financial_data():
@@ -99,5 +91,5 @@ def use_financial_data():
 
   algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
 
-# use_audio_data()
-use_financial_data()
+use_audio_data()
+# use_financial_data()

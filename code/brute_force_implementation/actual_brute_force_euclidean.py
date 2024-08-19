@@ -1,12 +1,15 @@
-from load_data import load_audio_data, load_custom_financial_data
+# Standard library imports
 from time import perf_counter_ns
 from math import sqrt
-import numpy as np
-from inc_p import incp
 import logging
 from typing import List
-from sandbox import euc_dist_manual
-from util import get_financial_params_1
+# Third-party imports
+import numpy as np
+# Local imports
+from load_data import load_audio_data, load_custom_financial_data
+from inc_p import incp
+from util import get_audio_params_1, get_financial_params_1, euc_dist_manual
+
 
 # Formatting for loggers
 formatter = logging.Formatter(
@@ -59,20 +62,11 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
     for i in range(m):
       for j in range(m):
         if i < j:
-          # corrcoef = incp(W[i], W[j], n)
-          # if abs(corrcoef) >= T:
           euc_d = np.linalg.norm(W[i] - W[j])
-          euc_d_man = euc_dist_manual(W[i], W[j])
           if euc_d <= epsilon_2:
             num_corr_pairs += 1
             logger.info(
               f"Report ({i}, {j}, {alpha}): Window {alpha} of time series {i} and {j} are correlated with euclidean distance {euc_d}."
-            )
-          # Check difference between numpy and manual Euclidean distance
-          # The difference should be less than 1/1000
-          if abs(euc_d - euc_d_man) > 1e-6:
-            logger.info(
-              f"Report i: {i}, j: {j}, alpha:{alpha}, np: {euc_d}, manual: {euc_dist_manual}."
             )
 
     alpha += 1
@@ -87,15 +81,7 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
 def use_audio_data():
   # convert_audio_data()  # activate this line when you added new mp3 files
   time_series = load_audio_data()
-
-  # parameters
-  m = 1   # number of data streams
-  n = 500   # window size
-  h = 10   # ideally a divisor of n
-  T = 0.75
-  k_s = 100
-  k_e = 250
-  k_b = 2
+  n, h, T, k_s, k_e, k_b = get_audio_params_1()
 
   algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
 
@@ -107,5 +93,5 @@ def use_financial_data():
 
   algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
 
-# use_audio_data()
-use_financial_data()
+use_audio_data()
+# use_financial_data()
