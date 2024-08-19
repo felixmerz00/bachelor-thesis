@@ -50,7 +50,7 @@ def corr_euc_d(norm_x, norm_y):
   """
   return 1-(1/2)*pow(np.linalg.norm(norm_x - norm_y), 2)
 
-def euc_dist_manual(x: List, y: List):
+def euc_dist_manual(x: np.ndarray, y: np.ndarray):
   """
   Calculate Euclidean distance manually according to Alizade Nikoo.
 

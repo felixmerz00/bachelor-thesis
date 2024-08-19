@@ -1,6 +1,10 @@
-from load_data import load_audio_data
+# Standard library imports
 from math import sqrt
+from typing import List
+# Third-party imports
 import numpy as np
+# Local imports
+from load_data import load_audio_data
 
 
 def get_params():
@@ -15,7 +19,7 @@ def get_params():
   """
   return 500, 10, 0.75, 100, 250, 2
 
-def get_first_normalized_window_audio_data():
+def get_first_normalized_window_audio_data() -> List[np.ndarray]:
   """
   Returns:
     list of np.ndarrays: First normalized window for m data streams of audio
