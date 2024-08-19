@@ -12,6 +12,8 @@ def test_computation_euc_d():
   to the manual Euclidean distance computation by Alizade Nikoo.
   """
   W = get_first_normalized_window_audio_data()
+  euc_d_np = np.linalg.norm(W[0] - W[1])
+  euc_d_man = euc_dist_manual(W[0], W[1])
   # Numpy rounds the result to, i.e., 1.4360323, thus I chose a lower
   # precision as my usual 1e-9
-  assert np.linalg.norm(W[0] - W[1]) - euc_dist_manual(W[0], W[1]) < 1e-6
+  assert abs(euc_d_np-euc_d_man) < 1e-6
