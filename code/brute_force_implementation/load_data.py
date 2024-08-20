@@ -138,7 +138,7 @@ def load_weather_data():
 # I don't use the following functions in my acutal correlation join algorithm.
 # They are used for comparisons and tests.
 
-def load_short_custom_financial_data():
+def load_short_custom_financial_data(length: int):
   print('log info: loading financial data')
   time_series = []
 
@@ -179,5 +179,5 @@ def load_short_custom_financial_data():
   time_series.append(xom_close_prices)
 
   for m in range(len(time_series)):
-    time_series[m] = time_series[m][:10]
+    time_series[m] = time_series[m][:length]
   return time_series

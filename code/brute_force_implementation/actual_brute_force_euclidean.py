@@ -93,12 +93,17 @@ def use_financial_data():
 
   algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
 
-def use_short_financial_data():
-  time_series = load_short_custom_financial_data()
-  n = len(time_series[0])
-  h = n
-  algorithm_1(time_series, n, h, 0.75, -1, -1, -1)
+def use_short_financial_data(data_len: int, n: int, h: int, T:float=0.75):
+  """
+  Parameters:
+    data_len: The length of the time series.
+    n: The length of a window.
+    h: The stride.
+    T: The threshold theta for the correlation.
+    """
+  time_series = load_short_custom_financial_data(data_len)
+  algorithm_1(time_series, n, h, T, -1, -1, -1)
 
 # use_audio_data()
 # use_financial_data()
-use_short_financial_data()
+use_short_financial_data(10, 10 , 10)
