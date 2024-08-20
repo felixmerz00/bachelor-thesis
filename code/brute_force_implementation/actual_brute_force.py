@@ -104,4 +104,5 @@ def use_short_financial_data(data_len: int, n: int, h: int, T:float=0.75):
 
 # use_audio_data()
 # use_financial_data()
-use_short_financial_data(10, 10, 10)
+# use_short_financial_data(10, 10, 10)  # Params 1
+use_short_financial_data(20, 10, 5)  # Params 2
