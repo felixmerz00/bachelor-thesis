@@ -36,6 +36,7 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
   epsilon_2 = sqrt(2*(1-T))
   m = len(t_series)   # number of time series
   num_corr_pairs = 0  # Output
+  logger.info(f"Threshold epsilon_2: {epsilon_2}")
 
   # initial windows
   w = np.empty((m, n))
@@ -63,6 +64,11 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
       for j in range(m):
         if i < j:
           euc_d = np.linalg.norm(W[i] - W[j])
+          # (4, 7, 1) and (6, 7, 1) are wrongfully being filtered.
+          if alpha == 1 and i in [4, 6] and j == 7:
+            logger.info(
+              f"Report exception ({i}, {j}, {alpha}): Window {alpha} of time series {i} and {j} are correlated with euclidean distance {euc_d}."
+            )
           if euc_d <= epsilon_2:
             num_corr_pairs += 1
             logger.info(

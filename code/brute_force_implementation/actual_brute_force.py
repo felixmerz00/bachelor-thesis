@@ -33,6 +33,7 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
   print('log info: algorithm 1')
   m = len(t_series)   # Number of time series
   num_corr_pairs = 0  # Output
+  logger.info(f"Threshold Theta: {T}")
 
   # initial windows
   w = np.empty((m, n))
