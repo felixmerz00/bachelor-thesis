@@ -50,6 +50,11 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
       W[p] = (w[p] - x_bar) / sqrt(np.sum(pow((w[p]-x_bar), 2)))
       # PAA would be here and return W_s[p], W_e[p]
 
+    if alpha == 1:
+      logger.info(f"Window {alpha}, time series 4: {W[4]}")
+      logger.info(f"Window {alpha}, time series 6: {W[6]}")
+      logger.info(f"Window {alpha}, time series 7: {W[7]}")
+
     # SVD would be here and return W_b
     # Bucketing filter would be here and return C_1
 
