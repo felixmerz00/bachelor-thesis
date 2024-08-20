@@ -47,3 +47,45 @@ def test_computation_euc_d_3():
   # Numpy rounds the result to, i.e., 1.4360323, thus I chose a lower
   # precision as my usual 1e-9
   assert abs(euc_d_np-euc_d_man) < 1e-6
+
+def test_computation_euc_d_4():
+  """
+  Test if the Euclidean distance computation by numpy.linalg.norm corresponds
+  to the manual Euclidean distance computation by Alizade Nikoo.
+  """
+  win_2_ts_3 = np.array([-0.22798765, -0.1889726, -0.22798765, -0.18187973,
+    -0.17833294, -0.10739677, -0.14641147, -0.1357711, -0.20316012,
+    -0.22798765, -0.15705149, -0.11449035, -0.04355454, 0.10186387,
+    0.00964731, -0.00808629, 0.11250388, 0.08412956, 0.05930203, 0.16925324,
+    0.23664155, 0.30048413, 0.26501587, 0.44944934, 0.36077957])
+  win_2_ts_6 = np.array([0.04219841, 0.20273505, 0.09636938, 0.13788767,
+    0.20510736, 0.20273505, 0.26916375, 0.22646001, 0.01610114, 0.01570589,
+    0.13472439, 0.23871759, 0.13630635, 0.05722418, 0.11851239, 0.01491491,
+    -0.07800695, -0.18555869, -0.18199952, -0.32751102, -0.17844098,
+    -0.2243088, -0.22589012, -0.21205106, -0.50109637])
+  euc_d_np = np.linalg.norm(win_2_ts_3 - win_2_ts_6)
+  euc_d_man = euc_dist_manual(win_2_ts_3, win_2_ts_6)
+  # Numpy rounds the result to, i.e., 1.4360323, thus I chose a lower
+  # precision as my usual 1e-9
+  assert abs(euc_d_np-euc_d_man) < 1e-6
+
+def test_computation_euc_d_5():
+  """
+  Test if the Euclidean distance computation by numpy.linalg.norm corresponds
+  to the manual Euclidean distance computation by Alizade Nikoo.
+  """
+  win_2_ts_6 = np.array([0.04219841, 0.20273505, 0.09636938, 0.13788767,
+    0.20510736, 0.20273505, 0.26916375, 0.22646001, 0.01610114, 0.01570589,
+    0.13472439, 0.23871759, 0.13630635, 0.05722418, 0.11851239, 0.01491491,
+    -0.07800695, -0.18555869, -0.18199952, -0.32751102, -0.17844098,
+    -0.2243088, -0.22589012, -0.21205106, -0.50109637])
+  win_2_ts_7 = np.array([-0.2868961, -0.09147876, -0.1553287, -0.13984987,
+    -0.19789358, -0.22691718, -0.13211017, -0.01408579, -0.13017495,
+    -0.25593903, -0.17854606, -0.16113318, -0.23659093, -0.04310765,
+    0.09620004, 0.22389817, 0.24518148, 0.12135262, 0.10393858, 0.078786,
+    0.16004939, 0.22583339, 0.30516157, 0.35933659, 0.33031415])
+  euc_d_np = np.linalg.norm(win_2_ts_6 - win_2_ts_7)
+  euc_d_man = euc_dist_manual(win_2_ts_6, win_2_ts_7)
+  # Numpy rounds the result to, i.e., 1.4360323, thus I chose a lower
+  # precision as my usual 1e-9
+  assert abs(euc_d_np-euc_d_man) < 1e-6
