@@ -54,11 +54,6 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
       W[p] = (w[p] - x_bar) / sqrt(np.sum(pow((w[p]-x_bar), 2)))
       # PAA would be here and return W_s[p], W_e[p]
 
-    if alpha == 2:
-      logger.info(f"Window {alpha}, time series 3: \n{W[3]}")
-      logger.info(f"Window {alpha}, time series 6: \n{W[6]}")
-      logger.info(f"Window {alpha}, time series 7: \n{W[7]}")
-
     # SVD would be here and return W_b
     # Bucketing filter would be here and return C_1
 
@@ -115,9 +110,9 @@ def use_short_financial_data(data_len: int, n: int, h: int, T:float=0.75):
   algorithm_1(time_series, n, h, T, -1, -1, -1)
   brute_force_euclidean.algorithm_1(time_series, n, h, T, -1, -1, -1)
 
-# use_audio_data()
+use_audio_data()
 # use_financial_data()
 # use_short_financial_data(10, 10, 10)  # Params 1
 # use_short_financial_data(20, 10, 5)  # Params 2
 # use_short_financial_data(50, 25, 10)  # Params 3
-use_short_financial_data(100, 25, 20)  # Params 4
+# use_short_financial_data(100, 25, 20)  # Params 4
