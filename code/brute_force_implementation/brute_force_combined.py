@@ -9,26 +9,30 @@ import numpy as np
 from load_data import load_audio_data, load_custom_financial_data, load_short_custom_financial_data
 from inc_p import incp
 from util import get_audio_params_1, get_financial_params_1, corr_euc_d
+import brute_force_euclidean
 
 
-# Formatting for loggers
-formatter = logging.Formatter(
-  '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+def get_logger():
+  # Formatting for loggers
+  formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-# Create a logger for reporting correlation
-logger = logging.getLogger("main_logger")
-logger.setLevel(logging.INFO)
-main_handler = logging.FileHandler(
-  'code/brute_force_implementation/logs/report-brute-force-combined.log',
-  mode='w', encoding='utf-8')
-main_handler.setLevel(logging.INFO)
-main_handler.setFormatter(formatter)
-logger.addHandler(main_handler)
+  # Create a logger for reporting correlation
+  logger = logging.getLogger("brute_force_logger")
+  logger.setLevel(logging.INFO)
+  main_handler = logging.FileHandler(
+    'code/brute_force_implementation/logs/report-brute-force-combined.log',
+    mode='w', encoding='utf-8')
+  main_handler.setLevel(logging.INFO)
+  main_handler.setFormatter(formatter)
+  logger.addHandler(main_handler)
+  return logger
 
 # Copy from actual_brute_force_euclidean.py
 def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
   k_s: int, k_e: int, k_b: int):
   print('log info: algorithm 1')
+  logger = get_logger()
   epsilon_2 = sqrt(2*(1-T))
   m = len(t_series)   # Number of time series
   num_corr_pairs = 0  # Output
@@ -50,10 +54,10 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
       W[p] = (w[p] - x_bar) / sqrt(np.sum(pow((w[p]-x_bar), 2)))
       # PAA would be here and return W_s[p], W_e[p]
 
-    if alpha == 1:
-      logger.info(f"Window {alpha}, time series 4: {W[4]}")
-      logger.info(f"Window {alpha}, time series 6: {W[6]}")
-      logger.info(f"Window {alpha}, time series 7: {W[7]}")
+    if alpha == 2:
+      logger.info(f"Window {alpha}, time series 3: \n{W[3]}")
+      logger.info(f"Window {alpha}, time series 6: \n{W[6]}")
+      logger.info(f"Window {alpha}, time series 7: \n{W[7]}")
 
     # SVD would be here and return W_b
     # Bucketing filter would be here and return C_1
@@ -109,8 +113,11 @@ def use_short_financial_data(data_len: int, n: int, h: int, T:float=0.75):
   """
   time_series = load_short_custom_financial_data(data_len)
   algorithm_1(time_series, n, h, T, -1, -1, -1)
+  brute_force_euclidean.algorithm_1(time_series, n, h, T, -1, -1, -1)
 
 # use_audio_data()
 # use_financial_data()
 # use_short_financial_data(10, 10, 10)  # Params 1
-use_short_financial_data(20, 10, 5)  # Params 2
+# use_short_financial_data(20, 10, 5)  # Params 2
+# use_short_financial_data(50, 25, 10)  # Params 3
+use_short_financial_data(100, 25, 20)  # Params 4

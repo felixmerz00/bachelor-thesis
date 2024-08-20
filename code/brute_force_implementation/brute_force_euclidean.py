@@ -11,19 +11,21 @@ from inc_p import incp
 from util import get_audio_params_1, get_financial_params_1, euc_dist_manual
 
 
-# Formatting for loggers
-formatter = logging.Formatter(
-  '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+def get_logger():
+  # Formatting for loggers
+  formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-# Create a logger for reporting correlation
-logger = logging.getLogger("main_logger")
-logger.setLevel(logging.INFO)
-main_handler = logging.FileHandler(
-  'code/brute_force_implementation/logs/report-brute-force-euclidean.log',
-  mode='w', encoding='utf-8')
-main_handler.setLevel(logging.INFO)
-main_handler.setFormatter(formatter)
-logger.addHandler(main_handler)
+  # Create a logger for reporting correlation
+  logger = logging.getLogger("eucledian_brute_force_logger")
+  logger.setLevel(logging.INFO)
+  main_handler = logging.FileHandler(
+    'code/brute_force_implementation/logs/report-brute-force-euclidean.log',
+    mode='w', encoding='utf-8')
+  main_handler.setLevel(logging.INFO)
+  main_handler.setFormatter(formatter)
+  logger.addHandler(main_handler)
+  return logger
 
 # Copy from actural_brute_force.py
 # I replaced computing the Pearson correlation between window pairs with
@@ -32,6 +34,7 @@ logger.addHandler(main_handler)
 def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
   k_s: int, k_e: int, k_b: int):
   print('log info: algorithm 1')
+  logger = get_logger()
   # epsilon_2 = sqrt(2*k_e*(1-T)/n)
   epsilon_2 = sqrt(2*(1-T))
   m = len(t_series)   # number of time series
@@ -108,4 +111,4 @@ def use_short_financial_data(data_len: int, n: int, h: int, T:float=0.75):
 # use_audio_data()
 # use_financial_data()
 # use_short_financial_data(10, 10 , 10)   # Params 1
-use_short_financial_data(20, 10 , 5)   # Params 2
+# use_short_financial_data(20, 10 , 5)   # Params 2
