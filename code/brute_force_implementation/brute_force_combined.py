@@ -8,7 +8,7 @@ import numpy as np
 # Local imports
 from load_data import load_audio_data, load_custom_financial_data, load_short_custom_financial_data
 from inc_p import incp
-from util import get_audio_params_1, get_financial_params_1, euc_dist_manual
+from util import get_audio_params_1, get_financial_params_1, corr_euc_d
 
 
 # Formatting for loggers
@@ -19,24 +19,20 @@ formatter = logging.Formatter(
 logger = logging.getLogger("main_logger")
 logger.setLevel(logging.INFO)
 main_handler = logging.FileHandler(
-  'code/brute_force_implementation/logs/report-actual-brute-force-euclidean.log',
+  'code/brute_force_implementation/logs/report-brute-force-combined.log',
   mode='w', encoding='utf-8')
 main_handler.setLevel(logging.INFO)
 main_handler.setFormatter(formatter)
 logger.addHandler(main_handler)
 
-# Copy from actural_brute_force.py
-# I replaced computing the Pearson correlation between window pairs with
-# computing the Euclidean distance between window pairs
-# PAA, SVD, bucketing filter are still deleted
+# Copy from actual_brute_force_euclidean.py
 def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
   k_s: int, k_e: int, k_b: int):
   print('log info: algorithm 1')
-  # epsilon_2 = sqrt(2*k_e*(1-T)/n)
   epsilon_2 = sqrt(2*(1-T))
-  m = len(t_series)   # number of time series
+  m = len(t_series)   # Number of time series
   num_corr_pairs = 0  # Output
-  logger.info(f"Threshold epsilon_2: {epsilon_2}")
+  logger.info(f"Correlation threshold: {T}, Euclidean distance threshold: {round(epsilon_2, 6)}")
 
   # initial windows
   w = np.empty((m, n))
@@ -48,9 +44,9 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
     # logger_2.info(f"Window number {alpha}.")
 
     for p in range(m):
-      w[p] = t_series[p][alpha*h:alpha*h+n]   # shift window
+      w[p] = t_series[p][alpha*h:alpha*h+n]   # Shift window
       x_bar = np.mean(w[p])
-      # normalization, W[p] is a np.ndarray
+      # Normalization, W[p] is a np.ndarray
       W[p] = (w[p] - x_bar) / sqrt(np.sum(pow((w[p]-x_bar), 2)))
       # PAA would be here and return W_s[p], W_e[p]
 
@@ -58,19 +54,23 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
     # Bucketing filter would be here and return C_1
 
     # Eucledian distance filter would be here and return C_2
-    # Computation of Pearson correlation would be here and return correlated
-    # window pairs
+    # Computation of Pearson correlation returns correlated window pairs
     for i in range(m):
       for j in range(m):
         if i < j:
+          corrcoef = incp(W[i], W[j], n)
           euc_d = np.linalg.norm(W[i] - W[j])
-          if euc_d <= epsilon_2:
+          if abs(corrcoef) >= T:
             num_corr_pairs += 1
             logger.info(
-              f"Report ({i}, {j}, {alpha}): Window {alpha} of time series {i} and {j} are correlated with euclidean distance {euc_d}."
+              f"Report ({i}, {j}, {alpha}): Window {alpha}, time series {i}, {j}, correlation coefficient: {round(corrcoef, 6)}, Euclidean distance: {round(euc_d, 6)}"
             )
-
+          elif euc_d <= epsilon_2:
+            logger.info(
+              f"ERROR: Euclidean distance detects correlation, but Pearson correlation doesn't!"
+            )
     alpha += 1
+
   logger.info(
     f"Report: In total the data contains {num_corr_pairs} correlated window pairs."
   )
@@ -80,7 +80,7 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
 
 # Copy from main.py
 def use_audio_data():
-  # convert_audio_data()  # activate this line when you added new mp3 files
+  # Convert_audio_data()  # activate this line when you added new mp3 files
   time_series = load_audio_data()
   n, h, T, k_s, k_e, k_b = get_audio_params_1()
 
@@ -101,11 +101,11 @@ def use_short_financial_data(data_len: int, n: int, h: int, T:float=0.75):
     n: The length of a window.
     h: The stride.
     T: The threshold theta for the correlation.
-    """
+  """
   time_series = load_short_custom_financial_data(data_len)
   algorithm_1(time_series, n, h, T, -1, -1, -1)
 
 # use_audio_data()
 # use_financial_data()
-# use_short_financial_data(10, 10 , 10)   # Params 1
-use_short_financial_data(20, 10 , 5)   # Params 2
+# use_short_financial_data(10, 10, 10)  # Params 1
+use_short_financial_data(20, 10, 5)  # Params 2
