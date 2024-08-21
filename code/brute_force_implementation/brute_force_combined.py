@@ -65,6 +65,7 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
           corrcoef = incp(W[i], W[j], n)
           euc_d = np.linalg.norm(W[i] - W[j])
           if abs(corrcoef) >= T:
+          # if corrcoef >= 0 and corrcoef >= T:
             num_corr_pairs += 1
             logger.info(
               f"Report ({i}, {j}, {alpha}): Window {alpha}, time series {i}, {j}, correlation coefficient: {round(corrcoef, 6)}, Euclidean distance: {round(euc_d, 6)}"
