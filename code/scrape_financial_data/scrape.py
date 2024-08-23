@@ -4,9 +4,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
-  filename='code/scrape_financial_data/invalid-symbols.log', 
-  filemode='a', 
-  encoding='utf-8', 
+  filename='code/scrape_financial_data/invalid-symbols.log',
+  filemode='a',
+  encoding='utf-8',
   level=logging.INFO,
   format='%(message)s'  # Only log the message, no other information
 )
@@ -20,66 +20,37 @@ def scrape(symbol_list: list):
   """
   print('log info: scrape')
   with sync_playwright() as p:
-    # specify the download path
+    # Specify the download path
     download_path = os.path.join(os.getcwd(), "data/finance/automated")
     os.makedirs(download_path, exist_ok=True)
 
-    # headless so I see the browser, slow_mo so I see it better
-    # browser = p.chromium.launch(headless=False, slow_mo=1000)
+    # Headless so I see the browser, slow_mo so I see it better
+    # browser = p.chromium.launch(headless=False, slow_mo=1000)   # For debugging
     browser = p.chromium.launch()
     context = browser.new_context(accept_downloads=True)
     page = browser.new_page()
 
+    # Navigate the cookie banner
+    re = page.goto(f"https://finance.yahoo.com")
+    # print(f"response.status {re.status}")   # For debugging
+    page.click('button[id="scroll-down-btn"]')
+    page.click('button[class="btn secondary accept-all "]')
+
     for symbol in symbol_list:
       try:
-        # page.goto(f"https://finance.yahoo.com/quote/{symbol}/history/")
-        # page.click('button[class="tertiary-btn fin-size-small menuBtn rounded yf-122t2xs"]')
-        # page.fill('input[name="startDate"]', '2014-01-01')
-        # page.fill('input[name="endDate"]', '2023-12-31')
-        # page.click('button[class="primary-btn fin-size-small rounded yf-122t2xs"]')
-        
         # I can put the time period in the link by using unix time stamps.
         # 1388534400 = 01.01.2014, 00:00; 1704067200 = 01.01.2024, 00:00
         page.goto(f"https://finance.yahoo.com/quote/{symbol}/history/?period1=1388534400&period2=1704067200")
 
         with page.expect_download(timeout=10000) as download_info:
-          print(f"log info: attemting a click for {symbol}")
-          # page.click('a[class="subtle-link fin-size-medium yf-13p9sh2"]')
-          # page.click('a[data-testid="download-link"]')
-          # page.click('a[href*="/v7/finance/download/"]')
+          print(f"log info: working on {symbol}")
           page.get_by_test_id("download-link").click(timeout=10000)
-
-          # page.goto(f"https://query1.finance.yahoo.com/v7/finance/download/{symbol}?period1=1388534400&amp;period2=1704067200&amp;interval=1d&amp;events=history&amp;includeAdjustedClose=true")
-
-          # HTML element I need to click to download the data
-          # <a 
-          #   class="subtle-link fin-size-medium yf-13p9sh2" 
-          #   data-ylk="elm:download;elmt:link;itc:1;sec:qsp-historical;slk:history-download;subsec:download" 
-          #   href="https://query1.finance.yahoo.com/v7/finance/download/FRSX?period1=1388534400&amp;period2=1704067200&amp;interval=1d&amp;events=history&amp;includeAdjustedClose=true" 
-          #   data-testid="download-link" 
-          #   data-rapid_p="18" 
-          #   data-v9y="1">
-          #   <span class="download-link-wrapper yf-ewueuo">
-          #     <div class="icon fin-icon link-icn sz-x-large yf-7v4gbg">
-          #       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          #         <path d="M19 9h-4V3H9v6H5l7 7zM5 18v2h14v-2z">
-          #         </path>
-          #       </svg>
-          #     </div> 
-          #     <span>Download</span>
-          #   </span> 
-          # </a>
-          
-          # Link of the download looks the same for each ticker symbol
-          # href="https://query1.finance.yahoo.com/v7/finance/download/FORLW?period1=1388534400&amp;period2=1704067200&amp;interval=1d&amp;events=history&amp;includeAdjustedClose=true"
-
 
         download = download_info.value
         download.save_as(os.path.join(download_path, download.suggested_filename))
-        print(f"File downloaded to: {os.path.join(download_path, download.suggested_filename)}")
+        print(f"log info: file downloaded to: {os.path.join(download_path, download.suggested_filename)}")
       except Exception as e:
         print(f"ERROR for {symbol}")
-        print(e)
         logger.info(symbol)
 
     browser.close()
@@ -104,7 +75,7 @@ def extract_stock_symbols_nasdaq():
         # Write the symbol to the output file
         outfile.write(symbol + '\n')
 
-  print(f"Symbols have been extracted and written to {output_file_path}")
+  print(f"log info: symbols have been extracted and written to {output_file_path}")
 
 def get_qoute_list(invalid_symbols: list):
   """
