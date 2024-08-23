@@ -37,13 +37,13 @@ def scrape(symbol_list: list):
     page.click('button[class="btn secondary accept-all "]')
 
     for symbol in symbol_list:
+      print(f"log info: working on {symbol}")
       try:
         # I can put the time period in the link by using unix time stamps.
         # 1388534400 = 01.01.2014, 00:00; 1704067200 = 01.01.2024, 00:00
         page.goto(f"https://finance.yahoo.com/quote/{symbol}/history/?period1=1388534400&period2=1704067200")
 
         with page.expect_download(timeout=10000) as download_info:
-          print(f"log info: working on {symbol}")
           page.get_by_test_id("download-link").click(timeout=10000)
 
         download = download_info.value
@@ -82,7 +82,7 @@ def get_qoute_list(invalid_symbols: list):
   Read the stock ticker symbols from the file I wrote with the extract_stock_symbols_nasdaq function.
 
   Parameters:
-  invalid_symbols (list): A list with all symbols for which scraping failed the last time.
+  invalid_symbols: A list with all symbols for which scraping failed the last time.
 
   Returns:
   list: A list with stock ticker symbols.
@@ -136,6 +136,6 @@ dont_scrape_symbols = []
 dont_scrape_symbols.extend(get_invalid_symbols())
 dont_scrape_symbols.extend(get_already_scraped_symbols())
 
-extract_stock_symbols_nasdaq()
+# extract_stock_symbols_nasdaq()  # Run this only when nasdaqlisted.txt changes
 ticker_symbols = get_qoute_list(dont_scrape_symbols)
 scrape(ticker_symbols)
