@@ -1,7 +1,11 @@
-from playwright.sync_api import sync_playwright
-import os
+# Standard library imports
 import logging
+import os
+# Third-party imports
+from playwright.sync_api import sync_playwright
+# Local imports
 
+# Setup logger
 logger = logging.getLogger(__name__)
 logging.basicConfig(
   filename='code/scrape_financial_data/invalid-symbols.log',
@@ -50,7 +54,7 @@ def scrape(symbol_list: list):
         download.save_as(os.path.join(download_path, download.suggested_filename))
         print(f"log info: file downloaded to: {os.path.join(download_path, download.suggested_filename)}")
       except Exception as e:
-        print(f"ERROR for {symbol}")
+        print(f"EXCEPTION for {symbol}")
         logger.info(symbol)
 
     browser.close()
