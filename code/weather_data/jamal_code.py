@@ -164,7 +164,7 @@ plt.xlabel('Time (days since 1948-01-01)')
 plt.ylabel('Precipitation (mm/day)')
 plt.title(f'Precipitation Time Series at Lon {lon_point}, Lat {lat_point}')
 plt.grid(True)
-plt.savefig('data/weather/precipitation_time_series.png')
+plt.savefig('data/weather/precipitation-dataset-plots/precipitation_time_series.png')
 plt.show()
 
 # Plotting the decomposed components
@@ -184,7 +184,7 @@ plt.plot(all_times, decomposition.resid, label='Residual')
 plt.legend(loc='best')
 
 plt.tight_layout()
-plt.savefig('data/weather/decomposed_time_series.png')
+plt.savefig('data/weather/precipitation-dataset-plots/decomposed_time_series.png')
 plt.show()
 
 # Calculate the time-averaged precipitation for the grid
@@ -198,5 +198,5 @@ plt.show()
 # plt.ylabel('Latitude')
 # plt.grid(True)
 # plt.title('Time-Averaged Daily Precipitation Heatmap')
-# plt.savefig('data/weather/time_averaged_precipitation_heatmap.png')
+# plt.savefig('data/weather/precipitation-dataset-plots/time_averaged_precipitation_heatmap.png')
 # plt.show()
