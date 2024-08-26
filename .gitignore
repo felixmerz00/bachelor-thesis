@@ -10,6 +10,7 @@ my-venv/
 data/ucr-archive-2018
 data/weather
 !data/weather/us-state-capitals-wo-alaska-hawaii.csv
+data/google-drive/
 # generated file
 data/finance/automated/
 
