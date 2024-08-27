@@ -31,6 +31,12 @@ def get_logger():
 # Copy from actual_brute_force_euclidean.py
 def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
   k_s: int, k_e: int, k_b: int):
+  """
+  This implementation of algorithm_1 yields not only window pairs with
+  positive correlation, but also window pairs with negative correlation. Thus
+  the result may differ from algo_1.py or algorithm_1 from the
+  brute_force_euclidean.py.
+  """
   print('log info: algorithm 1')
   logger = get_logger()
   epsilon_2 = sqrt(2*(1-T))
