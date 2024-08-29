@@ -1,7 +1,11 @@
+# Standard library imports
+import os
+# Third-party imports
 import librosa
 import numpy as np
 import pandas as pd
-import os
+# Local imports
+
 
 def trim_length(time_series, round_by: int = 1000):
   min_len = len(time_series[0])
@@ -15,7 +19,6 @@ def trim_length(time_series, round_by: int = 1000):
     time_series[i] = time_series[i][:min_len]
 
   return time_series
-
 
 
 def convert_audio_data():
@@ -47,6 +50,7 @@ def load_audio_data():
     time_series[i] = time_series[i][:-cut_off]
 
   return time_series
+
 
 def load_custom_financial_data():
   print('log info: loading financial data')
@@ -91,6 +95,7 @@ def load_custom_financial_data():
   time_series = trim_length(time_series, round_by=100)
   return time_series
 
+
 def load_automated_financial_data(m: int):
   """
   Load the financial data I scraped from Yahoo Finance.
@@ -123,6 +128,7 @@ def load_automated_financial_data(m: int):
 
   time_series = trim_length(time_series, round_by=100)
   return time_series
+
 
 def load_weather_data():
   import xarray as xr
@@ -181,3 +187,25 @@ def load_short_custom_financial_data(length: int):
   for m in range(len(time_series)):
     time_series[m] = time_series[m][:length]
   return time_series
+
+
+def load_gdrive_chlorine(m: int):
+    """
+    The chlorine dataset has 2040 rows and 4830 columns.
+
+    Parameters:
+    m: Number of time series to return.
+    """
+    print('log info: loading chlorine data')
+    time_series = []
+    # Use raw string to suppress unnecessary warning.
+    df_chlorine = pd.read_csv("./data/google-drive/chlorine.txt", sep=r'\s+',
+      header=None)
+    m = min(m, df_chlorine.shape[0])
+    for i in range(m):
+      time_series.append(df_chlorine.loc[i].to_numpy())
+    return time_series
+
+
+if __name__ == '__main__':
+  load_gdrive_chlorine(10)

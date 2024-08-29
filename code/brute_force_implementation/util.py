@@ -19,6 +19,7 @@ def get_audio_params_1():
   """
   return 500, 10, 0.75, 100, 250, 2
 
+
 def get_financial_params_1():
   """
   Returns:
@@ -31,6 +32,20 @@ def get_financial_params_1():
     - k_b (int): Number of dimensions for bucketing filter
   """
   return 300, 10, 0.85, 15, 30, 3
+
+
+def get_chlorine_params_1():
+  """
+  Returns:
+    tuple: My default paramters for running correlation join.
+    - n (int): Window size
+    - h (int): Stride, ideally a divisor of n
+    - T (float): Correlation threshold
+    - k_s (int): Number of dimensions for SVD
+    - k_e (int): Number of dimensions for Euclidea distance filter
+    - k_b (int): Number of dimensions for bucketing filter
+  """
+  return 512, 64, 0.9, 16, 32, 2
 
 
 # I don't use the following functions in my acutal correlation join algorithm.
@@ -49,6 +64,7 @@ def corr_euc_d(norm_x, norm_y):
     float: The Pearson correlation between x and y.
   """
   return 1-(1/2)*pow(np.linalg.norm(norm_x - norm_y), 2)
+
 
 def euc_dist_manual(x: np.ndarray, y: np.ndarray):
   """
