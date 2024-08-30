@@ -207,5 +207,23 @@ def load_gdrive_chlorine(m: int):
     return time_series
 
 
+def load_gdrive_gas(m: int = -1):
+  """
+  The gas dataset has 3600 rows and 5120 columns.
+
+  Parameters:
+  m: Number of time series to return.
+  """
+  print('log info: loading gas data')
+  time_series = []
+  # Use raw string to suppress unnecessary warning.
+  df = pd.read_csv("./data/google-drive/gas.txt", sep=r'\s+', header=None)
+  m = df.shape[0] if (m == -1) else min(m, df.shape[0])
+  for i in range(m):
+    time_series.append(df.loc[i].to_numpy())
+  return time_series
+
+
 if __name__ == '__main__':
-  load_gdrive_chlorine(10)
+  # load_gdrive_chlorine(10)
+  load_gdrive_gas()
