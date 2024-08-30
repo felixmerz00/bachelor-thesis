@@ -5,11 +5,15 @@ from math import sqrt
 import numpy as np
 # Local imports
 
-
-def get_audio_params_1():
+def get_params(params_name: str):
   """
+  Provide the requested parameters for running correlation join.
+
+  Parameters:
+  params_name : The name of the parameter tuple.
+
   Returns:
-  tuple: My default paramters for running correlation join.
+  tuple: Paramters for running correlation join.
     - n (int): Window size
     - h (int): Stride, ideally a divisor of n
     - T (float): Correlation threshold
@@ -17,51 +21,13 @@ def get_audio_params_1():
     - k_e (int): Number of dimensions for Euclidea distance filter
     - k_b (int): Number of dimensions for bucketing filter
   """
-  return 500, 10, 0.75, 100, 250, 2
-
-
-def get_financial_params_1():
-  """
-  Returns:
-  tuple: My default paramters for running correlation join.
-    - n (int): Window size
-    - h (int): Stride, ideally a divisor of n
-    - T (float): Correlation threshold
-    - k_s (int): Number of dimensions for SVD
-    - k_e (int): Number of dimensions for Euclidea distance filter
-    - k_b (int): Number of dimensions for bucketing filter
-  """
-  return 300, 10, 0.85, 15, 30, 3
-
-
-def get_chlorine_params_1():
-  """
-  Returns:
-  tuple: Paramters for running CorrJoin with the chlorine dataset.
-    - n (int): Window size
-    - h (int): Stride, ideally a divisor of n
-    - T (float): Correlation threshold
-    - k_s (int): Number of dimensions for SVD
-    - k_e (int): Number of dimensions for Euclidea distance filter
-    - k_b (int): Number of dimensions for bucketing filter
-  """
-  return 512, 64, 0.9, 16, 32, 2
-
-
-def get_random_params_1():
-  """
-  Provides parameters for the random.txt dataset.
-
-  Returns:
-  tuple: My default paramters for running correlation join.
-    - n (int): Window size
-    - h (int): Stride, ideally a divisor of n
-    - T (float): Correlation threshold
-    - k_s (int): Number of dimensions for SVD
-    - k_e (int): Number of dimensions for Euclidea distance filter
-    - k_b (int): Number of dimensions for bucketing filter
-  """
-  return 512, 64, 0.75, 16, 32, 2
+  parameters = {
+    "audio_params_1": (500, 10, 0.75, 100, 250, 2),
+    "financial_params_1": (300, 10, 0.85, 15, 30, 3),
+    "chlorine_params_1": (512, 64, 0.9, 16, 32, 2),
+    "random_params_1": (512, 64, 0.75, 16, 32, 2)
+  }
+  return parameters[params_name]
 
 
 # I don't use the following functions in my acutal correlation join algorithm.

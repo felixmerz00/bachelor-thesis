@@ -56,41 +56,10 @@ def load_custom_financial_data():
   print('log info: loading financial data')
   time_series = []
 
-  df_amd = pd.read_csv("./data/finance/manual/AMD.csv")
-  amd_close_prices = df_amd["Close"].to_numpy()
-  time_series.append(amd_close_prices)
-
-  df_avgo = pd.read_csv("./data/finance/manual/AVGO.csv")
-  avgo_close_prices = df_avgo["Close"].to_numpy()
-  time_series.append(avgo_close_prices)
-
-  df_ge = pd.read_csv("./data/finance/manual/GE.csv")
-  ge_close_prices = df_ge["Close"].to_numpy()
-  time_series.append(ge_close_prices)
-
-  df_intc = pd.read_csv("./data/finance/manual/INTC.csv")
-  intc_close_prices = df_intc["Close"].to_numpy()
-  time_series.append(intc_close_prices)
-
-  df_lly = pd.read_csv("./data/finance/manual/LLY.csv")
-  lly_close_prices = df_lly["Close"].to_numpy()
-  time_series.append(lly_close_prices)
-
-  df_nvda = pd.read_csv("./data/finance/manual/NVDA.csv")
-  nvda_close_prices = df_nvda["Close"].to_numpy()
-  time_series.append(nvda_close_prices)
-
-  df_v = pd.read_csv("./data/finance/manual/V.csv")
-  v_close_prices = df_v["Close"].to_numpy()
-  time_series.append(v_close_prices)
-
-  df_wmt = pd.read_csv("./data/finance/manual/WMT.csv")
-  wmt_close_prices = df_wmt["Close"].to_numpy()
-  time_series.append(wmt_close_prices)
-
-  df_xom = pd.read_csv("./data/finance/manual/XOM.csv")
-  xom_close_prices = df_xom["Close"].to_numpy()
-  time_series.append(xom_close_prices)
+  for ticker in ("AMD", "AVGO", "GE", "INTC", "LLY", "NVDA", "V", "WMT", "XOM"):
+    df = pd.read_csv(f"./data/finance/manual/{ticker}.csv")
+    close_prices = df["Close"].to_numpy()
+    time_series.append(close_prices)
 
   time_series = trim_length(time_series, round_by=100)
   return time_series
@@ -112,10 +81,10 @@ def load_automated_financial_data(m: int):
 
   # List all files in the specified directory
   for filename in os.listdir("data/finance/automated"):
-      if filename.endswith('.csv'):
-          # Extract the ticker symbol by removing the '.csv' extension
-          symbol = filename[:-4]
-          scraped_symbols.append(symbol)
+    if filename.endswith('.csv'):
+      # Extract the ticker symbol by removing the '.csv' extension
+      symbol = filename[:-4]
+      scraped_symbols.append(symbol)
 
   m = min(m, len(scraped_symbols))
   for i in range(m):
@@ -141,54 +110,6 @@ def load_weather_data():
   ts.to_netcdf('timeseries.nc')
 
 
-# I don't use the following functions in my acutal correlation join algorithm.
-# They are used for comparisons and tests.
-
-def load_short_custom_financial_data(length: int):
-  print('log info: loading financial data')
-  time_series = []
-
-  df_amd = pd.read_csv("./data/finance/manual/AMD.csv")
-  amd_close_prices = df_amd["Close"].to_numpy()
-  time_series.append(amd_close_prices)
-
-  df_avgo = pd.read_csv("./data/finance/manual/AVGO.csv")
-  avgo_close_prices = df_avgo["Close"].to_numpy()
-  time_series.append(avgo_close_prices)
-
-  df_ge = pd.read_csv("./data/finance/manual/GE.csv")
-  ge_close_prices = df_ge["Close"].to_numpy()
-  time_series.append(ge_close_prices)
-
-  df_intc = pd.read_csv("./data/finance/manual/INTC.csv")
-  intc_close_prices = df_intc["Close"].to_numpy()
-  time_series.append(intc_close_prices)
-
-  df_lly = pd.read_csv("./data/finance/manual/LLY.csv")
-  lly_close_prices = df_lly["Close"].to_numpy()
-  time_series.append(lly_close_prices)
-
-  df_nvda = pd.read_csv("./data/finance/manual/NVDA.csv")
-  nvda_close_prices = df_nvda["Close"].to_numpy()
-  time_series.append(nvda_close_prices)
-
-  df_v = pd.read_csv("./data/finance/manual/V.csv")
-  v_close_prices = df_v["Close"].to_numpy()
-  time_series.append(v_close_prices)
-
-  df_wmt = pd.read_csv("./data/finance/manual/WMT.csv")
-  wmt_close_prices = df_wmt["Close"].to_numpy()
-  time_series.append(wmt_close_prices)
-
-  df_xom = pd.read_csv("./data/finance/manual/XOM.csv")
-  xom_close_prices = df_xom["Close"].to_numpy()
-  time_series.append(xom_close_prices)
-
-  for m in range(len(time_series)):
-    time_series[m] = time_series[m][:length]
-  return time_series
-
-
 def gdrive(dataset: str, m: int = -1):
   """
   Load one of the given datasets: chlorine, gas, random, stock, synthetic.
@@ -204,6 +125,23 @@ def gdrive(dataset: str, m: int = -1):
   m = df.shape[0] if (m == -1) else min(m, df.shape[0])
   for i in range(m):
     time_series.append(df.loc[i].to_numpy())
+  return time_series
+
+
+# I don't use the following functions in my acutal correlation join algorithm.
+# They are used for comparisons and tests.
+
+def load_short_custom_financial_data(length: int):
+  print('log info: loading financial data')
+  time_series = []
+
+  for ticker in ("AMD", "AVGO", "GE", "INTC", "LLY", "NVDA", "V", "WMT", "XOM"):
+    df = pd.read_csv(f"./data/finance/manual/{ticker}.csv")
+    close_prices = df["Close"].to_numpy()
+    time_series.append(close_prices)
+
+  for m in range(len(time_series)):
+    time_series[m] = time_series[m][:length]
   return time_series
 
 
