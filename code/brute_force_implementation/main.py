@@ -58,8 +58,41 @@ def use_gdrive_gas_data():
   print(f"log info: time for algorithm 1: {time_elapsed/1e9} s")
 
 
+def use_gdrive_random_data():
+  time_series = ld.load_gdrive_random(50)
+  n, h, T, k_s, k_e, k_b = util.get_random_params_1()
+
+  time_start = perf_counter_ns()
+  algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
+  time_elapsed = perf_counter_ns()-time_start
+  print(f"log info: time for algorithm 1: {time_elapsed/1e9} s")
+
+
+def use_gdrive_stock_data():
+  time_series = ld.load_gdrive_stock(50)
+  n, h, T, k_s, k_e, k_b = util.get_chlorine_params_1()
+
+  time_start = perf_counter_ns()
+  algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
+  time_elapsed = perf_counter_ns()-time_start
+  print(f"log info: time for algorithm 1: {time_elapsed/1e9} s")
+
+
+def use_gdrive_synthetic_data():
+  time_series = ld.load_gdrive_synthetic(50)
+  n, h, T, k_s, k_e, k_b = util.get_chlorine_params_1()
+
+  time_start = perf_counter_ns()
+  algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
+  time_elapsed = perf_counter_ns()-time_start
+  print(f"log info: time for algorithm 1: {time_elapsed/1e9} s")
+
+
 if __name__ == '__main__':
   # use_audio_data()
   # use_financial_data()
   # use_gdrive_chlorine_data()
-  use_gdrive_gas_data()
+  # use_gdrive_gas_data()
+  # use_gdrive_random_data()
+  # use_gdrive_stock_data()
+  use_gdrive_synthetic_data()

@@ -224,6 +224,60 @@ def load_gdrive_gas(m: int = -1):
   return time_series
 
 
+def load_gdrive_random(m: int = -1):
+  """
+  The random dataset has 4080 rows and 5000 columns.
+
+  Parameters:
+  m: Number of time series to return.
+  """
+  print('log info: loading random data')
+  time_series = []
+  # Use raw string to suppress unnecessary warning.
+  df = pd.read_csv("./data/google-drive/random.txt", sep=r'\s+', header=None)
+  m = df.shape[0] if (m == -1) else min(m, df.shape[0])
+  for i in range(m):
+    time_series.append(df.loc[i].to_numpy())
+  return time_series
+
+
+def load_gdrive_stock(m: int = -1):
+  """
+  The stock dataset has 1259 rows and 3878 columns.
+
+  Parameters:
+  m: Number of time series to return.
+  """
+  print('log info: loading stock data')
+  time_series = []
+  # Use raw string to suppress unnecessary warning.
+  df = pd.read_csv("./data/google-drive/stock.txt", sep=r'\s+', header=None)
+  m = df.shape[0] if (m == -1) else min(m, df.shape[0])
+  for i in range(m):
+    time_series.append(df.loc[i].to_numpy())
+  return time_series
+
+
+def load_gdrive_synthetic(m: int = -1):
+  """
+  The synthetic dataset has 4080 rows and 5000 columns.
+
+  Parameters:
+  m: Number of time series to return.
+  """
+  print('log info: loading synthetic data')
+  time_series = []
+  # Use raw string to suppress unnecessary warning.
+  df = pd.read_csv("./data/google-drive/synthetic.txt", sep=r'\s+', header=None)
+  m = df.shape[0] if (m == -1) else min(m, df.shape[0])
+  for i in range(m):
+    time_series.append(df.loc[i].to_numpy())
+  return time_series
+
+
 if __name__ == '__main__':
   # load_gdrive_chlorine(10)
-  load_gdrive_gas()
+  # load_gdrive_gas()
+  # load_gdrive_random()
+  # load_gdrive_stock()
+  load_gdrive_synthetic()

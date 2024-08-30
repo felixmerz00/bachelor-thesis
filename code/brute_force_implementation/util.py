@@ -48,6 +48,22 @@ def get_chlorine_params_1():
   return 512, 64, 0.9, 16, 32, 2
 
 
+def get_random_params_1():
+  """
+  Provides parameters for the random.txt dataset.
+
+  Returns:
+    tuple: My default paramters for running correlation join.
+    - n (int): Window size
+    - h (int): Stride, ideally a divisor of n
+    - T (float): Correlation threshold
+    - k_s (int): Number of dimensions for SVD
+    - k_e (int): Number of dimensions for Euclidea distance filter
+    - k_b (int): Number of dimensions for bucketing filter
+  """
+  return 512, 64, 0.75, 16, 32, 2
+
+
 # I don't use the following functions in my acutal correlation join algorithm.
 # They are used for comparisons and tests.
 
