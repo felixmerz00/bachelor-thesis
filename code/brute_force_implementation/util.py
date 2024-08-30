@@ -9,7 +9,7 @@ import numpy as np
 def get_audio_params_1():
   """
   Returns:
-    tuple: My default paramters for running correlation join.
+  tuple: My default paramters for running correlation join.
     - n (int): Window size
     - h (int): Stride, ideally a divisor of n
     - T (float): Correlation threshold
@@ -23,7 +23,7 @@ def get_audio_params_1():
 def get_financial_params_1():
   """
   Returns:
-    tuple: My default paramters for running correlation join.
+  tuple: My default paramters for running correlation join.
     - n (int): Window size
     - h (int): Stride, ideally a divisor of n
     - T (float): Correlation threshold
@@ -37,7 +37,7 @@ def get_financial_params_1():
 def get_chlorine_params_1():
   """
   Returns:
-    tuple: My default paramters for running correlation join.
+  tuple: Paramters for running CorrJoin with the chlorine dataset.
     - n (int): Window size
     - h (int): Stride, ideally a divisor of n
     - T (float): Correlation threshold
@@ -53,7 +53,7 @@ def get_random_params_1():
   Provides parameters for the random.txt dataset.
 
   Returns:
-    tuple: My default paramters for running correlation join.
+  tuple: My default paramters for running correlation join.
     - n (int): Window size
     - h (int): Stride, ideally a divisor of n
     - T (float): Correlation threshold

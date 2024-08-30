@@ -1,5 +1,6 @@
 # Standard library imports
 from time import perf_counter_ns
+from typing import Callable
 # Third-party imports
 import librosa
 # Local imports
@@ -38,49 +39,18 @@ def use_financial_data():
   algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
 
 
-def use_gdrive_chlorine_data():
-  time_series = ld.load_gdrive_chlorine(10)
-  n, h, T, k_s, k_e, k_b = util.get_chlorine_params_1()
+def use_gdrive_data(dataset: str, get_params: Callable, m: int = -1):
+  """
+  Run CorrJoin with a dataset I got from Google Drive.
 
-  time_start = perf_counter_ns()
-  algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
-  time_elapsed = perf_counter_ns()-time_start
-  print(f"log info: time for algorithm 1: {time_elapsed/1e9} s")
-
-
-def use_gdrive_gas_data():
-  time_series = ld.load_gdrive_gas(10)
-  n, h, T, k_s, k_e, k_b = util.get_chlorine_params_1()
-
-  time_start = perf_counter_ns()
-  algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
-  time_elapsed = perf_counter_ns()-time_start
-  print(f"log info: time for algorithm 1: {time_elapsed/1e9} s")
-
-
-def use_gdrive_random_data():
-  time_series = ld.load_gdrive_random(50)
-  n, h, T, k_s, k_e, k_b = util.get_random_params_1()
-
-  time_start = perf_counter_ns()
-  algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
-  time_elapsed = perf_counter_ns()-time_start
-  print(f"log info: time for algorithm 1: {time_elapsed/1e9} s")
-
-
-def use_gdrive_stock_data():
-  time_series = ld.load_gdrive_stock(50)
-  n, h, T, k_s, k_e, k_b = util.get_chlorine_params_1()
-
-  time_start = perf_counter_ns()
-  algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
-  time_elapsed = perf_counter_ns()-time_start
-  print(f"log info: time for algorithm 1: {time_elapsed/1e9} s")
-
-
-def use_gdrive_synthetic_data():
-  time_series = ld.load_gdrive_synthetic(50)
-  n, h, T, k_s, k_e, k_b = util.get_chlorine_params_1()
+  Parameters:
+  dataset: The name of the dataset to use.
+  get_params: A function that provides the parameters.
+  m: The number of time series to include. Defaults to -1, which uses all
+  available time series.
+  """
+  time_series = ld.gdrive(dataset) if (m == -1) else ld.gdrive(dataset, m)
+  n, h, T, k_s, k_e, k_b = get_params()
 
   time_start = perf_counter_ns()
   algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
@@ -91,8 +61,8 @@ def use_gdrive_synthetic_data():
 if __name__ == '__main__':
   # use_audio_data()
   # use_financial_data()
-  # use_gdrive_chlorine_data()
-  # use_gdrive_gas_data()
-  # use_gdrive_random_data()
-  # use_gdrive_stock_data()
-  use_gdrive_synthetic_data()
+  # use_gdrive_data("chlorine", util.get_chlorine_params_1, 10)
+  # use_gdrive_data("gas", util.get_chlorine_params_1, 10)
+  # use_gdrive_data("random", util.get_random_params_1, 50)
+  # use_gdrive_data("stock", util.get_chlorine_params_1, 10)
+  use_gdrive_data("synthetic", util.get_chlorine_params_1, 10)
