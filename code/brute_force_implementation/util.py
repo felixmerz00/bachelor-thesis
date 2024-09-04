@@ -1,6 +1,7 @@
 # Standard library imports
-from typing import List
+import logging
 from math import sqrt
+from typing import List
 # Third-party imports
 import numpy as np
 # Local imports
@@ -28,6 +29,22 @@ def get_params(params_name: str):
     "random_params_1": (512, 64, 0.75, 16, 32, 2)
   }
   return parameters[params_name]
+
+
+def create_logger(logger_name: str, loggerlevel, file_name: str, writing_mode = 'w'):
+  """
+  Format and create a logger.
+  """
+  formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+  logger = logging.getLogger(logger_name)
+  logger.setLevel(loggerlevel)
+  main_handler = logging.FileHandler(f"code/brute_force_implementation/logs/{file_name}", mode=writing_mode, encoding='utf-8')
+  main_handler.setLevel(loggerlevel)
+  main_handler.setFormatter(formatter)
+  logger.addHandler(main_handler)
+
+  return logger
 
 
 # I don't use the following functions in my acutal correlation join algorithm.
