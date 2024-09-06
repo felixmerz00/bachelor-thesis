@@ -22,7 +22,9 @@ def trim_length(time_series, round_by: int = 1000):
 
 
 def convert_audio_data():
-  # convert the audio data from mp3 files to npy files
+  """
+  Convert the audio data from mp3 files to npy files.
+  """
   print('log info: converting audio data')
   np.save("./data/audio/ron-minis-cut-1", librosa.load('./data/audio/ron-minis-cut-1.mp3', sr=None)[0])
   np.save("./data/audio/ron-minis-cut-2", librosa.load('./data/audio/ron-minis-cut-2.mp3', sr=None)[0])
@@ -31,7 +33,12 @@ def convert_audio_data():
 
 
 def load_audio_data():
-  # load the audio data
+  """"
+  Load the audio data from npy files.
+  """
+  # Activate the following line for the first run after you added new mp3
+  # files.
+  # convert_audio_data()
   print('log info: loading audio data')
   time_series = []
   time_series.append(np.load("./data/audio/ron-minis-cut-1.npy"))
