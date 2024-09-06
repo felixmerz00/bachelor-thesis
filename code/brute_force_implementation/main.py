@@ -55,9 +55,9 @@ def use_gdrive_data(dataset: str, params: str, logger, m: int = -1):
   pruning_rate = algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
   time_elapsed = perf_counter_ns()-time_start
 
-  # Log dataset,m,T,n,h,pruning rate,runtime[s]
+  # Log dataset,m,n,h,T,k_s,k_e,k_b,pruning rate,runtime[s]
   logger.info(
-    f"{dataset},{len(time_series)},{T},{n},{h},{pruning_rate},{round(time_elapsed/1e9, 3)}"
+    f"{dataset},{len(time_series)},{n},{h},{T},{k_s},{k_e},{k_b},{pruning_rate},{round(time_elapsed/1e9, 3)}"
   )
 
 
