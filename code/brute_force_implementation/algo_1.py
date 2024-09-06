@@ -33,6 +33,7 @@ def algorithm_1(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int
   epsilon_2 = sqrt(2*k_e*(1-T)/n)
   m = len(t_series)   # number of time series
   num_corr_pairs = 0
+  overall_pruning_rate = -1.0
 
   # initial windows
   w = [None for _ in range(m)]
@@ -71,3 +72,4 @@ def algorithm_1(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int
     alpha += 1
 
   logger.info(f"Report: In total the data contains {num_corr_pairs} correlated window pairs.")
+  return overall_pruning_rate

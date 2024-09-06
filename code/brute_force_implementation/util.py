@@ -1,6 +1,7 @@
 # Standard library imports
 import logging
 from math import sqrt
+import os
 from typing import List
 # Third-party imports
 import numpy as np
@@ -43,6 +44,28 @@ def create_logger(logger_name: str, loggerlevel, file_name: str, writing_mode = 
   main_handler.setLevel(loggerlevel)
   main_handler.setFormatter(formatter)
   logger.addHandler(main_handler)
+
+  return logger
+
+
+def create_csv_logger(logger_name: str, loggerlevel, file_name: str, writing_mode = 'a'):
+  """
+  Format and create a logger for performance measurements, whose messages have
+  their own format and the default writing mode is set to 'a'.
+  """
+  log_file_path = f"code/brute_force_implementation/logs/{file_name}"
+  formatter = logging.Formatter('%(asctime)s,%(message)s', datefmt='%Y-%m-%d,%H:%M:%S')
+
+  logger = logging.getLogger(logger_name)
+  logger.setLevel(loggerlevel)
+  main_handler = logging.FileHandler(log_file_path, mode=writing_mode, encoding='utf-8')
+  main_handler.setLevel(loggerlevel)
+  main_handler.setFormatter(formatter)
+  logger.addHandler(main_handler)
+
+  # Write header row if file is empty or doesn't exist
+  if not os.path.exists(log_file_path) or os.path.getsize(log_file_path) < 2:
+    logger.info(f"dataset,m,T,n,h,pruning rate,runtime[s]")
 
   return logger
 
