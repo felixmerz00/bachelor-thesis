@@ -32,7 +32,8 @@ def runtime_t_pr_t(df):
   result_df = filtered_df.sort_values('T').groupby('T').last().reset_index()
 
   # Create the figure with two subplots side by side
-  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 6))
+  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
+  # fig, (ax1, ax2) = plt.subplots(1, 2)
 
   # Plot 1: Runtime vs. Correlation Threshold
   ax1.plot(result_df['T'], result_df['runtime'], marker='o')
@@ -48,8 +49,24 @@ def runtime_t_pr_t(df):
   ax2.set_title('Pruning Rate vs. Correlation Threshold')
   ax2.grid(True)
 
+  # Add description of fixed parameters
+  # I need double curly braces because otherwise the f-string things it's a
+  # variable
+  fixed_params = (
+      f"Fixed Parameters\n"
+      f"Dataset: chlorine, "
+      f"m: 10, "
+      f"n: 512, "
+      f"h: 64, "
+      f"$k_{{s}}$: 16, "
+      f"$k_{{e}}$: 32, "
+      f"$k_{{b}}$: 2"
+  )
+  fig.text(0.5, 0.08, fixed_params, ha='center', va='center', fontsize=10, bbox=dict(facecolor='white', alpha=0.5))
+
   # Adjust layout and save the figure
   plt.tight_layout()
+  plt.subplots_adjust(bottom=0.25)  # Make room for the description
   plt.savefig('./code/brute_force_implementation/plots/runtime_t_pr_t.png')
   plt.close()
 
