@@ -32,8 +32,8 @@ def convert_audio_data():
   np.save("./data/audio/ron-minis-cut-0143300", librosa.load('./data/audio/ron-minis-cut-0143300.mp3', sr=None)[0])
 
 
-def load_audio_data():
-  """"
+def audio(_, __):
+  """
   Load the audio data from npy files.
   """
   # Activate the following line for the first run after you added new mp3
@@ -59,7 +59,7 @@ def load_audio_data():
   return time_series
 
 
-def load_custom_financial_data():
+def custom_financial(_, __):
   print('log info: loading financial data')
   time_series = []
 
@@ -72,8 +72,13 @@ def load_custom_financial_data():
   return time_series
 
 
-def load_automated_financial_data(m: int):
+def automated_financial(_, m: int):
   """
+  When running CorrJoin with this dataset, paa.py, line 22
+  data_reduced_s = paa_s.transform(data_reshaped)
+  has issues with NaN values somewhere inside their computation, even though
+  my data contains no Nan values, so don't use this dataset.
+
   Load the financial data I scraped from Yahoo Finance.
 
   Parameters:
@@ -83,6 +88,7 @@ def load_automated_financial_data(m: int):
   list: A list containing time series for m stocks.
   """
   print('log info: loading financial data')
+  raise NotImplementedError
   time_series = []
   scraped_symbols = []
 
@@ -93,20 +99,23 @@ def load_automated_financial_data(m: int):
       symbol = filename[:-4]
       scraped_symbols.append(symbol)
 
-  m = min(m, len(scraped_symbols))
-  for i in range(m):
+  m = len(scraped_symbols) if m == -1 else min(m, len(scraped_symbols))
+  i = 0
+  while len(time_series) < m and i < len(scraped_symbols):
     filename = f"./data/finance/automated/{scraped_symbols[i]}.csv"
     df = pd.read_csv(filename)
     close_prices = df["Close"].to_numpy()
     if len(close_prices) >= 2510 and not np.isnan(close_prices).any():
       time_series.append(close_prices)
       # print(f"added {scraped_symbols[i]} to the time_series: {len(time_series[-1])}")
+    i += 1
 
   time_series = trim_length(time_series, round_by=100)
   return time_series
 
 
-def load_weather_data():
+def weather():
+  raise NotImplementedError
   import xarray as xr
   lon=30
   lat=10
@@ -133,6 +142,28 @@ def gdrive(dataset: str, m: int = -1):
   for i in range(m):
     time_series.append(df.loc[i].to_numpy())
   return time_series
+
+
+def load_data(name: str, m: int = -1):
+  """
+  Load one of the given datasets: chlorine, gas, random, stock, synthetic,
+  audio, custom_financial, automated_financial.
+
+  Parameters:
+  name: Name of a given dataset.
+  m: Number of time series to return.
+  """
+  datasets = {
+    "chlorine": gdrive,
+    "gas": gdrive,
+    "random": gdrive,
+    "stock": gdrive,
+    "synthetic": gdrive,
+    "audio": audio,
+    "custom_financial": custom_financial,
+    "automated_financial": automated_financial,
+  }
+  return datasets[name](name, m)
 
 
 # I don't use the following functions in my acutal correlation join algorithm.

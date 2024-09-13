@@ -1,5 +1,9 @@
+# Standard library imports
+# Third-party imports
 import numpy as np
 from pyts.approximation import PiecewiseAggregateApproximation
+# Local imports$
+
 
 def paa_double_pyts(data, n: int, k_s: int, k_e: int):
   """
@@ -22,7 +26,7 @@ def paa_double_pyts(data, n: int, k_s: int, k_e: int):
   data_reduced_s = paa_s.transform(data_reshaped)
   paa_e = PiecewiseAggregateApproximation(window_size=n//k_e)
   data_reduced_e = paa_e.transform(data_reshaped)
-  return data_reduced_s.flatten(), data_reduced_e.flatten()   # Reduce convert 2D array back to 1D 
+  return data_reduced_s.flatten(), data_reduced_e.flatten()   # Reduce convert 2D array back to 1D
 
 
 # PAA custom
@@ -51,4 +55,3 @@ def paa_pyts(data, n: int, k: int):
   data_win_reshaped = data_win.reshape(1, -1)
   data_win_reduced = paa.transform(data_win_reshaped)
   return data_win_reduced
-
