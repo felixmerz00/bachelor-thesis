@@ -8,38 +8,24 @@ import numpy as np
 # Local imports
 from load_data import load_audio_data, load_custom_financial_data, load_short_custom_financial_data
 from inc_p import incp
-from util import get_audio_params_1, get_financial_params_1, euc_dist_manual
+import util
 
 
-def get_logger():
-  # Formatting for loggers
-  formatter = logging.Formatter(
-    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-  # Create a logger for reporting correlation
-  logger = logging.getLogger("eucledian_brute_force_logger")
-  logger.setLevel(logging.INFO)
-  main_handler = logging.FileHandler(
-    'code/brute_force_implementation/logs/report-brute-force-euclidean.log',
-    mode='w', encoding='utf-8')
-  main_handler.setLevel(logging.INFO)
-  main_handler.setFormatter(formatter)
-  logger.addHandler(main_handler)
-  return logger
-
-# Copy from actural_brute_force.py
-# I replaced computing the Pearson correlation between window pairs with
-# computing the Euclidean distance between window pairs
-# PAA, SVD, bucketing filter are still deleted
-def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
-  k_s: int, k_e: int, k_b: int):
-  print('log info: algorithm 1')
-  logger = get_logger()
+def brute_force_euc_dist(t_series: List[np.ndarray], n: int, h: int, T: float,
+  k_s: int = -1, k_e: int = -1, k_b: int = -1):
+  """
+  brute_force_euc_dist computes the correlated window pairs directly using
+  just the Euclidean distance and skips PAA, SVD, the bucketing filter, and
+  cumputing the Pearson correlation.
+  """
+  print('log info: running brute_force_euc_dist')
+  bf_logger = util.create_logger("euc_dist_brute_force_logger", logging.INFO,
+    "report-brute-force-euc-dist.log")
   # epsilon_2 = sqrt(2*k_e*(1-T)/n)
   epsilon_2 = sqrt(2*(1-T))
   m = len(t_series)   # number of time series
   num_corr_pairs = 0  # Output
-  logger.info(f"Threshold epsilon_2: {epsilon_2}")
+  bf_logger.info(f"Threshold epsilon_2: {epsilon_2}")
 
   # initial windows
   w = np.empty((m, n))
@@ -69,33 +55,36 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
           euc_d = np.linalg.norm(W[i] - W[j])
           if euc_d <= epsilon_2:
             num_corr_pairs += 1
-            logger.info(
+            bf_logger.info(
               f"Report ({i}, {j}, {alpha}): Window {alpha} of time series {i} and {j} are correlated with euclidean distance {euc_d}."
             )
 
     alpha += 1
-  logger.info(
+  bf_logger.info(
     f"Report: In total the data contains {num_corr_pairs} correlated window pairs."
   )
   print(
     f"log info: Report: In total the data contains {num_corr_pairs} correlated window pairs."
   )
 
+
 # Copy from main.py
 def use_audio_data():
   # convert_audio_data()  # activate this line when you added new mp3 files
   time_series = load_audio_data()
-  n, h, T, k_s, k_e, k_b = get_audio_params_1()
+  n, h, T, _, _, _ = util.get_params("audio_params_1")
 
-  algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
+  brute_force_euc_dist(time_series, n, h, T)
+
 
 # Copy from main.py (adjusted)
 def use_financial_data():
   # time_series = load_automated_financial_data(1000)
   time_series = load_custom_financial_data()
-  n, h, T, k_s, k_e, k_b = get_financial_params_1()
+  n, h, T, _, _, _ = util.get_params("financial_params_1")
 
-  algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
+  brute_force_euc_dist(time_series, n, h, T)
+
 
 def use_short_financial_data(data_len: int, n: int, h: int, T:float=0.75):
   """
@@ -106,9 +95,10 @@ def use_short_financial_data(data_len: int, n: int, h: int, T:float=0.75):
     T: The threshold theta for the correlation.
     """
   time_series = load_short_custom_financial_data(data_len)
-  algorithm_1(time_series, n, h, T, -1, -1, -1)
+  brute_force_euc_dist(time_series, n, h, T)
 
-# use_audio_data()
+
+use_audio_data()
 # use_financial_data()
 # use_short_financial_data(10, 10 , 10)   # Params 1
 # use_short_financial_data(20, 10 , 5)   # Params 2

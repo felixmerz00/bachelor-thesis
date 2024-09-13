@@ -8,34 +8,22 @@ import numpy as np
 # Local imports
 from load_data import load_audio_data, load_custom_financial_data, load_short_custom_financial_data
 from inc_p import incp
-from util import corr_euc_d, get_params
-
-
-# Formatting for loggers
-formatter = logging.Formatter(
-  '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-# Create a logger for reporting correlation
-logger = logging.getLogger("main_logger")
-logger.setLevel(logging.INFO)
-main_handler = logging.FileHandler(
-  'code/brute_force_implementation/logs/report-brute-force.log',
-  mode='w', encoding='utf-8')
-main_handler.setLevel(logging.INFO)
-main_handler.setFormatter(formatter)
-logger.addHandler(main_handler)
+import util
 
 
 def brute_force_p_corr(t_series: List[np.ndarray], n: int, h: int, T: float,
   k_s: int = -1, k_e: int = -1, k_b: int = -1):
   """
-  brute_force_p_corr computes the Pearson correlation directly and skips PAA,
-  SVD, the bucketing filter, and the Euclidean distance filter.
+  brute_force_p_corr computes the correlated window pairs directly using just
+  the Pearson correlation and skips PAA, SVD, the bucketing filter, and the
+  Euclidean distance filter.
   """
   print('log info: running brute_force_p_corr')
+  bf_logger = util.create_logger("brute_force_logger", logging.INFO,
+    "report-brute-force-p-corr.log")
   m = len(t_series)   # Number of time series
   num_corr_pairs = 0  # Output
-  logger.info(f"Threshold Theta: {T}")
+  bf_logger.info(f"Threshold Theta: {T}")
 
   # initial windows
   w = np.empty((m, n))
@@ -44,8 +32,6 @@ def brute_force_p_corr(t_series: List[np.ndarray], n: int, h: int, T: float,
   alpha = 0
   # I assume all time series have the same length
   while alpha*h <= (len(t_series[0])-n):
-    # logger_2.info(f"Window number {alpha}.")
-
     for p in range(m):
       w[p] = t_series[p][alpha*h:alpha*h+n]   # Shift window
       x_bar = np.mean(w[p])
@@ -65,12 +51,12 @@ def brute_force_p_corr(t_series: List[np.ndarray], n: int, h: int, T: float,
           # corrcoef = corr_euc_d(W[i], W[j])
           if corrcoef >= T:
             num_corr_pairs += 1
-            logger.info(
+            bf_logger.info(
               f"Report ({i}, {j}, {alpha}): Window {alpha} of time series {i} and {j} are correlated with correlation coefficient {corrcoef}."
             )
     alpha += 1
 
-  logger.info(
+  bf_logger.info(
     f"Report: In total the data contains {num_corr_pairs} correlated window pairs."
   )
   print(
@@ -82,7 +68,7 @@ def brute_force_p_corr(t_series: List[np.ndarray], n: int, h: int, T: float,
 def use_audio_data():
   # Convert_audio_data()  # activate this line when you added new mp3 files
   time_series = load_audio_data()
-  n, h, T, _, _, _ = get_params("audio_params_1")
+  n, h, T, _, _, _ = util.get_params("audio_params_1")
 
   brute_force_p_corr(time_series, n, h, T)
 
@@ -91,7 +77,7 @@ def use_audio_data():
 def use_financial_data():
   # time_series = load_automated_financial_data(1000)
   time_series = load_custom_financial_data()
-  n, h, T, _, _, _ = get_params("financial_params_1")
+  n, h, T, _, _, _ = util.get_params("financial_params_1")
 
   brute_force_p_corr(time_series, n, h, T)
 
