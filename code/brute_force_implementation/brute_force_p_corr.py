@@ -19,7 +19,7 @@ def brute_force_p_corr(t_series: List[np.ndarray], n: int, h: int, T: float,
   Euclidean distance filter.
   """
   print('log info: running brute_force_p_corr')
-  bf_logger = util.create_logger("brute_force_logger", logging.INFO,
+  bf_logger = util.create_logger("p_corr_brute_force_logger", logging.INFO,
     "report-brute-force-p-corr.log")
   m = len(t_series)   # Number of time series
   num_corr_pairs = 0  # Output
