@@ -8,7 +8,7 @@ import numpy as np
 # Local imports
 from load_data import load_audio_data, load_custom_financial_data, load_short_custom_financial_data
 from inc_p import incp
-from util import get_audio_params_1, get_financial_params_1, corr_euc_d
+from util import corr_euc_d, get_params
 
 
 # Formatting for loggers
@@ -25,18 +25,14 @@ main_handler.setLevel(logging.INFO)
 main_handler.setFormatter(formatter)
 logger.addHandler(main_handler)
 
-# Copy from algo_1.py
-# I deleted everything related to dimensionality reduction/filtering:
-# PAA, SVD, bucketing filter, Eucledian distance filter
-def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
-  k_s: int, k_e: int, k_b: int):
+
+def brute_force_p_corr(t_series: List[np.ndarray], n: int, h: int, T: float,
+  k_s: int = -1, k_e: int = -1, k_b: int = -1):
   """
-  This implementation of algorithm_1 yields not only window pairs with
-  positive correlation, but also window pairs with negative correlation. Thus
-  the result may differ from algo_1.py or algorithm_1 from the
-  brute_force_euclidean.py.
+  brute_force_p_corr computes the Pearson correlation directly and skips PAA,
+  SVD, the bucketing filter, and the Euclidean distance filter.
   """
-  print('log info: algorithm 1')
+  print('log info: running brute_force_p_corr')
   m = len(t_series)   # Number of time series
   num_corr_pairs = 0  # Output
   logger.info(f"Threshold Theta: {T}")
@@ -66,9 +62,8 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
       for j in range(m):
         if i < j:
           corrcoef = incp(W[i], W[j], n)
-          # corrcoef = incp(w[i], w[j], n)
           # corrcoef = corr_euc_d(W[i], W[j])
-          if abs(corrcoef) >= T:
+          if corrcoef >= T:
             num_corr_pairs += 1
             logger.info(
               f"Report ({i}, {j}, {alpha}): Window {alpha} of time series {i} and {j} are correlated with correlation coefficient {corrcoef}."
@@ -82,21 +77,24 @@ def algorithm_1(t_series: List[np.ndarray], n: int, h: int, T: float,
     f"log info: Report: In total the data contains {num_corr_pairs} correlated window pairs."
   )
 
+
 # Copy from main.py
 def use_audio_data():
   # Convert_audio_data()  # activate this line when you added new mp3 files
   time_series = load_audio_data()
-  n, h, T, k_s, k_e, k_b = get_audio_params_1()
+  n, h, T, _, _, _ = get_params("audio_params_1")
 
-  algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
+  brute_force_p_corr(time_series, n, h, T)
+
 
 # Copy from main.py (adjusted)
 def use_financial_data():
   # time_series = load_automated_financial_data(1000)
   time_series = load_custom_financial_data()
-  n, h, T, k_s, k_e, k_b = get_financial_params_1()
+  n, h, T, _, _, _ = get_params("financial_params_1")
 
-  algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
+  brute_force_p_corr(time_series, n, h, T)
+
 
 def use_short_financial_data(data_len: int, n: int, h: int, T:float=0.75):
   """
@@ -107,9 +105,10 @@ def use_short_financial_data(data_len: int, n: int, h: int, T:float=0.75):
     T: The threshold theta for the correlation.
   """
   time_series = load_short_custom_financial_data(data_len)
-  algorithm_1(time_series, n, h, T, -1, -1, -1)
+  brute_force_p_corr(time_series, n, h, T)
+
 
 # use_audio_data()
-# use_financial_data()
+use_financial_data()
 # use_short_financial_data(10, 10, 10)  # Params 1
-use_short_financial_data(20, 10, 5)  # Params 2
+# use_short_financial_data(20, 10, 5)  # Params 2

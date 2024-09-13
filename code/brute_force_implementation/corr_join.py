@@ -26,9 +26,9 @@ handler_2.setFormatter(formatter)
 logger_2.addHandler(handler_2)
 
 
-# algorithm 1 Alizade Nikoo
-def algorithm_1(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
-  print('log info: algorithm 1')
+# CorrJoin according to Alizade Nikoo
+def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
+  print('log info: running CorrJoin')
   epsilon_1 = sqrt(2*k_s*(1-T)/n)
   epsilon_2 = sqrt(2*k_e*(1-T)/n)
   m = len(t_series)   # number of time series

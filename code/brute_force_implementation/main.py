@@ -3,13 +3,13 @@ import logging
 from time import perf_counter_ns
 # Third-party imports
 # Local imports
-from algo_1 import algorithm_1
+from corr_join import corr_join
 import load_data as ld
 from paa import paa_custom, paa_pyts
 import util
 
 
-def use_audio_data(logger):
+def use_audio_data(logger, algorithm_1 = corr_join):
   time_series = ld.load_audio_data()
   n, h, T, k_s, k_e, k_b = util.get_params("audio_params_1")
 
@@ -19,11 +19,11 @@ def use_audio_data(logger):
 
   # Log dataset,m,T,n,h,pruning rate,runtime[s]
   logger.info(
-    f"audio,{len(time_series)},{T},{n},{h},{round(pruning_rate, 3)},{round(time_elapsed/1e9, 3)}"
+    f"audio,{len(time_series)},{T},{n},{h},{algorithm_1.__name__},{round(pruning_rate, 3)},{round(time_elapsed/1e9, 3)}"
   )
 
 
-def use_financial_data(logger):
+def use_financial_data(logger, algorithm_1 = corr_join):
   # time_series = load_automated_financial_data(1000)
   time_series = ld.load_custom_financial_data()
   n, h, T, k_s, k_e, k_b = util.get_params("financial_params_1")
@@ -34,11 +34,11 @@ def use_financial_data(logger):
 
   # Log dataset,m,T,n,h,pruning rate,runtime[s]
   logger.info(
-    f"financial_custom,{len(time_series)},{T},{n},{h},{round(pruning_rate, 3)},{round(time_elapsed/1e9, 3)}"
+    f"financial_custom,{len(time_series)},{T},{n},{h},{algorithm_1.__name__},{round(pruning_rate, 3)},{round(time_elapsed/1e9, 3)}"
   )
 
 
-def use_gdrive_data(dataset: str, params: str, logger, m: int = -1):
+def use_gdrive_data(dataset: str, params: str, logger, algorithm_1 = corr_join, m: int = -1):
   """
   Run CorrJoin with a dataset I got from Google Drive.
 
@@ -57,7 +57,7 @@ def use_gdrive_data(dataset: str, params: str, logger, m: int = -1):
 
   # Log dataset,m,n,h,T,k_s,k_e,k_b,pruning rate,runtime[s]
   logger.info(
-    f"{dataset},{len(time_series)},{n},{h},{T},{k_s},{k_e},{k_b},{pruning_rate},{round(time_elapsed/1e9, 3)}"
+    f"{dataset},{len(time_series)},{n},{h},{T},{k_s},{k_e},{k_b},{algorithm_1.__name__},{pruning_rate},{round(time_elapsed/1e9, 3)}"
   )
 
 
@@ -67,8 +67,8 @@ if __name__ == '__main__':
     "performance_log.csv")
   # use_audio_data(perf_logger)
   # use_financial_data(perf_logger)
-  use_gdrive_data("chlorine", "chlorine_params_1", perf_logger, 10)
-  use_gdrive_data("gas", "chlorine_params_1", perf_logger, 10)
-  use_gdrive_data("random", "random_params_1", perf_logger, 50)
-  use_gdrive_data("stock", "chlorine_params_1", perf_logger, 10)
-  use_gdrive_data("synthetic", "chlorine_params_1", perf_logger, 10)
+  use_gdrive_data("chlorine", "chlorine_params_1", perf_logger, m=10)
+  use_gdrive_data("gas", "chlorine_params_1", perf_logger, m=10)
+  use_gdrive_data("random", "random_params_1", perf_logger, m=50)
+  use_gdrive_data("stock", "chlorine_params_1", perf_logger, m=10)
+  use_gdrive_data("synthetic", "chlorine_params_1", perf_logger, m=10)
