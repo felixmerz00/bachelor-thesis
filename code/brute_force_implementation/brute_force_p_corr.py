@@ -1,12 +1,10 @@
 # Standard library imports
-from time import perf_counter_ns
 from math import sqrt
 import logging
 from typing import List
 # Third-party imports
 import numpy as np
 # Local imports
-from load_data import load_audio_data, load_custom_financial_data, load_short_custom_financial_data
 from inc_p import incp
 import util
 
@@ -59,42 +57,4 @@ def brute_force_p_corr(t_series: List[np.ndarray], n: int, h: int, T: float,
   bf_logger.info(
     f"Report: In total the data contains {num_corr_pairs} correlated window pairs."
   )
-  print(
-    f"log info: Report: In total the data contains {num_corr_pairs} correlated window pairs."
-  )
-
-
-# Copy from main.py
-def use_audio_data():
-  # Convert_audio_data()  # activate this line when you added new mp3 files
-  time_series = load_audio_data()
-  n, h, T, _, _, _ = util.get_params("audio_params_1")
-
-  brute_force_p_corr(time_series, n, h, T)
-
-
-# Copy from main.py (adjusted)
-def use_financial_data():
-  # time_series = load_automated_financial_data(1000)
-  time_series = load_custom_financial_data()
-  n, h, T, _, _, _ = util.get_params("financial_params_1")
-
-  brute_force_p_corr(time_series, n, h, T)
-
-
-def use_short_financial_data(data_len: int, n: int, h: int, T:float=0.75):
-  """
-  Parameters:
-    data_len: The length of the time series.
-    n: The length of a window.
-    h: The stride.
-    T: The threshold theta for the correlation.
-  """
-  time_series = load_short_custom_financial_data(data_len)
-  brute_force_p_corr(time_series, n, h, T)
-
-
-# use_audio_data()
-use_financial_data()
-# use_short_financial_data(10, 10, 10)  # Params 1
-# use_short_financial_data(20, 10, 5)  # Params 2
+  return 0
