@@ -1,6 +1,7 @@
 # Standard library imports
 # Third-party imports
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 # Local imports
 import util
@@ -33,24 +34,38 @@ def t_runtime_pr(df, ds_name: str, m: int, params):
     & (df['k_e'] == k_e)
     & (df['k_b'] == k_b)]
   # Take the latest available performance measurement for each T value.
-  result_df = filtered_df.sort_values('T').groupby('T').last().reset_index()
+  result_df = filtered_df.sort_values(['T', 'algorithm']).groupby(
+    ['T', 'algorithm']).last().reset_index()
 
   # Create the figure with two subplots side by side
   fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
 
+  # Get unique algorithms from the data
+  algorithms = result_df['algorithm'].unique()
+  # Generate a color map for the algorithms
+  color_map = plt.get_cmap('tab10')(np.linspace(0, 1, max(10, len(algorithms))))
+
   # Plot 1: Runtime vs. Correlation Threshold
-  ax1.plot(result_df['T'], result_df['runtime'], marker='o')
+  for i, algo in enumerate(algorithms):
+    algo_df = result_df[result_df['algorithm'] == algo]
+    ax1.plot(algo_df['T'], algo_df['runtime'], marker='o', label=algo, color=color_map[i])
+
   ax1.set_xlabel('Correlation Threshold (T)')
   ax1.set_ylabel('Runtime (seconds)')
   ax1.set_title('Runtime vs. Correlation Threshold')
   ax1.grid(True)
+  ax1.legend()
 
   # Plot 2: Pruning Rate vs. Correlation Threshold
-  ax2.plot(result_df['T'], result_df['pruning_rate'], marker='o', color='green')
+  for i, algo in enumerate(algorithms):
+    algo_df = result_df[result_df['algorithm'] == algo]
+    ax2.plot(algo_df['T'], algo_df['pruning_rate'], marker='o', label=algo, color=color_map[i])
+
   ax2.set_xlabel('Correlation Threshold (T)')
   ax2.set_ylabel('Pruning Rate')
   ax2.set_title('Pruning Rate vs. Correlation Threshold')
   ax2.grid(True)
+  ax2.legend()
 
   # Add description of fixed parameters
   # I need double curly braces because otherwise the f-string things it's a
@@ -97,20 +112,31 @@ def n_runtime_pr(df, ds_name: str, m: int, params):
     & (df['k_e'] == k_e)
     & (df['k_b'] == k_b)]
   # Take the latest available performance measurement for each T value.
-  result_df = filtered_df.sort_values('n').groupby('n').last().reset_index()
+  result_df = filtered_df.sort_values(['n', 'algorithm']).groupby(['n', 'algorithm']).last().reset_index()
 
   # Create the figure with two subplots side by side
   fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
 
-  # Plot 1: Runtime vs. Correlation Threshold
-  ax1.plot(result_df['n'], result_df['runtime'], marker='o')
+  # Get unique algorithms from the data
+  algorithms = result_df['algorithm'].unique()
+  # Colors for each algorithm
+  color_map = plt.get_cmap('tab10')(np.linspace(0, 1, max(10, len(algorithms))))
+
+  # Plot 1: Runtime vs. window size
+  for i, algo in enumerate(algorithms):
+    algo_df = result_df[result_df['algorithm'] == algo]
+    ax1.plot(algo_df['n'], algo_df['runtime'], marker='o', label=algo, color=color_map[i])
+
   ax1.set_xlabel('Window Size (n)')
   ax1.set_ylabel('Runtime (seconds)')
   ax1.set_title('Runtime vs. Window Size')
   ax1.grid(True)
 
-  # Plot 2: Pruning Rate vs. Correlation Threshold
-  ax2.plot(result_df['n'], result_df['pruning_rate'], marker='o', color='green')
+  # Plot 2: Pruning Rate vs. window size
+  for i, algo in enumerate(algorithms):
+    algo_df = result_df[result_df['algorithm'] == algo]
+    ax2.plot(algo_df['n'], algo_df['pruning_rate'], marker='o', label=algo, color=color_map[i])
+
   ax2.set_xlabel('Window Size (n)')
   ax2.set_ylabel('Pruning Rate')
   ax2.set_title('Pruning Rate vs. Window Size')
