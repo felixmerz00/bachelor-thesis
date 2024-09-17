@@ -43,6 +43,10 @@ def gen_t_runtime_pr_data(perf_logger):
     corr_join_wrapper("chlorine", f"chlorine_0_run_{i}", perf_logger, m=50)
     corr_join_wrapper("chlorine", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
     corr_join_wrapper("chlorine", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
+    # I use the same parameters with the gas dataset
+    corr_join_wrapper("gas", f"chlorine_0_run_{i}", perf_logger, m=50)
+    corr_join_wrapper("gas", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
+    corr_join_wrapper("gas", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
 
 
 def gen_n_runtime_pr_data(perf_logger):
@@ -54,6 +58,10 @@ def gen_n_runtime_pr_data(perf_logger):
     corr_join_wrapper("chlorine", f"chlorine_1_run_{i}", perf_logger, m=50)
     corr_join_wrapper("chlorine", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
     corr_join_wrapper("chlorine", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
+    # I use the same parameters with the gas dataset
+    corr_join_wrapper("gas", f"chlorine_1_run_{i}", perf_logger, m=50)
+    corr_join_wrapper("gas", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
+    corr_join_wrapper("gas", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
 
 
 def gen_perf_data():
