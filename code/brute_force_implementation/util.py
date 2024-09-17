@@ -36,7 +36,13 @@ def get_params(params_name: str):
     "chlorine_0_run_3": (512, 64, 0.915, 16, 32, 2),
     "chlorine_0_run_4": (512, 64, 0.94, 16, 32, 2),
     "chlorine_0_run_5": (512, 64, 0.965, 16, 32, 2),
-    "chlorine_0_run_6": (512, 64, 0.99, 16, 32, 2)
+    "chlorine_0_run_6": (512, 64, 0.99, 16, 32, 2),
+    # Params for runtime vs. T and pruning rate vs. T plots
+    "chlorine_1_plot_0": (-1, 30, 0.9, 15, 30, 2),
+    "chlorine_1_run_0": (30, 30, 0.9, 15, 30, 2),
+    "chlorine_1_run_1": (510, 30, 0.9, 15, 30, 2),
+    "chlorine_1_run_2": (990, 30, 0.9, 15, 30, 2),
+    "chlorine_1_run_3": (1500, 30, 0.9, 15, 30, 2)
   }
   return parameters[params_name]
 

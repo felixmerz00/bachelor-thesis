@@ -45,6 +45,17 @@ def gen_t_runtime_pr_data(perf_logger):
     corr_join_wrapper("chlorine", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
 
 
+def gen_n_runtime_pr_data(perf_logger):
+  """
+  Generate performance data for the runtime vs. n and pruning rate vs. n
+  plots.
+  """
+  for i in range(4):
+    corr_join_wrapper("chlorine", f"chlorine_1_run_{i}", perf_logger, m=50)
+    corr_join_wrapper("chlorine", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
+    corr_join_wrapper("chlorine", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
+
+
 def gen_perf_data():
   """
   Generate performance data.
@@ -56,7 +67,8 @@ if __name__ == '__main__':
   # Use the same logger for all runs to avoid duplicate entries
   perf_logger = util.create_csv_logger("performance_logger", logging.INFO,
     "performance_log.csv")
-  gen_t_runtime_pr_data(perf_logger)
+  # gen_t_runtime_pr_data(perf_logger)
+  gen_n_runtime_pr_data(perf_logger)
 
   # Run with CorrJoin
   # corr_join_wrapper("audio", "audio_params_1", perf_logger)
