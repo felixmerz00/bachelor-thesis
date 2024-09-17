@@ -166,7 +166,7 @@ def n_runtime_pr(df, ds_name: str, m: int, params):
 
 def main():
   df = pd.read_csv('./code/brute_force_implementation/logs/performance_log.csv')
-  t_runtime_pr(df, "chlorine", 10, util.get_params("chlorine_params_1"))
+  t_runtime_pr(df, "chlorine", 50, util.get_params("chlorine_0_plot_0"))
   t_runtime_pr(df, "gas", 10, util.get_params("chlorine_params_1"))
   n_runtime_pr(df, "chlorine", 10, util.get_params("chlorine_params_1"))
   n_runtime_pr(df, "gas", 10, util.get_params("chlorine_params_1"))
