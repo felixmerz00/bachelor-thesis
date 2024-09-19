@@ -10,6 +10,8 @@ import numpy as np
 def get_params(params_name: str):
   """
   Provide the requested parameters for running correlation join.
+  Note: Alizade Nikoo recommends these parameters: n = 300, h = 10, T = 0.85,
+  k_s = 15, k_e = 30, k_b = 3.
 
   Parameters:
   params_name : The name of the parameter tuple.
@@ -37,12 +39,19 @@ def get_params(params_name: str):
     "chlorine_0_run_4": (512, 64, 0.94, 16, 32, 2),
     "chlorine_0_run_5": (512, 64, 0.965, 16, 32, 2),
     "chlorine_0_run_6": (512, 64, 0.99, 16, 32, 2),
-    # Params for runtime vs. T and pruning rate vs. T plots
+    # Params for runtime vs. n and pruning rate vs. n plots
     "chlorine_1_plot_0": (-1, 30, 0.9, 15, 30, 2),
     "chlorine_1_run_0": (30, 30, 0.9, 15, 30, 2),
     "chlorine_1_run_1": (510, 30, 0.9, 15, 30, 2),
     "chlorine_1_run_2": (990, 30, 0.9, 15, 30, 2),
-    "chlorine_1_run_3": (1500, 30, 0.9, 15, 30, 2)
+    "chlorine_1_run_3": (1500, 30, 0.9, 15, 30, 2),
+    # Params for runtime vs. h plots
+    "chlorine_var_h_plot": (300, -1, 0.85, 15, 30, 3),
+    "chlorine_var_h_run_0": (300, 100, 0.85, 15, 30, 3),
+    "chlorine_var_h_run_1": (300, 200, 0.85, 15, 30, 3),
+    "chlorine_var_h_run_2": (300, 300, 0.85, 15, 30, 3),
+    "chlorine_var_h_run_3": (300, 400, 0.85, 15, 30, 3),
+    "chlorine_var_h_run_4": (300, 500, 0.85, 15, 30, 3)
   }
   return parameters[params_name]
 

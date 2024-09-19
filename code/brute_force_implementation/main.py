@@ -40,10 +40,11 @@ def gen_t_runtime_pr_data(perf_logger):
   plots.
   """
   for i in range(7):
+    # Chlorine dataset
     corr_join_wrapper("chlorine", f"chlorine_0_run_{i}", perf_logger, m=50)
     corr_join_wrapper("chlorine", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
     corr_join_wrapper("chlorine", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
-    # I use the same parameters with the gas dataset
+    # Gas dataset, for which I use the same parameters
     corr_join_wrapper("gas", f"chlorine_0_run_{i}", perf_logger, m=50)
     corr_join_wrapper("gas", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
     corr_join_wrapper("gas", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
@@ -55,13 +56,25 @@ def gen_n_runtime_pr_data(perf_logger):
   plots.
   """
   for i in range(4):
+    # Chlorine dataset
     corr_join_wrapper("chlorine", f"chlorine_1_run_{i}", perf_logger, m=50)
     corr_join_wrapper("chlorine", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
     corr_join_wrapper("chlorine", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
-    # I use the same parameters with the gas dataset
+    # Gas dataset, for which I use the same parameters
     corr_join_wrapper("gas", f"chlorine_1_run_{i}", perf_logger, m=50)
     corr_join_wrapper("gas", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
     corr_join_wrapper("gas", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
+
+
+def gen_h_runtime(perf_logger):
+  """
+  Generate performance data for the runtime vs. h plots.
+  """
+  for i in range(5):
+    # Chlorine dataset
+    corr_join_wrapper("chlorine", f"chlorine_var_h_run_{i}", perf_logger, m=50)
+    corr_join_wrapper("chlorine", f"chlorine_var_h_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
+    corr_join_wrapper("chlorine", f"chlorine_var_h_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
 
 
 def gen_perf_data():
@@ -76,7 +89,8 @@ if __name__ == '__main__':
   perf_logger = util.create_csv_logger("performance_logger", logging.INFO,
     "performance_log.csv")
   # gen_t_runtime_pr_data(perf_logger)
-  gen_n_runtime_pr_data(perf_logger)
+  # gen_n_runtime_pr_data(perf_logger)
+  gen_h_runtime(perf_logger)
 
   # Run with CorrJoin
   # corr_join_wrapper("audio", "audio_params_1", perf_logger)
