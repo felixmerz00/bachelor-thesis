@@ -18,7 +18,7 @@ def get_params(params_name: str):
 
   Returns:
   tuple: Paramters for running correlation join.
-    - n (int): Window size
+    - n (int): Window size, n >= h should always hold
     - h (int): Stride, ideally a divisor of n
     - T (float): Correlation threshold
     - k_s (int): Number of dimensions for SVD
@@ -45,13 +45,13 @@ def get_params(params_name: str):
     "chlorine_1_run_1": (510, 30, 0.9, 15, 30, 2),
     "chlorine_1_run_2": (990, 30, 0.9, 15, 30, 2),
     "chlorine_1_run_3": (1500, 30, 0.9, 15, 30, 2),
-    # Params for runtime vs. h plots
-    "chlorine_var_h_plot": (300, -1, 0.85, 15, 30, 3),
-    "chlorine_var_h_run_0": (300, 100, 0.85, 15, 30, 3),
-    "chlorine_var_h_run_1": (300, 200, 0.85, 15, 30, 3),
-    "chlorine_var_h_run_2": (300, 300, 0.85, 15, 30, 3),
-    "chlorine_var_h_run_3": (300, 400, 0.85, 15, 30, 3),
-    "chlorine_var_h_run_4": (300, 500, 0.85, 15, 30, 3)
+    # New params for runtime vs. h plots
+    "chlorine_var_h_plot": (1200, -1, 0.85, 15, 30, 3),
+    "chlorine_var_h_run_0": (1200, 100, 0.85, 15, 30, 3),
+    "chlorine_var_h_run_1": (1200, 200, 0.85, 15, 30, 3),
+    "chlorine_var_h_run_2": (1200, 300, 0.85, 15, 30, 3),
+    "chlorine_var_h_run_3": (1200, 400, 0.85, 15, 30, 3),
+    "chlorine_var_h_run_4": (1200, 500, 0.85, 15, 30, 3)
   }
   return parameters[params_name]
 

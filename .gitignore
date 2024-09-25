@@ -1,5 +1,6 @@
 # venv files with the installed packages
 my-venv/
+spleeter-venv/
 
 # PyCharm files
 .idea

@@ -1,4 +1,4 @@
-# manually maintained requirements
+# manually maintained requirements for my-venv, which I use for converting mp3 files to npy files
 notebook
 # librosa is not compatible with numpy 2, use numpy version < 2
 numpy==1.26.4
