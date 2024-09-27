@@ -90,7 +90,8 @@ if __name__ == '__main__':
     "performance_log.csv")
   # gen_t_runtime_pr_data(perf_logger)
   # gen_n_runtime_pr_data(perf_logger)
-  gen_h_runtime(perf_logger)
+  # gen_h_runtime(perf_logger)
+  corr_join_wrapper("audio_drums", "audio_params_1", perf_logger)
 
   # Run with CorrJoin
   # corr_join_wrapper("audio", "audio_params_1", perf_logger)

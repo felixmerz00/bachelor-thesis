@@ -13,6 +13,7 @@ data/weather
 !data/weather/us-state-capitals-wo-alaska-hawaii.csv
 data/google-drive/
 data/audio/out
+data/audio/ron-minis-separated/
 # generated file
 data/finance/automated/
 
