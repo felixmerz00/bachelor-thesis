@@ -131,6 +131,7 @@ def n_runtime_pr(df, ds_name: str, m: int, params):
   ax1.set_ylabel('Runtime (seconds)')
   ax1.set_title('Runtime vs. Window Size')
   ax1.grid(True)
+  ax1.legend()
 
   # Plot 2: Pruning Rate vs. window size
   for i, algo in enumerate(algorithms):
@@ -141,6 +142,7 @@ def n_runtime_pr(df, ds_name: str, m: int, params):
   ax2.set_ylabel('Pruning Rate')
   ax2.set_title('Pruning Rate vs. Window Size')
   ax2.grid(True)
+  ax2.legend()
 
   # Add description of fixed parameters
   # I need double curly braces because otherwise the f-string thinks it's a
@@ -205,6 +207,7 @@ def h_runtime(df, ds_name: str, m: int, params):
   ax.set_ylabel('Runtime (seconds)')
   ax.set_title('Runtime vs. Stride')
   ax.grid(True)
+  ax.legend()
 
   # Add description of fixed parameters
   # I need double curly braces because otherwise the f-string thinks it's a
@@ -269,6 +272,7 @@ def m_runtime(df, ds_name: str, params):
   ax.set_ylabel('Runtime (seconds)')
   ax.set_title('Runtime vs. number of time series')
   ax.grid(True)
+  ax.legend()
 
   # Add description of fixed parameters
   # I need double curly braces because otherwise the f-string thinks it's a
