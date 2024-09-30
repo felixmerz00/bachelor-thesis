@@ -77,11 +77,14 @@ def gen_h_runtime(perf_logger):
     corr_join_wrapper("chlorine", f"chlorine_var_h_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
 
 
-def gen_perf_data():
+def gen_n_runtime(perf_logger):
   """
-  Generate performance data.
+  Generate performance data for the runtime vs. n plots.
   """
-  print("Hello World!")
+  for m in util.get_params("synthetic_var_m_0_test"):
+    corr_join_wrapper("synthetic", "synthetic_var_m_0", perf_logger, m=m)
+    corr_join_wrapper("synthetic", "synthetic_var_m_0", perf_logger, m=m, algorithm_1=brute_force_p_corr)
+    corr_join_wrapper("synthetic", "synthetic_var_m_0", perf_logger, m=m, algorithm_1=brute_force_euc_dist)
 
 
 if __name__ == '__main__':
@@ -91,31 +94,6 @@ if __name__ == '__main__':
   # gen_t_runtime_pr_data(perf_logger)
   # gen_n_runtime_pr_data(perf_logger)
   # gen_h_runtime(perf_logger)
-  corr_join_wrapper("audio_drums", "audio_params_1", perf_logger)
+  gen_n_runtime(perf_logger)
 
-  # Run with CorrJoin
-  # corr_join_wrapper("audio", "audio_params_1", perf_logger)
-  # corr_join_wrapper("custom_financial", "financial_params_1", perf_logger)
-  # corr_join_wrapper("chlorine", "chlorine_params_1", perf_logger, m=10)
-  # corr_join_wrapper("gas", "chlorine_params_1", perf_logger, m=10)
-  # corr_join_wrapper("random", "random_params_1", perf_logger, m=50)
-  # corr_join_wrapper("stock", "chlorine_params_1", perf_logger, m=10)
-  # corr_join_wrapper("synthetic", "chlorine_params_1", perf_logger, m=10)
-
-  # Run with brute-force algorithm using the Pearson correlation
-  # corr_join_wrapper("audio", "audio_params_1", perf_logger, algorithm_1=brute_force_p_corr)
-  # corr_join_wrapper("custom_financial", "financial_params_1", perf_logger, algorithm_1=brute_force_p_corr)
-  # corr_join_wrapper("chlorine", "chlorine_params_1", perf_logger, m=10, algorithm_1=brute_force_p_corr)
-  # corr_join_wrapper("gas", "chlorine_params_1", perf_logger, m=10, algorithm_1=brute_force_p_corr)
-  # corr_join_wrapper("random", "random_params_1", perf_logger, m=50, algorithm_1=brute_force_p_corr)
-  # corr_join_wrapper("stock", "chlorine_params_1", perf_logger, m=10, algorithm_1=brute_force_p_corr)
-  # corr_join_wrapper("synthetic", "chlorine_params_1", perf_logger, m=10, algorithm_1=brute_force_p_corr)
-
-  # Run with brute-force algorithm using the Euclidean distance
-  # corr_join_wrapper("audio", "audio_params_1", perf_logger, algorithm_1=brute_force_euc_dist)
-  # corr_join_wrapper("custom_financial", "financial_params_1", perf_logger, algorithm_1=brute_force_euc_dist)
-  # corr_join_wrapper("chlorine", "chlorine_params_1", perf_logger, m=10, algorithm_1=brute_force_euc_dist)
-  # corr_join_wrapper("gas", "chlorine_params_1", perf_logger, m=10, algorithm_1=brute_force_euc_dist)
-  # corr_join_wrapper("random", "random_params_1", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
-  # corr_join_wrapper("stock", "chlorine_params_1", perf_logger, m=10, algorithm_1=brute_force_euc_dist)
-  # corr_join_wrapper("synthetic", "chlorine_params_1", perf_logger, m=10, algorithm_1=brute_force_euc_dist)
+  # corr_join_wrapper("audio_drums", "audio_params_1", perf_logger)

@@ -51,7 +51,13 @@ def get_params(params_name: str):
     "chlorine_var_h_run_1": (1200, 200, 0.85, 15, 30, 3),
     "chlorine_var_h_run_2": (1200, 300, 0.85, 15, 30, 3),
     "chlorine_var_h_run_3": (1200, 400, 0.85, 15, 30, 3),
-    "chlorine_var_h_run_4": (1200, 500, 0.85, 15, 30, 3)
+    "chlorine_var_h_run_4": (1200, 500, 0.85, 15, 30, 3),
+    # New params for runtime vs. m plots,
+    # For this plot the variable parameter is defined somewhere else, thus I
+    # need only one set of parameters
+    "synthetic_var_m_0": (300, 10, 0.85, 15, 30, 3),
+    "synthetic_var_m_0_prod": (50, 5000, 10000, 15000, 20000, 25000),
+    "synthetic_var_m_0_test": (4, 8, 16, 32)
   }
   return parameters[params_name]
 
