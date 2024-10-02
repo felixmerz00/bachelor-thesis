@@ -44,7 +44,9 @@ def audio(dataset: str, _):
     "audio_1": ["ron-minis-cut-1", "ron-minis-cut-2", "ron-minis-cut-0107700",
     "ron-minis-cut-0143300"],
     "audio_drums": ["ron-minis-separated/ron-minis-cut-drums-1017000-30s/drums",
-      "ron-minis-separated/ron-minis-cut-drums-1128500-30s/drums"]}
+      "ron-minis-separated/ron-minis-cut-drums-1128500-30s/drums"],
+    "audio_drums_8k": ["ron-minis-separated/ron-minis-cut-drums-1017000-30s/drums-8k",
+      "ron-minis-separated/ron-minis-cut-drums-1128500-30s/drums-8k"]}
   # Activate the following line for the first run after you added new mp3
   # files.
   # convert_audio_data(path_lists[dataset])
@@ -168,6 +170,7 @@ def load_data(name: str, m: int = -1):
     "synthetic": gdrive,
     "audio": audio,
     "audio_drums": audio,
+    "audio_drums_8k": audio,
     "custom_financial": custom_financial,
     "automated_financial": automated_financial,
   }

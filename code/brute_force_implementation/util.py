@@ -27,6 +27,7 @@ def get_params(params_name: str):
   """
   parameters = {
     "audio_params_1": (500, 10, 0.75, 100, 250, 2),
+    "audio_params_2": (8000, 10, 0.11, 200, 400, 2),
     "financial_params_1": (300, 10, 0.85, 15, 30, 3),
     "chlorine_params_1": (512, 64, 0.9, 16, 32, 2),
     "random_params_1": (512, 64, 0.75, 16, 32, 2),
