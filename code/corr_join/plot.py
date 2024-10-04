@@ -7,7 +7,7 @@ import pandas as pd
 import util
 
 
-# Consult code/brute_force_implementation/util.py for the structure of the
+# Consult code/corr_join/util.py for the structure of the
 # logs
 
 
@@ -85,7 +85,7 @@ def t_runtime_pr(df, ds_name: str, m: int, params):
   # Adjust layout and save the figure
   plt.tight_layout()
   plt.subplots_adjust(bottom=0.25)  # Make room for the description
-  plt.savefig(f"./code/brute_force_implementation/plots/t_runtime_pr_{ds_name}.png")
+  plt.savefig(f"./code/corr_join/plots/t_runtime_pr_{ds_name}.png")
   plt.close()
 
 
@@ -162,7 +162,7 @@ def n_runtime_pr(df, ds_name: str, m: int, params):
   # Adjust layout and save the figure
   plt.tight_layout()
   plt.subplots_adjust(bottom=0.25)  # Make room for the description
-  plt.savefig(f"./code/brute_force_implementation/plots/n_runtime_pr_{ds_name}.png")
+  plt.savefig(f"./code/corr_join/plots/n_runtime_pr_{ds_name}.png")
   plt.close()
 
 
@@ -227,7 +227,7 @@ def h_runtime(df, ds_name: str, m: int, params):
   # Adjust layout and save the figure
   plt.tight_layout()
   plt.subplots_adjust(bottom=0.25)  # Make room for the description
-  plt.savefig(f"./code/brute_force_implementation/plots/h_runtime_{ds_name}.png")
+  plt.savefig(f"./code/corr_join/plots/h_runtime_{ds_name}.png")
   plt.close()
 
 
@@ -292,12 +292,12 @@ def m_runtime(df, ds_name: str, params):
   # Adjust layout and save the figure
   plt.tight_layout()
   plt.subplots_adjust(bottom=0.25)  # Make room for the description
-  plt.savefig(f"./code/brute_force_implementation/plots/m_runtime_{ds_name}.png")
+  plt.savefig(f"./code/corr_join/plots/m_runtime_{ds_name}.png")
   plt.close()
 
 
 def main():
-  df = pd.read_csv('./code/brute_force_implementation/logs/performance_log.csv')
+  df = pd.read_csv('./code/corr_join/logs/performance_log.csv')
   t_runtime_pr(df, "chlorine", 50, util.get_params("chlorine_0_plot_0"))
   t_runtime_pr(df, "gas", 50, util.get_params("chlorine_0_plot_0"))
   n_runtime_pr(df, "chlorine", 50, util.get_params("chlorine_1_plot_0"))

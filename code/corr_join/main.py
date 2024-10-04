@@ -98,4 +98,5 @@ if __name__ == '__main__':
 
   # corr_join_wrapper("audio_drums", "audio_params_1", perf_logger)
   # corr_join_wrapper("audio_drums", "audio_params_2", perf_logger)
-  corr_join_wrapper("audio_drums_8k", "audio_params_2", perf_logger)
+  # corr_join_wrapper("audio_drums_8k", "audio_params_2", perf_logger)
+  corr_join_wrapper("chlorine", "chlorine_params_1", perf_logger, m = 20)

@@ -17,16 +17,14 @@ data/audio/ron-minis-separated/
 # generated file
 data/finance/automated/
 
-# ignore irrelevant files like  Jupyter Notebook checkpoints
-.ipynb_checkpoints/
-.DS_Store
-
 # for trying out different functions
-code/sandbox.py
-code/brute_force_implementation/sandbox.py
+code/corr_join/sandbox.py
 
 # generated file
 code/scrape_financial_data/nasdaqlisted-symbols.txt
 
-# ignore compiled bytecode files for imported modules
-code/brute_force_implementation/__pycache__/
+# ignore irrelevant files like  Jupyter Notebook checkpoints, compiled
+# bytecode files for imported modules
+.ipynb_checkpoints/
+.DS_Store
+code/corr_join/__pycache__/
