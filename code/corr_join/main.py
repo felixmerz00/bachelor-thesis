@@ -26,7 +26,7 @@ def corr_join_wrapper(dataset: str, params: str, logger,
   n, h, T, k_s, k_e, k_b = util.get_params(params)
 
   time_start = perf_counter_ns()
-  pruning_rate = algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
+  _, pruning_rate = algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
   time_elapsed = perf_counter_ns()-time_start
 
   logger.info(
@@ -99,4 +99,4 @@ if __name__ == '__main__':
   # corr_join_wrapper("audio_drums", "audio_params_1", perf_logger)
   # corr_join_wrapper("audio_drums", "audio_params_2", perf_logger)
   # corr_join_wrapper("audio_drums_8k", "audio_params_2", perf_logger)
-  corr_join_wrapper("chlorine", "chlorine_params_1", perf_logger, m = 20)
+  corr_join_wrapper("chlorine_np", "chlorine_params_1", perf_logger, m = 10)
