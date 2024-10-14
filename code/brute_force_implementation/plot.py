@@ -45,25 +45,25 @@ def t_runtime_pr(df, ds_name: str, m: int, params):
   # Generate a color map for the algorithms
   color_map = plt.get_cmap('tab10')(np.linspace(0, 1, max(10, len(algorithms))))
 
-  # Plot 1: Runtime vs. Correlation Threshold
+  # Plot 1: Runtime vs. correlation threshold
   for i, algo in enumerate(algorithms):
     algo_df = result_df[result_df['algorithm'] == algo]
     ax1.plot(algo_df['T'], algo_df['runtime'], marker='o', label=algo, color=color_map[i])
 
-  ax1.set_xlabel('Correlation Threshold (T)')
+  ax1.set_xlabel('Correlation threshold (T)')
   ax1.set_ylabel('Runtime (seconds)')
-  ax1.set_title('Runtime vs. Correlation Threshold')
+  ax1.set_title('Runtime vs. correlation threshold')
   ax1.grid(True)
   ax1.legend()
 
-  # Plot 2: Pruning Rate vs. Correlation Threshold
+  # Plot 2: Pruning rate vs. correlation threshold
   for i, algo in enumerate(algorithms):
     algo_df = result_df[result_df['algorithm'] == algo]
     ax2.plot(algo_df['T'], algo_df['pruning_rate'], marker='o', label=algo, color=color_map[i])
 
-  ax2.set_xlabel('Correlation Threshold (T)')
-  ax2.set_ylabel('Pruning Rate')
-  ax2.set_title('Pruning Rate vs. Correlation Threshold')
+  ax2.set_xlabel('Correlation threshold (T)')
+  ax2.set_ylabel('Pruning rate')
+  ax2.set_title('Pruning rate vs. correlation threshold')
   ax2.grid(True)
   ax2.legend()
 
@@ -71,7 +71,7 @@ def t_runtime_pr(df, ds_name: str, m: int, params):
   # I need double curly braces because otherwise the f-string thinks it's a
   # variable
   fixed_params = (
-      f"Fixed Parameters\n"
+      f"Fixed parameters\n"
       f"dataset: {ds_name}, "
       f"m: {m}, "
       f"n: {n}, "
@@ -127,20 +127,20 @@ def n_runtime_pr(df, ds_name: str, m: int, params):
     algo_df = result_df[result_df['algorithm'] == algo]
     ax1.plot(algo_df['n'], algo_df['runtime'], marker='o', label=algo, color=color_map[i])
 
-  ax1.set_xlabel('Window Size (n)')
+  ax1.set_xlabel('Window size (n)')
   ax1.set_ylabel('Runtime (seconds)')
-  ax1.set_title('Runtime vs. Window Size')
+  ax1.set_title('Runtime vs. window size')
   ax1.grid(True)
   ax1.legend()
 
-  # Plot 2: Pruning Rate vs. window size
+  # Plot 2: Pruning rate vs. window size
   for i, algo in enumerate(algorithms):
     algo_df = result_df[result_df['algorithm'] == algo]
     ax2.plot(algo_df['n'], algo_df['pruning_rate'], marker='o', label=algo, color=color_map[i])
 
-  ax2.set_xlabel('Window Size (n)')
-  ax2.set_ylabel('Pruning Rate')
-  ax2.set_title('Pruning Rate vs. Window Size')
+  ax2.set_xlabel('Window size (n)')
+  ax2.set_ylabel('Pruning rate')
+  ax2.set_title('Pruning rate vs. window size')
   ax2.grid(True)
   ax2.legend()
 
@@ -148,7 +148,7 @@ def n_runtime_pr(df, ds_name: str, m: int, params):
   # I need double curly braces because otherwise the f-string thinks it's a
   # variable
   fixed_params = (
-      f"Fixed Parameters\n"
+      f"Fixed parameters\n"
       f"dataset: {ds_name}, "
       f"m: {m}, "
       f"h: {h}, "
@@ -205,7 +205,7 @@ def h_runtime(df, ds_name: str, m: int, params):
 
   ax.set_xlabel('Stride (h)')
   ax.set_ylabel('Runtime (seconds)')
-  ax.set_title('Runtime vs. Stride')
+  ax.set_title('Runtime vs. stride')
   ax.grid(True)
   ax.legend()
 
@@ -213,7 +213,7 @@ def h_runtime(df, ds_name: str, m: int, params):
   # I need double curly braces because otherwise the f-string thinks it's a
   # variable
   fixed_params = (
-      f"Fixed Parameters\n"
+      f"Fixed parameters\n"
       f"dataset: {ds_name}, "
       f"m: {m}, "
       f"n: {n}, "
@@ -278,7 +278,7 @@ def m_runtime(df, ds_name: str, params):
   # I need double curly braces because otherwise the f-string thinks it's a
   # variable
   fixed_params = (
-      f"Fixed Parameters\n"
+      f"Fixed parameters\n"
       f"dataset: {ds_name}, "
       f"n: {n}, "
       f"h: {h}, "
