@@ -17,10 +17,10 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
   print('log info: running CorrJoin')
   main_logger = util.create_logger("main_logger", logging.INFO,
     "report-corr-join.log")
-  print(f"Information about t_sereis")
-  print(f"type(t_series): {type(t_series)}")
-  print(f"type(t_series[0]): {type(t_series[0])}")
-  print(f"t_series.shape: {t_series.shape}")
+  # print(f"Information about t_sereis")
+  # print(f"type(t_series): {type(t_series)}")
+  # print(f"type(t_series[0]): {type(t_series[0])}")
+  # print(f"t_series.shape: {t_series.shape}")
   # print(f"t_series.size: {t_series.size}")
   # print(f"t_series.ndim: {t_series.ndim}")
   # print(f"t_series.dtypes: {t_series.dtypes}")
@@ -31,10 +31,11 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
   num_corr_pairs = 0
   overall_pruning_rate = -1.0
 
-  # initial windows
+  # Initialize windows
   # TODO: Change these declarations to the correct type or to None.
-  w = [None for _ in range(m)]  # List of pandas.core.series.Series
+  w = [None for _ in range(m)]
   W = [None for _ in range(m)]
+  W = np.empty((m, n))
   W_s = np.empty((m, k_s))
   W_e = np.empty((m, k_e))
 
@@ -42,15 +43,20 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
   while alpha*h <= (t_series.shape[1]-n):  # I assume all time series have the same length
     # logger_2.info(f"Window number {alpha}.")
 
-    for p in range(m):
-      w[p] = t_series.iloc[p, alpha*h:alpha*h+n]   # shift window
+    # TODO: w has a column too much. Correct the shape of w.
+    w = t_series.loc[:, alpha*h:alpha*h+n].to_numpy(dtype='float')
+    print(f"w: {w}")
+    x_bar = np.mean(w, axis=1)  # Array of row means
+    # for p in range(m):
+      # w[p] = t_series.iloc[p, alpha*h:alpha*h+n]   # shift window
       # x_bar = np.mean(w[p])
-      x_bar = w[p].mean()
+      # x_bar = w[p].mean()
       # W[p] = (w[p] - x_bar) / sqrt(np.sum(pow((w[p]-x_bar), 2)))  # normalization, W[p] is a np.ndarray
       # TODO: Convert this calculation to work with pandas series
-      W[p] = (w[p] - x_bar) / sqrt(np.sum(pow((w[p]-x_bar), 2)))
-      print(type(W[p]))
+      # W[p] = (w[p] - x_bar[p]) / sqrt(np.sum(pow((w[p]-x_bar[p]), 2)))
       # W_s[p], W_e[p] = paa_double_pyts(W[p], n, k_s, k_e)  # PAA
+    # print(f"W: {W}")
+    # print(f"type(W): {type(W)}")
 
   #   W_b = custom_svd(W_s, k_b)
   #   C_1, _ = bucketing_filter(W_b, k_b, epsilon_1)
