@@ -7,6 +7,7 @@ from typing import List
 import numpy as np
 # Local imports
 
+
 def get_params(params_name: str):
   """
   Provide the requested parameters for running correlation join.
