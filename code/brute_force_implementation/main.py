@@ -18,6 +18,7 @@ def corr_join_wrapper(dataset: str, params: str, logger,
   Parameters:
   dataset: The name of the dataset to use.
   params: The name of the parameter tuple to use.
+  logger (Logger): Logger for logging performance metrics of the run.
   algorithm_1: The correlation function to use.
   m: The number of time series to include. Defaults to -1, which uses all
   available time series of the dataset.
@@ -92,10 +93,4 @@ if __name__ == '__main__':
   perf_logger = util.create_csv_logger("performance_logger", logging.INFO,
     "performance_log.csv")
   # gen_t_runtime_pr_data(perf_logger)
-  # gen_n_runtime_pr_data(perf_logger)
-  # gen_h_runtime(perf_logger)
-  # gen_n_runtime(perf_logger)
-
-  # corr_join_wrapper("audio_drums", "audio_params_1", perf_logger)
-  # corr_join_wrapper("audio_drums", "audio_params_2", perf_logger)
-  corr_join_wrapper("audio_drums_8k", "audio_params_2", perf_logger)
+  corr_join_wrapper("chlorine", "chlorine_params_2", perf_logger, m=50)

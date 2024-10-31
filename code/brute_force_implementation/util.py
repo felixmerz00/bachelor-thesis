@@ -31,6 +31,7 @@ def get_params(params_name: str):
     "audio_params_2": (8000, 10, 0.11, 200, 400, 2),
     "financial_params_1": (300, 10, 0.85, 15, 30, 3),
     "chlorine_params_1": (512, 64, 0.9, 16, 32, 2),
+    "chlorine_params_2": (512, 64, 0.95, 16, 32, 2),
     "random_params_1": (512, 64, 0.75, 16, 32, 2),
     # Params for runtime vs. T and pruning rate vs. T plots
     "chlorine_0_plot_0": (512, 64, -1, 16, 32, 2),
