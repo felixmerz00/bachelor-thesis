@@ -27,11 +27,11 @@ def corr_join_wrapper(dataset: str, params: str, logger,
   n, h, T, k_s, k_e, k_b = util.get_params(params)
 
   time_start = perf_counter_ns()
-  pruning_rate = algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
+  pruning_rate, profiling_times = algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
   time_elapsed = perf_counter_ns()-time_start
 
   logger.info(
-    f"{dataset},{len(time_series)},{n},{h},{T},{k_s},{k_e},{k_b},{algorithm_1.__name__},{round(pruning_rate, 3)},{round(time_elapsed/1e9, 3)}"
+    f"{dataset},{len(time_series)},{n},{h},{T},{k_s},{k_e},{k_b},{algorithm_1.__name__},{round(pruning_rate, 3)},{round(time_elapsed/1e9, 3)}, {profiling_times[0]}, {profiling_times[1]}, {profiling_times[2]}, {profiling_times[3]}, {profiling_times[4]}"
   )
 
 
