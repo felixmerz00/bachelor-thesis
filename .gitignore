@@ -30,3 +30,8 @@ code/scrape_financial_data/nasdaqlisted-symbols.txt
 
 # ignore compiled bytecode files for imported modules
 code/brute_force_implementation/__pycache__/
+code/experiments/__pycache__/
+
+# archive
+# I looked at this data, but it's unsuitable for my application
+data/audio/McGill-Billboard/
