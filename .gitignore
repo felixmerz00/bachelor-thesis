@@ -28,3 +28,9 @@ code/scrape_financial_data/nasdaqlisted-symbols.txt
 .ipynb_checkpoints/
 .DS_Store
 code/corr_join/__pycache__/
+
+# ignore files I created and ignored on different branches
+code/brute_force_implementation
+code/experiments/__pycache__
+code/experiments/extract-chords.py
+data/audio/McGill-Billboard
