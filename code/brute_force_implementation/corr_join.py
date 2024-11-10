@@ -82,4 +82,4 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
   ]).astype(int)
 
   main_logger.info(f"Report: In total the data contains {num_corr_pairs} correlated window pairs.")
-  return overall_pruning_rate, section_times
+  return num_corr_pairs, overall_pruning_rate, section_times

@@ -135,6 +135,25 @@ def weather():
   ts.to_netcdf('timeseries.nc')
 
 
+def gdrive_np(dataset: str, m: int = -1):
+  """
+  Load one of the given datasets: chlorine, gas, random, stock, synthetic.
+
+  Parameters:
+  dataset: Choose one of the above datasets.
+  m: Number of time series to return.
+  """
+  dataset = dataset[:-3]  # Remove '_np' suffix
+  print(f"log info: loading {dataset} data")
+  time_series = []
+  # Use raw string to suppress unnecessary warning.
+  df = pd.read_csv(f"./data/google-drive/{dataset}.txt", sep=r'\s+', header=None)
+  m = df.shape[0] if (m == -1) else min(m, df.shape[0])
+  for i in range(m):
+    time_series.append(df.loc[i].to_numpy())
+  return time_series
+
+
 def gdrive(dataset: str, m: int = -1):
   """
   Load one of the given datasets: chlorine, gas, random, stock, synthetic.
@@ -144,13 +163,10 @@ def gdrive(dataset: str, m: int = -1):
   m: Number of time series to return.
   """
   print(f"log info: loading {dataset} data")
-  time_series = []
   # Use raw string to suppress unnecessary warning.
   df = pd.read_csv(f"./data/google-drive/{dataset}.txt", sep=r'\s+', header=None)
   m = df.shape[0] if (m == -1) else min(m, df.shape[0])
-  for i in range(m):
-    time_series.append(df.loc[i].to_numpy())
-  return time_series
+  return df.head(m)
 
 
 def load_data(name: str, m: int = -1):
@@ -164,6 +180,7 @@ def load_data(name: str, m: int = -1):
   """
   datasets = {
     "chlorine": gdrive,
+    "chlorine_np": gdrive_np,
     "gas": gdrive,
     "random": gdrive,
     "stock": gdrive,

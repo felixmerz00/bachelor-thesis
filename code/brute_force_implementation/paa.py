@@ -47,6 +47,7 @@ def paa_custom(data, n: int, k: int):
 
 # PAA with pyts package
 # !!! does only the first window !!!
+# This function is for trying out the PAA from pyts
 def paa_pyts(data, n: int, k: int):
   print('log info: paa 2')
   # window_size in this case is what I call segment size
