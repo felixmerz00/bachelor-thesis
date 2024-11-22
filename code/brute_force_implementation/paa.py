@@ -5,6 +5,22 @@ from pyts.approximation import PiecewiseAggregateApproximation
 # Local imports$
 
 
+def paa_pyts(time_series, n: int, k: int):
+  """
+  Perform PAA on a collection of time series using the pyts package.
+
+  Parameters:
+  time_series (np.ndarray): A matrix with time series of length n.
+  n (int): The length of the time series.
+  k (int): The number of dimensions for the reduced representation.
+
+  Returns:
+  np.ndarray: A matrix with time series of length k.
+  """
+  transformer = PiecewiseAggregateApproximation(window_size=n//k)
+  return transformer.transform(time_series)
+
+
 def paa_double_pyts(data, n: int, k_s: int, k_e: int):
   """
   Perform PAA on a time series using the pyts package for two different dimensions.
@@ -48,7 +64,7 @@ def paa_custom(data, n: int, k: int):
 # PAA with pyts package
 # !!! does only the first window !!!
 # This function is for trying out the PAA from pyts
-def paa_pyts(data, n: int, k: int):
+def paa_pyts_experiment(data, n: int, k: int):
   print('log info: paa 2')
   # window_size in this case is what I call segment size
   paa = PiecewiseAggregateApproximation(window_size=n//k)

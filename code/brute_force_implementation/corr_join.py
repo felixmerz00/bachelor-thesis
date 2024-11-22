@@ -8,7 +8,7 @@ import pandas as pd
 # Local imports
 from bucketing_filter import bucketing_filter
 from inc_p import incp
-from paa import paa_double_pyts
+from paa import paa_double_pyts, paa_pyts
 from svd import custom_svd
 import util
 
@@ -49,23 +49,21 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
     # WARNING: Contrary to usual python slices, both the start and the stop are included
     w = t_series.loc[:, alpha*h:alpha*h+n-1].to_numpy(dtype='float')
     x_bar = np.mean(w, axis=1)  # np.ndarray of row means, shape (m,)
+    
+    # Normalization
     # Subtract x_bar from each row using broadcasting
     w_centered = w - x_bar[:, np.newaxis]
     # square element-wise, calculate the sum of each row, compute square root 
     # element-wise
     denominator = np.sqrt(np.sum(np.power(w_centered, 2), axis=1))  # np.ndarray of shape (m,)
-    W = np.divide(w_centered, denominator[:, np.newaxis])
-    break
-    for p in range(m):
-      # w[p] = t_series.iloc[p, alpha*h:alpha*h+n]   # shift window
-      # x_bar = np.mean(w[p])
-      # x_bar = w[p].mean()
-      # W[p] = (w[p] - x_bar) / sqrt(np.sum(pow((w[p]-x_bar), 2)))  # normalization, W[p] is a np.ndarray
-      # W[p] = (w[p] - x_bar) / sqrt(np.sum(pow((w[p]-x_bar), 2)))
-      # TODO: Convert this calculation to work with pandas series
-      W_s[p], W_e[p] = paa_double_pyts(W[p], n, k_s, k_e)  # PAA
+    W = np.divide(w_centered, denominator[:, np.newaxis]) # np.ndarray of shape (m, n)
+
+    # PAA
+    W_s = paa_pyts(W, n, k_s)   # np.ndarray of shape (m, k_s)
+    W_e = paa_pyts(W, n, k_e)   # np.ndarray of shape (m, k_e)
 
     p_times[alpha, 1] = perf_counter_ns()   # Time before SVD
+    # TODO: Improve performance of SVD
     # W_b = custom_svd(W_s, k_b)
     p_times[alpha, 2] = perf_counter_ns()   # Time before bucketing filter
     # C_1, _ = bucketing_filter(W_b, k_b, epsilon_1)
