@@ -12,11 +12,13 @@ def paa_pyts(time_series, n: int, k: int):
   Parameters:
   time_series (np.ndarray): A matrix with time series of length n.
   n (int): The length of the time series.
-  k (int): The number of dimensions for the reduced representation.
+  k (int): The number of dimensions for the reduced representation. Choose k such that k < n and k divides n.
 
   Returns:
   np.ndarray: A matrix with time series of length k.
   """
+  if n%k != 0 or not k < n:
+    raise ValueError("Choose k such that k < n and k divides n.")
   transformer = PiecewiseAggregateApproximation(window_size=n//k)
   return transformer.transform(time_series)
 
