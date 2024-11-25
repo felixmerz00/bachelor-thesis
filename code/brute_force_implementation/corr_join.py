@@ -63,10 +63,9 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
     W_e = paa_pyts(W, n, k_e)   # np.ndarray of shape (m, k_e)
 
     p_times[alpha, 1] = perf_counter_ns()   # Time before SVD
-    # TODO: Improve performance of SVD
-    # W_b = custom_svd(W_s, k_b)
+    W_b = custom_svd(W_s, k_b)  # np.ndarray of shape (m, k_b)
     p_times[alpha, 2] = perf_counter_ns()   # Time before bucketing filter
-    # C_1, _ = bucketing_filter(W_b, k_b, epsilon_1)
+    C_1, _ = bucketing_filter(W_b, k_b, epsilon_1)
     # C_2 = set()
 
     p_times[alpha, 3] = perf_counter_ns()   # Time before Euclidean distance filter

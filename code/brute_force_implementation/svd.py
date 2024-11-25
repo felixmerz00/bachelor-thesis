@@ -6,10 +6,10 @@ def custom_svd(W_s, k_b: int):
 
   Parameters:
   W_s (array-like): A matrix with m rows.
-  k_e (int): The number of dimensions for the output W_b.
+  k_b: The number of dimensions for the output W_b.
 
   Returns:
-  W_b: A matrix consisting of m k_b-dimensional windows.
+  W_b (ndarray): A matrix consisting of m k_b-dimensional windows.
   """
   try: 
     # u.shape is mxm, s.shape is mx1, v.shape is nxn
