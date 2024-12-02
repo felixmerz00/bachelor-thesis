@@ -45,11 +45,12 @@ def bucketing_filter(W_b, k_b: int, eps):
   eps (float): distance threshold ε
 
   Returns:
-  C_1 (set of tuples): Candidate set of indices of likely correlated pairs of windows.
+  C_1 (np.ndarray): Candidate set of indices of likely correlated pairs of windows. 
+  Each row contains one candidate pair, i.e. the matrix has two columns.
   join_pruning_rate (float): The pruning rate from the bucketing filter.
   """
   m = len(W_b)
-  C_1 = set()
+  # C_1 = set()
 
   # initialize k_b-dimensional bucketing scheme
   bkt_lwr_bnd = floor_epsilon(np.min(W_b), eps)
@@ -74,30 +75,44 @@ def bucketing_filter(W_b, k_b: int, eps):
       continue
     bkt = np.array(bkt)  # Convert to NumPy array for vectorization
 
-    # Same bucket comparisons
     if len(bkt) > 1:
+      # Same bucket comparisons
       i, j = np.triu_indices(len(bkt), k=1)   # Get indices for upper triangle of matrix with offset k = 1
       # Store distance for every comparison
       dist_matrix = np.linalg.norm(W_b[bkt[i]] - W_b[bkt[j]], axis=1)
       # If the distance of a pair bkt[i], bkt[j] is <= eps, return bkt[i] in a new array. 
       # Do the same with j.
-      # Stacking the arrays on top of each other puts each candidate pairs into a row.
-      # For the following operation I need the transpose. 
-      close_pairs = np.vstack((bkt[i][dist_matrix <= eps], bkt[j][dist_matrix <= eps])).T
-      C_1.update(map(tuple, close_pairs))
+      # Stacking the arrays on top of each other and taking the transpose puts 
+      # each candidate pair into a row.
+      C_1 = np.vstack((bkt[i][dist_matrix <= eps], bkt[j][dist_matrix <= eps])).T
+      # close_pairs = np.vstack((bkt[i][dist_matrix <= eps], bkt[j][dist_matrix <= eps])).T
+      # C_1.update(map(tuple, close_pairs))
     
-    # Neighboring bucket comparisons
-    neighbors = get_neighbors(np.array(index), k_b, B)
-    for neighbor in neighbors:
-      neighbor_bkt = BKT[neighbor]
-      if neighbor_bkt is None:
-        continue
-      neighbor_bkt = np.array(neighbor_bkt)
-      for i in bkt:   # i = time series index from current bucket
-        dist = np.linalg.norm(W_b[i] - W_b[neighbor_bkt], axis=1)
-        close_neighbors = neighbor_bkt[dist <= eps]
-        # j = time series index from neighbor bucket
-        C_1.update((i, j) for j in close_neighbors if i < j)
+      # Neighboring bucket comparisons
+      neighbors = get_neighbors(np.array(index), k_b, B)
+      C_1_neighbors = [[], []]
+      for neighbor in neighbors:
+        neighbor_bkt = BKT[neighbor]
+        if neighbor_bkt is None:
+          continue
+        neighbor_bkt = np.array(neighbor_bkt)
 
-  join_pruning_rate = 1 - len(C_1)/pow(m, 2)
+        # Calculate all pairwise distances between bkt and neighbor_bkt
+        distances = np.linalg.norm(W_b[bkt[:, None]] - W_b[neighbor_bkt], axis=2)  # Shape: (len(bkt), len(neighbor_bkt))
+        # Create a mask for pairs within the epsilon distance
+        mask = distances <= eps  # Shape: (len(bkt), len(neighbor_bkt))
+        i_vals, j_vals = np.where(mask)  # Indices where the condition is met
+        # Map the indices back to the original values in bkt and neighbor_bkt
+        i_vals = bkt[i_vals]
+        j_vals = neighbor_bkt[j_vals]
+        # Keep only pairs where i < j
+        valid_pairs_mask = i_vals < j_vals
+        i_vals = i_vals[valid_pairs_mask]
+        j_vals = j_vals[valid_pairs_mask]
+        # Add the valid pairs as new columns to `C_1`
+        new_pairs = np.vstack((i_vals, j_vals)).T  # Shape: (n, 2)
+        C_1 = np.vstack((C_1, new_pairs))  # Append to `C_1`
+
+  # join_pruning_rate = 1 - len(C_1)/pow(m, 2)
+  join_pruning_rate = 1 - C_1.shape[0]/pow(m, 2)
   return C_1, join_pruning_rate

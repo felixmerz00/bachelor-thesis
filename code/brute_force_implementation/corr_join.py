@@ -5,6 +5,7 @@ from time import perf_counter_ns
 # Third-party imports
 import numpy as np
 import pandas as pd
+from scipy.stats import pearsonr
 # Local imports
 from bucketing_filter import bucketing_filter
 from inc_p import incp
@@ -71,21 +72,30 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
     p_times[alpha, 3] = perf_counter_ns()   # Time before Euclidean distance filter
     # Eucledian distance filter
     # for pair in C_1:
-    #   # if incp(W_e[pair[0]], W_e[pair[1]], len(W_e[pair[0]])) <= epsilon_2:
     #   if np.linalg.norm(W_e[pair[0]] - W_e[pair[1]]) <= epsilon_2:
     #     C_2.add(pair)
+    # Compute the norms for all pairs
+    distances = np.linalg.norm(W_e[C_1[:, 0]] - W_e[C_1[:, 1]], axis=1)
+    # Create a mask for pairs satisfying the condition
+    valid_pairs_mask = distances <= epsilon_2
+    # Filter C_1 based on the mask to create C_2
+    C_2 = C_1[valid_pairs_mask]
+    
     # overall_pruning_rate = 1 - len(C_2)/pow(m, 2)
+    overall_pruning_rate = 1 - C_2.shape[0]/pow(m, 2)
     # logger_2.info(f"The overall pruning rate is {overall_pruning_rate}.")
     p_times[alpha, 4] = perf_counter_ns()   # Time before computing the Pearson correlation
-    # Actual Pearson correlation comparison
-    # for pair in C_2:
-    #   corrcoef = incp(W[pair[0]], W[pair[1]], n)
-    #   if abs(corrcoef) >= T:
-    #     num_corr_pairs += 1
-    #     main_logger.info(f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with correlation coefficient {corrcoef}.")
+    
+    # Pearson correlation comparison
+    for pair in C_2:
+      corrcoef, _ = pearsonr(W[pair[0]], W[pair[1]])
+      if corrcoef >= T:
+      # if abs(corrcoef) >= T:
+        num_corr_pairs += 1
+        main_logger.info(f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with correlation coefficient {corrcoef}.")
+    
     p_times[alpha, 5] = perf_counter_ns()   # Time after computing the Pearson correlation
     alpha += 1
-    break
 
   p_means = np.mean(p_times, axis=1)  # Calculate across columns
   # Calculate mean differences between consecutive columns
@@ -98,5 +108,5 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
   ]).astype(int)
 
   main_logger.info(f"Report: In total the data contains {num_corr_pairs} correlated window pairs.")
-  # return num_corr_pairs, overall_pruning_rate, section_times
-  return -1, -1, np.array([-1, -1, -1, -1, -1])
+  return num_corr_pairs, overall_pruning_rate, section_times
+  # return -1, -1, np.array([-1, -1, -1, -1, -1])
