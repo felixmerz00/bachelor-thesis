@@ -94,3 +94,5 @@ if __name__ == '__main__':
     "performance_log.csv")
   # gen_t_runtime_pr_data(perf_logger)
   corr_join_wrapper("chlorine", "chlorine_params_2", perf_logger, m=50)
+  # corr_join_wrapper("chlorine", f"chlorine_1_run_{0}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
+  # corr_join_wrapper("chlorine", f"chlorine_1_run_{3}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)

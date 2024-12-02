@@ -1,6 +1,7 @@
 # Standard library imports
-from math import sqrt
+from math import floor, sqrt
 import logging
+from time import perf_counter_ns
 from typing import List
 # Third-party imports
 import numpy as np
@@ -14,51 +15,77 @@ def brute_force_euc_dist(t_series: List[np.ndarray], n: int, h: int, T: float,
   """
   brute_force_euc_dist computes the correlated window pairs directly using
   just the Euclidean distance and skips PAA, SVD, the bucketing filter, and
-  cumputing the Pearson correlation.
+  computing the Pearson correlation.
   """
   print('log info: running brute_force_euc_dist')
   bf_logger = util.create_logger("euc_dist_brute_force_logger", logging.INFO,
     "report-brute-force-euc-dist.log")
   # epsilon_2 = sqrt(2*k_e*(1-T)/n)
   epsilon_2 = sqrt(2*(1-T))
-  m = len(t_series)   # number of time series
+  m = t_series.shape[0]   # number of time series
   num_corr_pairs = 0  # Output
+  overall_pruning_rate = 0
   bf_logger.info(f"Threshold epsilon_2: {epsilon_2}")
+  # Times for profiling, 6 columns/measurements for max_alpha-1 rows/windows
+  len_ts = t_series.shape[1]
+  max_alpha = floor((len_ts-n)/h)
+  p_times = np.empty((max_alpha + 1, 6))
 
   # initial windows
-  w = np.empty((m, n))
-  W = np.empty((m, n))
+  w = [None for _ in range(m)]
+  W = [None for _ in range(m)]
 
   alpha = 0
   # I assume all time series have the same length
-  while alpha*h <= (len(t_series[0])-n):
-    # logger_2.info(f"Window number {alpha}.")
+  while alpha*h <= (len_ts-n):  # I assume all time series have the same length
+    # Time before shifting the window (0) for window alpha
+    p_times[alpha, 0] = perf_counter_ns()
 
-    for p in range(m):
-      w[p] = t_series[p][alpha*h:alpha*h+n]   # shift window
-      x_bar = np.mean(w[p])
-      # normalization, W[p] is a np.ndarray
-      W[p] = (w[p] - x_bar) / sqrt(np.sum(pow((w[p]-x_bar), 2)))
-      # PAA would be here and return W_s[p], W_e[p]
+    # Shift windows
+    # WARNING: Contrary to usual python slices, both the start and the stop are included
+    w = t_series.loc[:, alpha*h:alpha*h+n-1].to_numpy(dtype='float')
+    x_bar = np.mean(w, axis=1)  # np.ndarray of row means, shape (m,)
+    # Normalization
+    w_centered = w - x_bar[:, np.newaxis]
+    denominator = np.sqrt(np.sum(np.power(w_centered, 2), axis=1))  # np.ndarray of shape (m,)
+    W = np.divide(w_centered, denominator[:, np.newaxis]) # np.ndarray of shape (m, n)
 
+    # PAA would be here and return W_s, W_e
+
+    p_times[alpha, 1] = perf_counter_ns()   # Time before SVD
     # SVD would be here and return W_b
+    p_times[alpha, 2] = p_times[alpha, 1]   # Time before bucketing filter
     # Bucketing filter would be here and return C_1
-
+    p_times[alpha, 3] = p_times[alpha, 1]   # Time before Euclidean distance filter
     # Eucledian distance filter would be here and return C_2
+    # Unique pairs of cross product of indices
+    C_2 = np.array([(i, j) for i in range(m) for j in range(i + 1, m)])
+
     # Computation of Pearson correlation would be here and return correlated
     # window pairs
-    for i in range(m):
-      for j in range(m):
-        if i < j:
-          euc_d = np.linalg.norm(W[i] - W[j])
-          if euc_d <= epsilon_2:
-            num_corr_pairs += 1
-            bf_logger.info(
-              f"Report ({i}, {j}, {alpha}): Window {alpha} of time series {i} and {j} are correlated with euclidean distance {euc_d}."
-            )
+    p_times[alpha, 4] = p_times[alpha, 1]   # Time before computing the correlation
+    for pair in C_2:
+      euc_d = np.linalg.norm(W[pair[0]] - W[pair[1]])
+      if euc_d <= epsilon_2:
+        num_corr_pairs += 1
+        bf_logger.info(
+              f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with euclidean distance {euc_d}."
+        )
+    p_times[alpha, 5] = perf_counter_ns()   # Time after computing the correlation
+
     alpha += 1
+
+  p_means = np.mean(p_times, axis=1)  # Calculate across columns
+  # Calculate mean differences between consecutive columns
+  section_times = np.round([
+    np.mean(p_times[:, 1] - p_times[:, 0]),
+    np.mean(p_times[:, 2] - p_times[:, 1]),
+    np.mean(p_times[:, 3] - p_times[:, 2]),
+    np.mean(p_times[:, 4] - p_times[:, 3]),
+    np.mean(p_times[:, 5] - p_times[:, 4])
+  ]).astype(int)
 
   bf_logger.info(
     f"Report: In total the data contains {num_corr_pairs} correlated window pairs."
   )
-  return 0
+  return num_corr_pairs, overall_pruning_rate, section_times
