@@ -1,12 +1,14 @@
-# venv files with the installed packages
+# Virtual environments
 my-venv/
 spleeter-venv/
 
-# PyCharm files
+# Files from MacOS, PyCharm, Jupyter Notebook
+.DS_Store
 .idea
+.ipynb_checkpoints/
 
-# data
-# don't commit audio files
+# Data
+# Don't commit audio files
 *.mp3
 data/ucr-archive-2018
 data/weather
@@ -14,24 +16,28 @@ data/weather
 data/google-drive/
 data/audio/out
 data/audio/ron-minis-separated/
-# generated file
+# Generated file
 data/finance/automated/
 
-# ignore irrelevant files like  Jupyter Notebook checkpoints
-.ipynb_checkpoints/
-.DS_Store
-
-# for trying out different functions
+# For trying out different functions
 code/sandbox.py
 code/brute_force_implementation/sandbox.py
 
-# generated file
+# Generated file
 code/scrape_financial_data/nasdaqlisted-symbols.txt
 
-# ignore compiled bytecode files for imported modules
+# Ignore compiled bytecode files for imported modules
 code/brute_force_implementation/__pycache__/
 code/experiments/__pycache__/
 
-# archive
+# Archive
 # I looked at this data, but it's unsuitable for my application
 data/audio/McGill-Billboard/
+
+# Logs
+code/brute_force_implementation/logs/pruning-rate-exact.log
+code/brute_force_implementation/logs/pruning-rate.log
+code/brute_force_implementation/logs/report-brute-force-combined.log
+code/brute_force_implementation/logs/report-brute-force-euc-dist.log
+code/brute_force_implementation/logs/report-brute-force-p-corr.log
+code/brute_force_implementation/logs/report-corr-join.log
