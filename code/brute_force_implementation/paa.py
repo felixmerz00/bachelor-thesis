@@ -18,7 +18,7 @@ def paa_pyts(time_series, n: int, k: int):
   np.ndarray: A matrix with time series of length k.
   """
   if n%k != 0 or not k < n:
-    raise ValueError("Choose k such that k < n and k divides n.")
+    raise ValueError(f"Choose k such that k < n and k divides n. You chose n = {n} and k = {k}")
   transformer = PiecewiseAggregateApproximation(window_size=n//k)
   return transformer.transform(time_series)
 

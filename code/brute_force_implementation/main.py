@@ -41,6 +41,7 @@ def gen_t_runtime_pr_data(perf_logger):
   plots.
   """
   for i in range(7):
+    print(f"log info: start run {i}")
     # Chlorine dataset
     corr_join_wrapper("chlorine", f"chlorine_0_run_{i}", perf_logger, m=50)
     corr_join_wrapper("chlorine", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
@@ -57,6 +58,7 @@ def gen_n_runtime_pr_data(perf_logger):
   plots.
   """
   for i in range(4):
+    print(f"log info: start run {i}")
     # Chlorine dataset
     corr_join_wrapper("chlorine", f"chlorine_1_run_{i}", perf_logger, m=50)
     corr_join_wrapper("chlorine", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
@@ -72,6 +74,7 @@ def gen_h_runtime(perf_logger):
   Generate performance data for the runtime vs. h plots.
   """
   for i in range(5):
+    print(f"log info: start run {i}")
     # Chlorine dataset
     corr_join_wrapper("chlorine", f"chlorine_var_h_run_{i}", perf_logger, m=50)
     corr_join_wrapper("chlorine", f"chlorine_var_h_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
@@ -92,7 +95,10 @@ if __name__ == '__main__':
   # Use the same logger for all runs to avoid duplicate entries
   perf_logger = util.create_csv_logger("performance_logger", logging.INFO,
     "performance_log.csv")
-  # gen_t_runtime_pr_data(perf_logger)
   corr_join_wrapper("chlorine", "chlorine_params_2", perf_logger, m=50)
   # corr_join_wrapper("chlorine", f"chlorine_1_run_{0}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
   # corr_join_wrapper("chlorine", f"chlorine_1_run_{3}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
+  # gen_t_runtime_pr_data(perf_logger)
+  # gen_n_runtime_pr_data(perf_logger)
+  # gen_h_runtime(perf_logger)
+  # gen_n_runtime(perf_logger)

@@ -50,7 +50,8 @@ def bucketing_filter(W_b, k_b: int, eps):
   join_pruning_rate (float): The pruning rate from the bucketing filter.
   """
   m = len(W_b)
-  # C_1 = set()
+  # Initialize C_1 as an empty array, because otherwise it might never be intialized
+  C_1 = np.empty((0, 2), dtype=int)
 
   # initialize k_b-dimensional bucketing scheme
   bkt_lwr_bnd = floor_epsilon(np.min(W_b), eps)
@@ -113,6 +114,5 @@ def bucketing_filter(W_b, k_b: int, eps):
         new_pairs = np.vstack((i_vals, j_vals)).T  # Shape: (n, 2)
         C_1 = np.vstack((C_1, new_pairs))  # Append to `C_1`
 
-  # join_pruning_rate = 1 - len(C_1)/pow(m, 2)
   join_pruning_rate = 1 - C_1.shape[0]/pow(m, 2)
   return C_1, join_pruning_rate

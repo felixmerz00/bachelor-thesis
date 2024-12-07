@@ -48,7 +48,7 @@ def t_runtime_pr(df, ds_name: str, m: int, params):
   # Plot 1: Runtime vs. correlation threshold
   for i, algo in enumerate(algorithms):
     algo_df = result_df[result_df['algorithm'] == algo]
-    ax1.plot(algo_df['T'], algo_df['runtime'], marker='o', label=algo, color=color_map[i])
+    ax1.plot(algo_df['T'], algo_df['runtime [s]'], marker='o', label=algo, color=color_map[i])
 
   ax1.set_xlabel('Correlation threshold (T)')
   ax1.set_ylabel('Runtime (seconds)')
@@ -125,7 +125,7 @@ def n_runtime_pr(df, ds_name: str, m: int, params):
   # Plot 1: Runtime vs. window size
   for i, algo in enumerate(algorithms):
     algo_df = result_df[result_df['algorithm'] == algo]
-    ax1.plot(algo_df['n'], algo_df['runtime'], marker='o', label=algo, color=color_map[i])
+    ax1.plot(algo_df['n'], algo_df['runtime [s]'], marker='o', label=algo, color=color_map[i])
 
   ax1.set_xlabel('Window size (n)')
   ax1.set_ylabel('Runtime (seconds)')
@@ -201,7 +201,7 @@ def h_runtime(df, ds_name: str, m: int, params):
   # Plot: Runtime vs. variable
   for i, algo in enumerate(algorithms):
     algo_df = result_df[result_df['algorithm'] == algo]
-    ax.plot(algo_df['h'], algo_df['runtime'], marker='o', label=algo, color=color_map[i])
+    ax.plot(algo_df['h'], algo_df['runtime [s]'], marker='o', label=algo, color=color_map[i])
 
   ax.set_xlabel('Stride (h)')
   ax.set_ylabel('Runtime (seconds)')
@@ -266,7 +266,7 @@ def m_runtime(df, ds_name: str, params):
   # Plot: Runtime vs. the variable
   for i, algo in enumerate(algorithms):
     algo_df = result_df[result_df['algorithm'] == algo]
-    ax.plot(algo_df['m'], algo_df['runtime'], marker='o', label=algo, color=color_map[i])
+    ax.plot(algo_df['m'], algo_df['runtime [s]'], marker='o', label=algo, color=color_map[i])
 
   ax.set_xlabel('Number of time series (m)')
   ax.set_ylabel('Runtime (seconds)')
