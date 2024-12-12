@@ -20,24 +20,24 @@ data/audio/ron-minis-separated/
 data/finance/automated/
 
 # For trying out different functions
-code/sandbox.py
-code/brute_force_implementation/sandbox.py
+src/sandbox.py
+src/corr_join/sandbox.py
 
 # Generated file
-code/scrape_financial_data/nasdaqlisted-symbols.txt
+src/scrape_financial_data/nasdaqlisted-symbols.txt
 
 # Ignore compiled bytecode files for imported modules
-code/brute_force_implementation/__pycache__/
-code/experiments/__pycache__/
+src/corr_join/__pycache__/
+src/experiments/__pycache__/
 
 # Archive
 # I looked at this data, but it's unsuitable for my application
 data/audio/McGill-Billboard/
 
 # Logs
-code/brute_force_implementation/logs/pruning-rate-exact.log
-code/brute_force_implementation/logs/pruning-rate.log
-code/brute_force_implementation/logs/report-brute-force-combined.log
-code/brute_force_implementation/logs/report-brute-force-euc-dist.log
-code/brute_force_implementation/logs/report-brute-force-p-corr.log
-code/brute_force_implementation/logs/report-corr-join.log
+src/corr_join/logs/pruning-rate-exact.log
+src/corr_join/logs/pruning-rate.log
+src/corr_join/logs/report-brute-force-combined.log
+src/corr_join/logs/report-brute-force-euc-dist.log
+src/corr_join/logs/report-brute-force-p-corr.log
+src/corr_join/logs/report-corr-join.log
