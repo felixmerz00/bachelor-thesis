@@ -9,7 +9,7 @@ from scipy.stats import pearsonr
 # Local imports
 from bucketing_filter import bucketing_filter
 from inc_p import incp
-from paa import paa_double_pyts, paa_pyts
+from paa import paa_pyts
 from svd import custom_svd
 import util
 
@@ -33,7 +33,6 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
   p_times = np.empty((max_alpha + 1, 6))
 
   # Initialize windows
-  # TODO: Change these declarations to the correct type or to None.
   w = [None for _ in range(m)]
   W = [None for _ in range(m)]
   W_s = np.empty((m, k_s))
@@ -54,8 +53,7 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
     # Normalization
     # Subtract x_bar from each row using broadcasting
     w_centered = w - x_bar[:, np.newaxis]
-    # square element-wise, calculate the sum of each row, compute square root 
-    # element-wise
+    # Square element-wise, sum each row, compute square root element-wise
     denominator = np.sqrt(np.sum(np.power(w_centered, 2), axis=1))  # np.ndarray of shape (m,)
     W = np.divide(w_centered, denominator[:, np.newaxis]) # np.ndarray of shape (m, n)
 
@@ -67,13 +65,9 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
     W_b = custom_svd(W_s, k_b)  # np.ndarray of shape (m, k_b)
     p_times[alpha, 2] = perf_counter_ns()   # Time before bucketing filter
     C_1, _ = bucketing_filter(W_b, k_b, epsilon_1)
-    # C_2 = set()
 
     p_times[alpha, 3] = perf_counter_ns()   # Time before Euclidean distance filter
     # Eucledian distance filter
-    # for pair in C_1:
-    #   if np.linalg.norm(W_e[pair[0]] - W_e[pair[1]]) <= epsilon_2:
-    #     C_2.add(pair)
     # Compute the norms for all pairs
     distances = np.linalg.norm(W_e[C_1[:, 0]] - W_e[C_1[:, 1]], axis=1)
     # Create a mask for pairs satisfying the condition
@@ -81,7 +75,6 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
     # Filter C_1 based on the mask to create C_2
     C_2 = C_1[valid_pairs_mask]
     
-    # overall_pruning_rate = 1 - len(C_2)/pow(m, 2)
     overall_pruning_rate = 1 - C_2.shape[0]/pow(m, 2)
     # logger_2.info(f"The overall pruning rate is {overall_pruning_rate}.")
     p_times[alpha, 4] = perf_counter_ns()   # Time before computing the Pearson correlation
@@ -109,4 +102,3 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
 
   main_logger.info(f"Report: In total the data contains {num_corr_pairs} correlated window pairs.")
   return num_corr_pairs, overall_pruning_rate, section_times
-  # return -1, -1, np.array([-1, -1, -1, -1, -1])

@@ -1,8 +1,10 @@
-import numpy as np
+# Standard library imports
 from math import floor, ceil
 from itertools import product
-# Brute force test if I don't filter too many pairs
-from inc_p import incp
+# Third-party imports
+import numpy as np
+# Local imports
+
 
 def floor_epsilon(number, eps):
   """
@@ -10,11 +12,13 @@ def floor_epsilon(number, eps):
   """
   return floor(number / eps) * eps
 
+
 def ceil_epsilon(number, eps):
   """
   Round up to the nearest epsilon.
   """
   return ceil(number / eps) * eps
+
 
 def get_neighbors(bkt_cords, k_b: int, B:int):
   """
@@ -37,6 +41,7 @@ def get_neighbors(bkt_cords, k_b: int, B:int):
   neighbors = neighbors[((neighbors>=0)&(neighbors<B)).all(axis=1)]
   return [tuple(row) for row in neighbors]
 
+
 def bucketing_filter(W_b, k_b: int, eps):
   """
   Parameters:
@@ -53,7 +58,7 @@ def bucketing_filter(W_b, k_b: int, eps):
   # Initialize C_1 as an empty array, because otherwise it might never be intialized
   C_1 = np.empty((0, 2), dtype=int)
 
-  # initialize k_b-dimensional bucketing scheme
+  # Initialize k_b-dimensional bucketing scheme
   bkt_lwr_bnd = floor_epsilon(np.min(W_b), eps)
   bkt_upr_bnd = ceil_epsilon(np.max(W_b), eps)
   B = round((bkt_upr_bnd - bkt_lwr_bnd)/eps)  # number of partitions
@@ -70,7 +75,7 @@ def bucketing_filter(W_b, k_b: int, eps):
     else:
       BKT[bkt_tuple].append(p)
 
-  # Flatten the bucket processing
+  # Compare time series in buckets
   for index, bkt in np.ndenumerate(BKT):
     if bkt is None:
       continue
@@ -86,8 +91,6 @@ def bucketing_filter(W_b, k_b: int, eps):
       # Stacking the arrays on top of each other and taking the transpose puts 
       # each candidate pair into a row.
       C_1 = np.vstack((bkt[i][dist_matrix <= eps], bkt[j][dist_matrix <= eps])).T
-      # close_pairs = np.vstack((bkt[i][dist_matrix <= eps], bkt[j][dist_matrix <= eps])).T
-      # C_1.update(map(tuple, close_pairs))
     
       # Neighboring bucket comparisons
       neighbors = get_neighbors(np.array(index), k_b, B)

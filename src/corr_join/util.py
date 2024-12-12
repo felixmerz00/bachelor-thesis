@@ -11,7 +11,7 @@ import numpy as np
 def get_params(params_name: str):
   """
   Provide the requested parameters for running correlation join.
-  Note: Alizade Nikoo recommends these parameters: n = 300, h = 10, T = 0.85,
+  Note: Alizade Nikoo et al. recommend these parameters: n = 300, h = 10, T = 0.85,
   k_s = 15, k_e = 30, k_b = 3.
 
   Parameters:
@@ -73,7 +73,7 @@ def create_logger(logger_name: str, loggerlevel, file_name: str, writing_mode = 
 
   logger = logging.getLogger(logger_name)
   logger.setLevel(loggerlevel)
-  main_handler = logging.FileHandler(f"code/brute_force_implementation/logs/{file_name}", mode=writing_mode, encoding='utf-8')
+  main_handler = logging.FileHandler(f"src/corr_join/logs/{file_name}", mode=writing_mode, encoding='utf-8')
   main_handler.setLevel(loggerlevel)
   main_handler.setFormatter(formatter)
   logger.addHandler(main_handler)
@@ -86,7 +86,7 @@ def create_csv_logger(logger_name: str, loggerlevel, file_name: str, writing_mod
   Format and create a logger for performance measurements, whose messages have
   their own format and the default writing mode is set to 'a'.
   """
-  log_file_path = f"code/brute_force_implementation/logs/{file_name}"
+  log_file_path = f"src/corr_join/logs/{file_name}"
   formatter = logging.Formatter('%(asctime)s,%(message)s', datefmt='%Y-%m-%d,%H:%M:%S')
 
   logger = logging.getLogger(logger_name)
@@ -103,8 +103,7 @@ def create_csv_logger(logger_name: str, loggerlevel, file_name: str, writing_mod
   return logger
 
 
-# I don't use the following functions in my acutal correlation join algorithm.
-# They are used for comparisons and tests.
+# Functions for testing and debugging
 
 def corr_euc_d(norm_x, norm_y):
   """

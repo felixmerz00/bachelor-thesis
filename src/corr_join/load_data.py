@@ -123,37 +123,6 @@ def automated_financial(_, m: int):
   return time_series
 
 
-def weather():
-  raise NotImplementedError
-  import xarray as xr
-  lon=30
-  lat=10
-
-  # open the file, select the location and write to new netcdf
-  da=xr.open_dataset('2016_01.nc')
-  ts=da.sel(x=lon, y=lat, method="nearest")
-  ts.to_netcdf('timeseries.nc')
-
-
-def gdrive_np(dataset: str, m: int = -1):
-  """
-  Load one of the given datasets: chlorine, gas, random, stock, synthetic.
-
-  Parameters:
-  dataset: Choose one of the above datasets.
-  m: Number of time series to return.
-  """
-  dataset = dataset[:-3]  # Remove '_np' suffix
-  print(f"log info: loading {dataset} data")
-  time_series = []
-  # Use raw string to suppress unnecessary warning.
-  df = pd.read_csv(f"./data/google-drive/{dataset}.txt", sep=r'\s+', header=None)
-  m = df.shape[0] if (m == -1) else min(m, df.shape[0])
-  for i in range(m):
-    time_series.append(df.loc[i].to_numpy())
-  return time_series
-
-
 def gdrive(dataset: str, m: int = -1):
   """
   Load one of the given datasets: chlorine, gas, random, stock, synthetic.
@@ -180,7 +149,6 @@ def load_data(name: str, m: int = -1):
   """
   datasets = {
     "chlorine": gdrive,
-    "chlorine_np": gdrive_np,
     "gas": gdrive,
     "random": gdrive,
     "stock": gdrive,
@@ -194,8 +162,7 @@ def load_data(name: str, m: int = -1):
   return datasets[name](name, m)
 
 
-# I don't use the following functions in my acutal correlation join algorithm.
-# They are used for comparisons and tests.
+# Functions for testing and debugging
 
 def load_short_custom_financial_data(length: int):
   print('log info: loading financial data')

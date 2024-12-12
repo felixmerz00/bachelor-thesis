@@ -6,7 +6,7 @@ from time import perf_counter_ns
 from brute_force_euc_dist import brute_force_euc_dist
 from brute_force_p_corr import brute_force_p_corr
 from corr_join import corr_join
-import load_data as ld
+from load_data import load_data
 import util
 
 
@@ -23,7 +23,7 @@ def corr_join_wrapper(dataset: str, params: str, logger,
   m: The number of time series to include. Defaults to -1, which uses all
   available time series of the dataset.
   """
-  time_series = ld.load_data(dataset, m)
+  time_series = load_data(dataset, m)
   n, h, T, k_s, k_e, k_b = util.get_params(params)
 
   time_start = perf_counter_ns()
@@ -95,7 +95,7 @@ if __name__ == '__main__':
   # Use the same logger for all runs to avoid duplicate entries
   perf_logger = util.create_csv_logger("performance_logger", logging.INFO,
     "performance_log.csv")
-  corr_join_wrapper("chlorine", "chlorine_params_2", perf_logger, m=50)
+  corr_join_wrapper("chlorine", "chlorine_params_2", perf_logger, m=10)
   # corr_join_wrapper("chlorine", f"chlorine_1_run_{0}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
   # corr_join_wrapper("chlorine", f"chlorine_1_run_{3}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
   # gen_t_runtime_pr_data(perf_logger)
