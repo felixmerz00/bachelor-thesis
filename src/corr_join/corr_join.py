@@ -85,12 +85,11 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
       if corrcoef >= T:
       # if abs(corrcoef) >= T:
         num_corr_pairs += 1
-        main_logger.info(f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with correlation coefficient {corrcoef}.")
+        # main_logger.info(f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with correlation coefficient {corrcoef}.")
     
     p_times[alpha, 5] = perf_counter_ns()   # Time after computing the Pearson correlation
     alpha += 1
 
-  p_means = np.mean(p_times, axis=1)  # Calculate across columns
   # Calculate mean differences between consecutive columns
   section_times = np.round([
     np.mean(p_times[:, 1] - p_times[:, 0]),
