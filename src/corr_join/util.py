@@ -98,7 +98,7 @@ def create_csv_logger(logger_name: str, loggerlevel, file_name: str, writing_mod
 
   # Write header row if file is empty or doesn't exist
   if not os.path.exists(log_file_path) or os.path.getsize(log_file_path) < 2:
-    logger.info(f"dataset,m,n,h,T,k_s,k_e,k_b,algorithm,pruning_rate,runtime [s],window shift time [ns],SVD time [ns],bucketing filter time [ns],Euclidean distance filter time [ns],Pearson correlation computation time [ns]")
+    logger.info(f"dataset,m,n,h,T,k_s,k_e,k_b,algorithm,pruning_rate,num_corr_pairs,runtime [s],window shift time [ns],SVD time [ns],bucketing filter time [ns],Euclidean distance filter time [ns],Pearson correlation computation time [ns]")
 
   return logger
 
