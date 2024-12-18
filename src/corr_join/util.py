@@ -60,7 +60,8 @@ def get_params(params_name: str):
     # need only one set of parameters
     "synthetic_var_m_0": (300, 10, 0.85, 15, 30, 3),
     "synthetic_var_m_0_prod": (50, 5000, 10000, 15000, 20000, 25000),
-    "synthetic_var_m_0_test": (4, 8, 16, 32)
+    "synthetic_var_m_0_test": (4, 8, 16, 32, 64),
+    "synthetic_var_m_1_test": (4, 8, 16, 32, 64, 128, 256, 512)
   }
   return parameters[params_name]
 

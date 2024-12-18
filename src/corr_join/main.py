@@ -13,7 +13,7 @@ import util
 def corr_join_wrapper(dataset: str, params: str, logger,
   algorithm_1 = corr_join, m: int = -1):
   """
-  Run CorrJoin with the given parameters.
+  Load the specified data and run CorrJoin with the given parameters.
 
   Parameters:
   dataset: The name of the dataset to use.
@@ -35,61 +35,94 @@ def corr_join_wrapper(dataset: str, params: str, logger,
   )
 
 
-def gen_t_runtime_pr_data(perf_logger):
+def corr_join_wrapper_loop(time_series, dataset_name: str, params: str, logger,
+  algorithm_1 = corr_join):
+  """
+  Run CorrJoin with the given parameters. 
+
+  Parameters:
+  time_series (pandas.DataFrame): The dataset of time series.
+  dataset: The name of the dataset to use.
+  params: The name of the parameter tuple to use.
+  logger (Logger): Logger for logging performance metrics of the run.
+  algorithm_1: The correlation function to use.
+  """
+  n, h, T, k_s, k_e, k_b = util.get_params(params)
+
+  time_start = perf_counter_ns()
+  num_corr_pairs, pruning_rate, profiling_times = algorithm_1(time_series, n, h, T, k_s, k_e, k_b)
+  time_elapsed = perf_counter_ns()-time_start
+
+  logger.info(
+    f"{dataset_name},{time_series.shape[0]},{n},{h},{T},{k_s},{k_e},{k_b},{algorithm_1.__name__},{round(pruning_rate, 3)},{num_corr_pairs},{round(time_elapsed/1e9, 3)}, {profiling_times[0]}, {profiling_times[1]}, {profiling_times[2]}, {profiling_times[3]}, {profiling_times[4]}"
+  )
+
+
+def gen_t_runtime_pr_data(dataset: str, perf_logger):
   """
   Generate performance data for the runtime vs. T and pruning rate vs. T
   plots.
   """
+  print(f"log info: dataset: {dataset}")
+  df = load_data(dataset, m=50)
   for i in range(7):
-    print(f"log info: start run {i}")
-    # Chlorine dataset
-    corr_join_wrapper("chlorine", f"chlorine_0_run_{i}", perf_logger, m=50)
-    corr_join_wrapper("chlorine", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
-    # Gas dataset, for which I use the same parameters
-    corr_join_wrapper("gas", f"chlorine_0_run_{i}", perf_logger, m=50)
-    corr_join_wrapper("gas", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
-    # Chlorine dataset
-    corr_join_wrapper("synthetic", f"chlorine_0_run_{i}", perf_logger, m=50)
-    corr_join_wrapper("synthetic", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
+    corr_join_wrapper_loop(df, dataset, f"chlorine_0_run_{i}", perf_logger)
+    corr_join_wrapper_loop(df, dataset, f"chlorine_0_run_{i}", perf_logger, algorithm_1=brute_force_euc_dist)
 
 
-def gen_n_runtime_pr_data(perf_logger):
+def gen_n_runtime_pr_data(dataset: str, perf_logger):
   """
   Generate performance data for the runtime vs. n and pruning rate vs. n
   plots.
   """
+  print(f"log info: dataset: {dataset}")
+  df = load_data(dataset, m=50)
   for i in range(4):
-    print(f"log info: start run {i}")
-    # Chlorine dataset
-    corr_join_wrapper("chlorine", f"chlorine_1_run_{i}", perf_logger, m=50)
-    corr_join_wrapper("chlorine", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
-    # Gas dataset, for which I use the same parameters
-    corr_join_wrapper("gas", f"chlorine_1_run_{i}", perf_logger, m=50)
-    corr_join_wrapper("gas", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
-    # Chlorine dataset
-    corr_join_wrapper("synthetic", f"chlorine_1_run_{i}", perf_logger, m=50)
-    corr_join_wrapper("synthetic", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
+    corr_join_wrapper_loop(df, dataset, f"chlorine_0_run_{i}", perf_logger)
+    corr_join_wrapper_loop(df, dataset, f"chlorine_0_run_{i}", perf_logger, algorithm_1=brute_force_euc_dist)
 
 
-def gen_h_runtime(perf_logger):
+def gen_h_runtime(dataset: str, perf_logger):
   """
   Generate performance data for the runtime vs. h plots.
   """
+  print(f"log info: dataset: {dataset}")
+  df = load_data(dataset, m=50)
   for i in range(5):
-    print(f"log info: start run {i}")
-    # Chlorine dataset
-    corr_join_wrapper("chlorine", f"chlorine_var_h_run_{i}", perf_logger, m=50)
-    corr_join_wrapper("chlorine", f"chlorine_var_h_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
+    corr_join_wrapper_loop(df, dataset, f"chlorine_var_h_run_{i}", perf_logger)
+    corr_join_wrapper_loop(df, dataset, f"chlorine_var_h_run_{i}", perf_logger, algorithm_1=brute_force_euc_dist)
 
 
-def gen_m_runtime(perf_logger):
+def gen_m_runtime(dataset: str, perf_logger):
   """
   Generate performance data for the runtime vs. n plots.
   """
   for m in util.get_params("synthetic_var_m_0_test"):
-    print(f"log info: start run with m = {m}")
-    corr_join_wrapper("synthetic", "synthetic_var_m_0", perf_logger, m=m)
-    corr_join_wrapper("synthetic", "synthetic_var_m_0", perf_logger, m=m, algorithm_1=brute_force_euc_dist)
+    print(f"log info: m: {m}")
+    df = load_data(dataset, m=m)
+    corr_join_wrapper_loop(df, dataset, "synthetic_var_m_0", perf_logger)
+    corr_join_wrapper_loop(df, dataset, "synthetic_var_m_0", perf_logger, algorithm_1=brute_force_euc_dist)
+
+
+def gen_all(perf_logger):
+  """
+  Generate performance data for all plots.
+  """
+  print(f"log info: variable: T")
+  gen_t_runtime_pr_data("chlorine", perf_logger)
+  gen_t_runtime_pr_data("gas", perf_logger)
+  gen_t_runtime_pr_data("synthetic", perf_logger)
+
+  print(f"log info: variable: n")
+  gen_n_runtime_pr_data("chlorine", perf_logger)
+  gen_n_runtime_pr_data("gas", perf_logger)
+  gen_n_runtime_pr_data("synthetic", perf_logger)
+
+  print(f"log info: variable: h")
+  gen_h_runtime("chlorine", perf_logger)
+
+  print(f"log info: variable: m")
+  gen_m_runtime("synthetic", perf_logger)
 
 
 if __name__ == '__main__':
@@ -98,8 +131,5 @@ if __name__ == '__main__':
     "performance_log.csv")
   # corr_join_wrapper("chlorine", "chlorine_params_2", perf_logger, m=10)
   # corr_join_wrapper("chlorine", f"chlorine_1_run_{3}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
-  gen_t_runtime_pr_data(perf_logger)
-  gen_n_runtime_pr_data(perf_logger)
-  gen_h_runtime(perf_logger)
-  gen_m_runtime(perf_logger)
 
+  gen_all(perf_logger)
