@@ -48,18 +48,23 @@ def brute_force_p_corr(t_series: List[np.ndarray], n: int, h: int, T: float,
     w_centered = w - x_bar[:, np.newaxis]
     denominator = np.sqrt(np.sum(np.power(w_centered, 2), axis=1))  # np.ndarray of shape (m,)
     W = np.divide(w_centered, denominator[:, np.newaxis]) # np.ndarray of shape (m, n)
-
     # PAA would be here and return W_s, W_e
 
+    # SVD
     p_times[alpha, 1] = perf_counter_ns()   # Time before SVD
     # SVD would be here and return W_b
+    
+    # Bucketing filter
     p_times[alpha, 2] = p_times[alpha, 1]   # Time before bucketing filter
     # Bucketing filter would be here and return C_1
+    
+    # Eucledian distance
     p_times[alpha, 3] = p_times[alpha, 1]   # Time before Euclidean distance filter
     # Eucledian distance filter would be here and return C_2
     # Unique pairs of cross product of indices
     C_2 = np.array([(i, j) for i in range(m) for j in range(i + 1, m)])
 
+    # Pearson correlation comparison
     p_times[alpha, 4] = p_times[alpha, 1]   # Time before computing the Pearson correlation
     # Computation of Pearson correlation returns correlated window pairs
     for pair in C_2:
@@ -67,9 +72,9 @@ def brute_force_p_corr(t_series: List[np.ndarray], n: int, h: int, T: float,
       if corrcoef >= T:
       # if abs(corrcoef) >= T:
         num_corr_pairs += 1
-        bf_logger.info(
-              f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with correlation coefficient {corrcoef}."
-        )
+        # bf_logger.info(
+        #       f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with correlation coefficient {corrcoef}."
+        # )
     p_times[alpha, 5] = perf_counter_ns()   # Time after computing the Pearson correlation
 
     alpha += 1

@@ -49,45 +49,46 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
     # WARNING: Contrary to usual python slices, both the start and the stop are included
     w = t_series.loc[:, alpha*h:alpha*h+n-1].to_numpy(dtype='float')
     x_bar = np.mean(w, axis=1)  # np.ndarray of row means, shape (m,)
-    
     # Normalization
     # Subtract x_bar from each row using broadcasting
     w_centered = w - x_bar[:, np.newaxis]
     # Square element-wise, sum each row, compute square root element-wise
     denominator = np.sqrt(np.sum(np.power(w_centered, 2), axis=1))  # np.ndarray of shape (m,)
     W = np.divide(w_centered, denominator[:, np.newaxis]) # np.ndarray of shape (m, n)
-
     # PAA
     W_s = paa_pyts(W, n, k_s)   # np.ndarray of shape (m, k_s)
     W_e = paa_pyts(W, n, k_e)   # np.ndarray of shape (m, k_e)
-
+    
+    # SVD
     p_times[alpha, 1] = perf_counter_ns()   # Time before SVD
     W_b = custom_svd(W_s, k_b)  # np.ndarray of shape (m, k_b)
+
+    # Bucketing filter
     p_times[alpha, 2] = perf_counter_ns()   # Time before bucketing filter
     C_1, _ = bucketing_filter(W_b, k_b, epsilon_1)
 
-    p_times[alpha, 3] = perf_counter_ns()   # Time before Euclidean distance filter
     # Eucledian distance filter
+    p_times[alpha, 3] = perf_counter_ns()   # Time before Euclidean distance filter
     # Compute the norms for all pairs
     distances = np.linalg.norm(W_e[C_1[:, 0]] - W_e[C_1[:, 1]], axis=1)
     # Create a mask for pairs satisfying the condition
-    valid_pairs_mask = distances <= epsilon_2
+    correlated_pairs_mask = distances <= epsilon_2
     # Filter C_1 based on the mask to create C_2
-    C_2 = C_1[valid_pairs_mask]
-    
+    C_2 = C_1[correlated_pairs_mask]
     overall_pruning_rate = 1 - C_2.shape[0]/pow(m, 2)
     # logger_2.info(f"The overall pruning rate is {overall_pruning_rate}.")
-    p_times[alpha, 4] = perf_counter_ns()   # Time before computing the Pearson correlation
     
     # Pearson correlation comparison
-    for pair in C_2:
-      corrcoef, _ = pearsonr(W[pair[0]], W[pair[1]])
-      if corrcoef >= T:
-      # if abs(corrcoef) >= T:
-        num_corr_pairs += 1
-        # main_logger.info(f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with correlation coefficient {corrcoef}.")
-    
+    p_times[alpha, 4] = perf_counter_ns()   # Time before computing the Pearson correlation
+    epsilon = sqrt(2*(1-T))
+    distances = np.linalg.norm(W[C_2[:, 0]] - W[C_2[:, 1]], axis=1)
+    # Check if each distance satisfies the condition
+    correlated_pairs_mask = distances <= epsilon
+    correlated_pairs = C_2[correlated_pairs_mask]  # Filter C_2
+    num_corr_pairs += correlated_pairs.shape[0]
+    # main_logger.info(f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with correlation coefficient {corrcoef}.")
     p_times[alpha, 5] = perf_counter_ns()   # Time after computing the Pearson correlation
+    
     alpha += 1
 
   # Calculate mean differences between consecutive columns

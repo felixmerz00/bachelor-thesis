@@ -4,7 +4,7 @@ from time import perf_counter_ns
 # Third-party imports
 # Local imports
 from brute_force_euc_dist import brute_force_euc_dist
-from brute_force_p_corr import brute_force_p_corr
+# from brute_force_p_corr import brute_force_p_corr
 from corr_join import corr_join
 from load_data import load_data
 import util
@@ -44,12 +44,13 @@ def gen_t_runtime_pr_data(perf_logger):
     print(f"log info: start run {i}")
     # Chlorine dataset
     corr_join_wrapper("chlorine", f"chlorine_0_run_{i}", perf_logger, m=50)
-    corr_join_wrapper("chlorine", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
     corr_join_wrapper("chlorine", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
     # Gas dataset, for which I use the same parameters
     corr_join_wrapper("gas", f"chlorine_0_run_{i}", perf_logger, m=50)
-    corr_join_wrapper("gas", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
     corr_join_wrapper("gas", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
+    # Chlorine dataset
+    corr_join_wrapper("synthetic", f"chlorine_0_run_{i}", perf_logger, m=50)
+    corr_join_wrapper("synthetic", f"chlorine_0_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
 
 
 def gen_n_runtime_pr_data(perf_logger):
@@ -61,12 +62,13 @@ def gen_n_runtime_pr_data(perf_logger):
     print(f"log info: start run {i}")
     # Chlorine dataset
     corr_join_wrapper("chlorine", f"chlorine_1_run_{i}", perf_logger, m=50)
-    corr_join_wrapper("chlorine", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
     corr_join_wrapper("chlorine", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
     # Gas dataset, for which I use the same parameters
     corr_join_wrapper("gas", f"chlorine_1_run_{i}", perf_logger, m=50)
-    corr_join_wrapper("gas", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
     corr_join_wrapper("gas", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
+    # Chlorine dataset
+    corr_join_wrapper("synthetic", f"chlorine_1_run_{i}", perf_logger, m=50)
+    corr_join_wrapper("synthetic", f"chlorine_1_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
 
 
 def gen_h_runtime(perf_logger):
@@ -77,17 +79,16 @@ def gen_h_runtime(perf_logger):
     print(f"log info: start run {i}")
     # Chlorine dataset
     corr_join_wrapper("chlorine", f"chlorine_var_h_run_{i}", perf_logger, m=50)
-    corr_join_wrapper("chlorine", f"chlorine_var_h_run_{i}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
     corr_join_wrapper("chlorine", f"chlorine_var_h_run_{i}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
 
 
-def gen_n_runtime(perf_logger):
+def gen_m_runtime(perf_logger):
   """
   Generate performance data for the runtime vs. n plots.
   """
   for m in util.get_params("synthetic_var_m_0_test"):
+    print(f"log info: start run with m = {m}")
     corr_join_wrapper("synthetic", "synthetic_var_m_0", perf_logger, m=m)
-    corr_join_wrapper("synthetic", "synthetic_var_m_0", perf_logger, m=m, algorithm_1=brute_force_p_corr)
     corr_join_wrapper("synthetic", "synthetic_var_m_0", perf_logger, m=m, algorithm_1=brute_force_euc_dist)
 
 
@@ -95,10 +96,10 @@ if __name__ == '__main__':
   # Use the same logger for all runs to avoid duplicate entries
   perf_logger = util.create_csv_logger("performance_logger", logging.INFO,
     "performance_log.csv")
-  corr_join_wrapper("chlorine", "chlorine_params_2", perf_logger, m=10)
-  # corr_join_wrapper("chlorine", f"chlorine_1_run_{0}", perf_logger, m=50, algorithm_1=brute_force_p_corr)
+  # corr_join_wrapper("chlorine", "chlorine_params_2", perf_logger, m=10)
   # corr_join_wrapper("chlorine", f"chlorine_1_run_{3}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
-  # gen_t_runtime_pr_data(perf_logger)
-  # gen_n_runtime_pr_data(perf_logger)
-  # gen_h_runtime(perf_logger)
-  # gen_n_runtime(perf_logger)
+  gen_t_runtime_pr_data(perf_logger)
+  gen_n_runtime_pr_data(perf_logger)
+  gen_h_runtime(perf_logger)
+  gen_m_runtime(perf_logger)
+

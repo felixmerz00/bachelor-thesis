@@ -49,28 +49,32 @@ def brute_force_euc_dist(t_series: List[np.ndarray], n: int, h: int, T: float,
     w_centered = w - x_bar[:, np.newaxis]
     denominator = np.sqrt(np.sum(np.power(w_centered, 2), axis=1))  # np.ndarray of shape (m,)
     W = np.divide(w_centered, denominator[:, np.newaxis]) # np.ndarray of shape (m, n)
-
     # PAA would be here and return W_s, W_e
 
+    # SVD
     p_times[alpha, 1] = perf_counter_ns()   # Time before SVD
     # SVD would be here and return W_b
+
+    # Bucketing filter
     p_times[alpha, 2] = p_times[alpha, 1]   # Time before bucketing filter
     # Bucketing filter would be here and return C_1
-    p_times[alpha, 3] = p_times[alpha, 1]   # Time before Euclidean distance filter
-    # Eucledian distance filter would be here and return C_2
     # Unique pairs of cross product of indices
-    C_2 = np.array([(i, j) for i in range(m) for j in range(i + 1, m)])
+    C_1 = np.array([(i, j) for i in range(m) for j in range(i + 1, m)])
 
+    # Eucledian distance filter
+    # Brute-force Euclidean filter directly on W
+    p_times[alpha, 3] = p_times[alpha, 1]   # Time before Euclidean distance filter
+    epsilon = sqrt(2*(1-T))
+    distances = np.linalg.norm(W[C_1[:, 0]] - W[C_1[:, 1]], axis=1)
+    # Check if each distance satisfies the condition
+    correlated_pairs_mask = distances <= epsilon
+    correlated_pairs = C_1[correlated_pairs_mask]  # Filter C_1
+    num_corr_pairs += correlated_pairs.shape[0]
+
+    # Computation of Pearson correlation
+    p_times[alpha, 4] = p_times[alpha, 1]   # Time before computing the correlation
     # Computation of Pearson correlation would be here and return correlated
     # window pairs
-    p_times[alpha, 4] = p_times[alpha, 1]   # Time before computing the correlation
-    for pair in C_2:
-      euc_d = np.linalg.norm(W[pair[0]] - W[pair[1]])
-      if euc_d <= epsilon_2:
-        num_corr_pairs += 1
-        bf_logger.info(
-              f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with euclidean distance {euc_d}."
-        )
     p_times[alpha, 5] = perf_counter_ns()   # Time after computing the correlation
 
     alpha += 1
