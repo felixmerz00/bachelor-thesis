@@ -22,12 +22,12 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
 
   epsilon_1 = sqrt(2*k_s*(1-T)/n)
   epsilon_2 = sqrt(2*k_e*(1-T)/n)
-  m = t_series.shape[0]   # number of time series
+  m = t_series.shape[0]   # Number of time series
 
   main_logger.info(f"Threshold Theta: {T}")
   num_corr_pairs = 0
-  overall_pruning_rate = -1.0
-  len_ts = t_series.shape[1]
+  overall_pruning_rate = []
+  len_ts = t_series.shape[1]  # Length of each time series
   max_alpha = floor((len_ts-n)/h)
   # Times for profiling, 6 columns/measurements for max_alpha-1 rows/windows
   p_times = np.empty((max_alpha + 1, 6))
@@ -75,7 +75,7 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
     correlated_pairs_mask = distances <= epsilon_2
     # Filter C_1 based on the mask to create C_2
     C_2 = C_1[correlated_pairs_mask]
-    overall_pruning_rate = 1 - C_2.shape[0]/pow(m, 2)
+    overall_pruning_rate.append(1 - C_2.shape[0]/pow(m, 2))
     # logger_2.info(f"The overall pruning rate is {overall_pruning_rate}.")
     
     # Pearson correlation comparison
@@ -101,4 +101,4 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
   ]).astype(int)
 
   main_logger.info(f"Report: In total the data contains {num_corr_pairs} correlated window pairs.")
-  return num_corr_pairs, overall_pruning_rate, section_times
+  return num_corr_pairs, np.mean(overall_pruning_rate), section_times

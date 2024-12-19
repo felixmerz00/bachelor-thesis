@@ -78,8 +78,8 @@ def gen_n_runtime_pr_data(dataset: str, perf_logger):
   print(f"log info: dataset: {dataset}")
   df = load_data(dataset, m=50)
   for i in range(4):
-    corr_join_wrapper_loop(df, dataset, f"chlorine_0_run_{i}", perf_logger)
-    corr_join_wrapper_loop(df, dataset, f"chlorine_0_run_{i}", perf_logger, algorithm_1=brute_force_euc_dist)
+    corr_join_wrapper_loop(df, dataset, f"chlorine_1_run_{i}", perf_logger)
+    corr_join_wrapper_loop(df, dataset, f"chlorine_1_run_{i}", perf_logger, algorithm_1=brute_force_euc_dist)
 
 
 def gen_h_runtime(dataset: str, perf_logger):
