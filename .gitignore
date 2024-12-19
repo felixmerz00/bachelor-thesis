@@ -41,3 +41,4 @@ src/corr_join/logs/report-brute-force-combined.log
 src/corr_join/logs/report-brute-force-euc-dist.log
 src/corr_join/logs/report-brute-force-p-corr.log
 src/corr_join/logs/report-corr-join.log
+src/corr_join/plots/*
