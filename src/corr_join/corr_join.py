@@ -73,7 +73,7 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
     correlated_pairs_mask = distances <= epsilon_2
     # Filter C_1 based on the mask to create C_2
     C_2 = C_1[correlated_pairs_mask]
-    overall_pr.append(1 - C_2.shape[0]/pow(m, 2))
+    overall_pr.append(1 - C_2.shape[0]/((pow(m, 2)-m)/2))
     # logger_2.info(f"The overall pruning rate is {overall_pruning_rate}.")
     
     # Pearson correlation comparison
@@ -154,7 +154,7 @@ def corr_join_unoptimized(t_series, n: int, h: int, T: float, k_s: int, k_e: int
     for pair in C_1:
       if np.linalg.norm(W_e[pair[0]] - W_e[pair[1]]) <= epsilon_2:
         C_2.append(pair)
-    overall_pr.append(1 - len(C_2)/pow(m, 2))
+    overall_pr.append(1 - len(C_2)/((pow(m, 2)-m)/2))
     
     # Pearson correlation comparison
     p_times[alpha, 4] = perf_counter_ns()   # Time before computing the Pearson correlation

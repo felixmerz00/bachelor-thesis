@@ -64,7 +64,7 @@ def gen_t_runtime_pr_data(dataset: str, perf_logger):
   plots.
   """
   print(f"log info: dataset: {dataset}")
-  df = load_data(dataset, m=50)
+  df = load_data(dataset, m=200)
   for i in range(7):
     corr_join_wrapper_loop(df, dataset, f"chlorine_0_run_{i}", perf_logger)
     corr_join_wrapper_loop(df, dataset, f"chlorine_0_run_{i}", perf_logger, algorithm_1=brute_force_euc_dist)
@@ -76,7 +76,7 @@ def gen_n_runtime_pr_data(dataset: str, perf_logger):
   plots.
   """
   print(f"log info: dataset: {dataset}")
-  df = load_data(dataset, m=50)
+  df = load_data(dataset, m=200)
   for i in range(4):
     corr_join_wrapper_loop(df, dataset, f"chlorine_1_run_{i}", perf_logger)
     corr_join_wrapper_loop(df, dataset, f"chlorine_1_run_{i}", perf_logger, algorithm_1=brute_force_euc_dist)
@@ -87,7 +87,7 @@ def gen_h_runtime(dataset: str, perf_logger):
   Generate performance data for the runtime vs. h plots.
   """
   print(f"log info: dataset: {dataset}")
-  df = load_data(dataset, m=50)
+  df = load_data(dataset, m=200)
   for i in range(5):
     corr_join_wrapper_loop(df, dataset, f"chlorine_var_h_run_{i}", perf_logger)
     corr_join_wrapper_loop(df, dataset, f"chlorine_var_h_run_{i}", perf_logger, algorithm_1=brute_force_euc_dist)

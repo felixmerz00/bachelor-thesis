@@ -120,7 +120,7 @@ def bucketing_filter(W_b, k_b: int, eps):
   join_pruning_rate = 0
   if C_1:
     C_1 = np.vstack(C_1)
-    join_pruning_rate = 1 - C_1.shape[0]/pow(m, 2)
+    join_pruning_rate = 1 - C_1.shape[0]/((pow(m, 2)-m)/2)
   else:
     C_1 = np.empty((0, 2), dtype=int)
   return C_1, join_pruning_rate
@@ -183,7 +183,7 @@ def bucketing_filter_unoptimized(W_b, k_b: int, eps):
   join_pruning_rate = 0
   if C_1:
     C_1 = np.array(C_1)
-    join_pruning_rate = 1 - C_1.shape[0]/pow(m, 2)
+    join_pruning_rate = 1 - C_1.shape[0]/((pow(m, 2)-m)/2)
   else:
     C_1 = np.empty((0, 2), dtype=int)
 
