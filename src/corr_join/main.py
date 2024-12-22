@@ -4,8 +4,8 @@ from time import perf_counter_ns
 # Third-party imports
 # Local imports
 from brute_force_euc_dist import brute_force_euc_dist
-# from brute_force_p_corr import brute_force_p_corr
-from corr_join import corr_join
+from brute_force_p_corr import brute_force_p_corr
+from corr_join import corr_join, corr_join_unoptimized
 from load_data import load_data
 import util
 
@@ -130,6 +130,13 @@ if __name__ == '__main__':
   perf_logger = util.create_csv_logger("performance_logger", logging.INFO,
     "performance_log.csv")
   # corr_join_wrapper("chlorine", "chlorine_params_2", perf_logger, m=10)
-  # corr_join_wrapper("chlorine", f"chlorine_1_run_{3}", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
+  # corr_join_wrapper("chlorine", "chlorine_params_2", perf_logger, m=10, algorithm_1=brute_force_euc_dist)
+  # corr_join_wrapper("chlorine", "chlorine_params_2", perf_logger, m=10, algorithm_1=brute_force_p_corr)
+  # corr_join_wrapper("chlorine", "chlorine_params_2", perf_logger, m=10, algorithm_1=corr_join_unoptimized)
+
+  # corr_join_wrapper("synthetic", "chlorine_0_run_6", perf_logger, m=50)
+  # corr_join_wrapper("synthetic", "chlorine_0_run_6", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
+  # corr_join_wrapper("synthetic", "chlorine_0_run_6", perf_logger, m=50, algorithm_1=brute_force_p_corr)
+  # corr_join_wrapper("synthetic", "chlorine_0_run_6", perf_logger, m=50, algorithm_1=corr_join_unoptimized)
 
   gen_all(perf_logger)

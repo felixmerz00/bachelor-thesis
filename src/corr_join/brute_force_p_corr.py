@@ -19,12 +19,12 @@ def brute_force_p_corr(t_series: List[np.ndarray], n: int, h: int, T: float,
   Euclidean distance filter.
   """
   print('log info: running brute_force_p_corr')
-  bf_logger = util.create_logger("p_corr_brute_force_logger", logging.INFO,
-    "report-brute-force-p-corr.log")
+  logger_1 = util.create_logger("brute_force_p_corr_logger", logging.INFO,
+    "report-brute_force_p_corr.log")
   m = t_series.shape[0]   # number of time series
   num_corr_pairs = 0  # Output
   overall_pruning_rate = 0
-  bf_logger.info(f"Threshold Theta: {T}")
+  logger_1.info(f"Threshold Theta: {T}")
   # Times for profiling, 6 columns/measurements for max_alpha-1 rows/windows
   len_ts = t_series.shape[1]
   max_alpha = floor((len_ts-n)/h)
@@ -72,7 +72,7 @@ def brute_force_p_corr(t_series: List[np.ndarray], n: int, h: int, T: float,
       if corrcoef >= T:
       # if abs(corrcoef) >= T:
         num_corr_pairs += 1
-        # bf_logger.info(
+        # logger_1.info(
         #       f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with correlation coefficient {corrcoef}."
         # )
     p_times[alpha, 5] = perf_counter_ns()   # Time after computing the Pearson correlation
@@ -89,7 +89,7 @@ def brute_force_p_corr(t_series: List[np.ndarray], n: int, h: int, T: float,
     np.mean(p_times[:, 5] - p_times[:, 4])
   ]).astype(int)
 
-  bf_logger.info(
+  logger_1.info(
     f"Report: In total the data contains {num_corr_pairs} correlated window pairs."
   )
   return num_corr_pairs, overall_pruning_rate, section_times

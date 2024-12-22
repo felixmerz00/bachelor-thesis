@@ -56,7 +56,7 @@ def bucketing_filter(W_b, k_b: int, eps):
   """
   m = len(W_b)
   # Initialize C_1 as an empty array, because otherwise it might never be intialized
-  C_1 = np.empty((0, 2), dtype=int)
+  C_1 = []  # Array of ndarrays with shape: (n, 2)
 
   # Initialize k_b-dimensional bucketing scheme
   bkt_lwr_bnd = floor_epsilon(np.min(W_b), eps)
@@ -90,8 +90,9 @@ def bucketing_filter(W_b, k_b: int, eps):
       # Do the same with j.
       # Stacking the arrays on top of each other and taking the transpose puts 
       # each candidate pair into a row.
-      C_1 = np.vstack((bkt[i][dist_matrix <= eps], bkt[j][dist_matrix <= eps])).T
+      C_1.append(np.vstack((bkt[i][dist_matrix <= eps], bkt[j][dist_matrix <= eps])).T)
     
+    if len(bkt) > 0:
       # Neighboring bucket comparisons
       neighbors = get_neighbors(np.array(index), k_b, B)
       C_1_neighbors = [[], []]
@@ -114,8 +115,76 @@ def bucketing_filter(W_b, k_b: int, eps):
         i_vals = i_vals[valid_pairs_mask]
         j_vals = j_vals[valid_pairs_mask]
         # Add the valid pairs as new columns to `C_1`
-        new_pairs = np.vstack((i_vals, j_vals)).T  # Shape: (n, 2)
-        C_1 = np.vstack((C_1, new_pairs))  # Append to `C_1`
+        C_1.append(np.vstack((i_vals, j_vals)).T)
 
-  join_pruning_rate = 1 - C_1.shape[0]/pow(m, 2)
+  join_pruning_rate = 0
+  if C_1:
+    C_1 = np.vstack(C_1)
+    join_pruning_rate = 1 - C_1.shape[0]/pow(m, 2)
+  else:
+    C_1 = np.empty((0, 2), dtype=int)
+  return C_1, join_pruning_rate
+
+
+# Bucketing filter true to the pseudo code by Alizade Nikoo et al.
+def bucketing_filter_unoptimized(W_b, k_b: int, eps):
+  """
+  Parameters:
+  W_b (numpy.ndarray): Matrix of windows.
+  k_b (int): number of dimensions.
+  eps (float): distance threshold ε
+
+  Returns:
+  C_1 (np.ndarray): Candidate set of indices of likely correlated pairs of windows. 
+  Each row contains one candidate pair, i.e. the matrix has two columns.
+  join_pruning_rate (float): The pruning rate from the bucketing filter.
+  """
+  m = len(W_b)
+  # Initialize C_1 as an empty array, because otherwise it might never be intialized
+  # C_1 = np.empty((0, 2), dtype=int)
+  C_1 = []
+
+  # Initialize k_b-dimensional bucketing scheme
+  bkt_lwr_bnd = floor_epsilon(np.min(W_b), eps)
+  bkt_upr_bnd = ceil_epsilon(np.max(W_b), eps)
+  B = round((bkt_upr_bnd - bkt_lwr_bnd)/eps)  # number of partitions
+  BKT_dim = k_b*(int(B),)
+  BKT = np.full(BKT_dim, fill_value=None, dtype=object)  # Each bucket contains a list of time series indices, thus dtype=object
+
+  # Assign time series in W_b to a bucket
+  # Compute the bucket indices for all time series
+  bkt_indices = np.floor_divide(np.subtract(W_b, bkt_lwr_bnd), eps).astype(int)
+  for p, bkt in enumerate(bkt_indices):
+    bkt_tuple = tuple(bkt)
+    if BKT[bkt_tuple] is None:
+      BKT[bkt_tuple] = [p]
+    else:
+      BKT[bkt_tuple].append(p)
+
+  # Compare time series in buckets
+  for index, bkt in np.ndenumerate(BKT):
+    if bkt is None:
+      continue
+    # Same bucket
+    for i in bkt:
+      for j in bkt:
+        if i < j and np.linalg.norm(W_b[i] - W_b[j]) <= eps:
+          C_1.append([i,j])
+    # Neighboring buckets
+    neighbors_idx_lst = get_neighbors(index, k_b, B)
+    for nb_idx in neighbors_idx_lst:
+      if BKT[nb_idx] is None:
+        continue
+      for i in bkt:
+        for j in BKT[nb_idx]:
+          if i < j and np.linalg.norm(W_b[i] - W_b[j]) <= eps:
+            C_1.append([i,j])
+  
+  join_pruning_rate = 0
+  if C_1:
+    C_1 = np.array(C_1)
+    join_pruning_rate = 1 - C_1.shape[0]/pow(m, 2)
+  else:
+    C_1 = np.empty((0, 2), dtype=int)
+
   return C_1, join_pruning_rate
