@@ -134,6 +134,7 @@ def gdrive(dataset: str, m: int = -1):
   print(f"log info: loading {dataset} data")
   # Use raw string to suppress unnecessary warning.
   df = pd.read_csv(f"./data/google-drive/{dataset}.txt", sep=r'\s+', header=None)
+  df = df.T   # The data is stored in column major
   m = df.shape[0] if (m == -1) else min(m, df.shape[0])
   return df.head(m)
 

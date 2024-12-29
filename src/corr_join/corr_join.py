@@ -87,6 +87,8 @@ def corr_join(t_series, n: int, h: int, T: float, k_s: int, k_e: int, k_b: int):
     # logger_1.info(f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with correlation coefficient {corrcoef}.")
     p_times[alpha, 5] = perf_counter_ns()   # Time after computing the Pearson correlation
     
+    if alpha == 99:
+      break
     alpha += 1
 
   # Calculate mean differences between consecutive columns
@@ -165,6 +167,8 @@ def corr_join_unoptimized(t_series, n: int, h: int, T: float, k_s: int, k_e: int
         # logger_1.info(f"Report ({pair[0]}, {pair[1]}, {alpha}): Window {alpha} of time series {pair[0]} and {pair[1]} are correlated with correlation coefficient {np.linalg.norm(W[pair[0]] - W[pair[1]])}.")
     p_times[alpha, 5] = perf_counter_ns()   # Time after computing the Pearson correlation
     
+    if alpha == 99:
+      break
     alpha += 1
 
   # Calculate mean differences between consecutive columns

@@ -77,6 +77,8 @@ def brute_force_euc_dist(t_series: List[np.ndarray], n: int, h: int, T: float,
     # window pairs
     p_times[alpha, 5] = perf_counter_ns()   # Time after computing the correlation
 
+    if alpha == 99:
+      break
     alpha += 1
 
   p_means = np.mean(p_times, axis=1)  # Calculate across columns

@@ -315,14 +315,20 @@ def m_runtime(df, ds_name: str, params):
 
 def main():
   df = pd.read_csv('./src/corr_join/logs/performance_log.csv')
-  t_runtime_pr(df, "chlorine", 50, util.get_params("chlorine_0_plot_0"))
-  t_runtime_pr(df, "gas", 50, util.get_params("chlorine_0_plot_0"))
-  n_runtime_pr(df, "chlorine", 50, util.get_params("chlorine_1_plot_0"))
-  n_runtime_pr(df, "gas", 50, util.get_params("chlorine_1_plot_0"))
-  h_runtime(df, "chlorine", 50, util.get_params("chlorine_var_h_plot"))
-  m_runtime(df, "synthetic", util.get_params("synthetic_var_m_0"))
-  t_runtime_pr(df, "chlorine", 200, util.get_params("chlorine_0_plot_0"))
-  t_runtime_pr(df, "synthetic", 200, util.get_params("chlorine_0_plot_0"))
+
+  # Experimentation chapter
+  t_runtime_pr(df, "synthetic", 500, util.get_params("t_runtime_pr_plot"))
+
+  # Other
+  # t_runtime_pr(df, "chlorine", 50, util.get_params("chlorine_0_plot_0"))
+  # t_runtime_pr(df, "gas", 50, util.get_params("chlorine_0_plot_0"))
+  # n_runtime_pr(df, "chlorine", 50, util.get_params("chlorine_1_plot_0"))
+  # n_runtime_pr(df, "gas", 50, util.get_params("chlorine_1_plot_0"))
+  # h_runtime(df, "chlorine", 50, util.get_params("chlorine_var_h_plot"))
+  # m_runtime(df, "synthetic", util.get_params("synthetic_var_m_0"))
+  # t_runtime_pr(df, "chlorine", 200, util.get_params("chlorine_0_plot_0"))
+  # t_runtime_pr(df, "synthetic", 200, util.get_params("chlorine_0_plot_0"))
+
 
 
 if __name__ == '__main__':

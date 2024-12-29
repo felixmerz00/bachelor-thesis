@@ -27,6 +27,21 @@ def get_params(params_name: str):
     - k_b (int): Number of dimensions for bucketing filter
   """
   parameters = {
+    # Experimentation chapter
+    # Runtime vs. T and pruning rate vs. T plots
+    "t_runtime_pr_plot": (300, 10, -1, 15, 30, 3),
+    "t_runtime_pr_run_0": (300, 10, 0.84, 15, 30, 3),
+    "t_runtime_pr_run_1": (300, 10, 0.865, 15, 30, 3),
+    "t_runtime_pr_run_2": (300, 10, 0.89, 15, 30, 3),
+    "t_runtime_pr_run_3": (300, 10, 0.915, 15, 30, 3),
+    "t_runtime_pr_run_4": (300, 10, 0.94, 15, 30, 3),
+    "t_runtime_pr_run_5": (300, 10, 0.965, 15, 30, 3),
+    "t_runtime_pr_run_6": (300, 10, 0.99, 15, 30, 3),
+    # Runtime vs. m plots
+    "m_vals": (50, 5000, 10000, 15000, 20000, 25000), 
+    "m_params": (300, 10, 0.975, 15, 30, 3),
+
+    # Other
     "audio_params_1": (500, 10, 0.75, 100, 250, 2),
     "audio_params_2": (8000, 10, 0.11, 200, 400, 2),
     "financial_params_1": (300, 10, 0.85, 15, 30, 3),
