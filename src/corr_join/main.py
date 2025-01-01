@@ -133,12 +133,6 @@ if __name__ == '__main__':
   # Use the same logger for all runs to avoid duplicate entries
   perf_logger = util.create_csv_logger("performance_logger", logging.INFO,
     "performance_log.csv")
-  # corr_join_wrapper("synthetic", "t_runtime_pr_run_6", perf_logger, m=50)
-  # corr_join_wrapper("synthetic", "chlorine_0_run_6", perf_logger, m=50, algorithm_1=brute_force_euc_dist)
-  # corr_join_wrapper("synthetic", "chlorine_0_run_6", perf_logger, m=50, algorithm_1=brute_force_p_corr)
-  # corr_join_wrapper("synthetic", "chlorine_0_run_6", perf_logger, m=50, algorithm_1=corr_join_unoptimized)
-
-  # gen_all(perf_logger)
 
   # Calls for chapter experimentation
   m = 200
@@ -148,4 +142,3 @@ if __name__ == '__main__':
   gen_n_runtime_pr_data("synthetic", m, perf_logger)
   gen_h_runtime("synthetic", m, perf_logger)
   gen_m_runtime("synthetic", perf_logger)
-
