@@ -28,7 +28,7 @@ def get_params(params_name: str):
   """
   parameters = {
     # Experimentation chapter
-    # Runtime vs. T and pruning rate vs. T plots
+    # Runtime vs. T and pruning rate vs. T
     "t_runtime_pr_plot": (300, 10, -1, 15, 30, 3),
     "t_runtime_pr_run_0": (300, 10, 0.84, 15, 30, 3),
     "t_runtime_pr_run_1": (300, 10, 0.865, 15, 30, 3),
@@ -37,9 +37,23 @@ def get_params(params_name: str):
     "t_runtime_pr_run_4": (300, 10, 0.94, 15, 30, 3),
     "t_runtime_pr_run_5": (300, 10, 0.965, 15, 30, 3),
     "t_runtime_pr_run_6": (300, 10, 0.99, 15, 30, 3),
-    # Runtime vs. m plots
-    "m_vals": (50, 5000, 10000, 15000, 20000, 25000), 
-    "m_params": (300, 10, 0.975, 15, 30, 3),
+    # Runtime vs. m
+    "m_vals": (50, 100, 200, 500, 1000, 2500, 5000), 
+    "m_params": (300, 10, 0.95, 15, 30, 3),
+    # Runtime vs. n and pruning rate vs. n
+    "n_runtime_pr_plot": (-1, 10, 0.95, 15, 30, 3),
+    "n_runtime_pr_run_0": (60, 10, 0.95, 15, 30, 3),
+    "n_runtime_pr_run_1": (510, 10, 0.95, 15, 30, 3),
+    "n_runtime_pr_run_2": (990, 10, 0.95, 15, 30, 3),
+    "n_runtime_pr_run_3": (1500, 10, 0.95, 15, 30, 3),
+    # Runtime vs. h
+    "h_runtime_plot": (1200, -1, 0.85, 15, 30, 3),
+    "h_runtime_run_0": (1200, 1, 0.85, 15, 30, 3),
+    "h_runtime_run_1": (1200, 100, 0.85, 15, 30, 3),
+    "h_runtime_run_2": (1200, 200, 0.85, 15, 30, 3),
+    "h_runtime_run_3": (1200, 300, 0.85, 15, 30, 3),
+    "h_runtime_run_4": (1200, 400, 0.85, 15, 30, 3),
+    "h_runtime_run_5": (1200, 500, 0.85, 15, 30, 3),
 
     # Other
     "audio_params_1": (500, 10, 0.75, 100, 250, 2),
@@ -74,7 +88,7 @@ def get_params(params_name: str):
     # For this plot the variable parameter is defined somewhere else, thus I
     # need only one set of parameters
     "synthetic_var_m_0": (300, 10, 0.85, 15, 30, 3),
-    "synthetic_var_m_0_prod": (50, 5000, 10000, 15000, 20000, 25000),
+    "m_vals_alizade_nikoo": (50, 5000, 10000, 15000, 20000, 25000), 
     "synthetic_var_m_0_test": (4, 8, 16, 32, 64),
     "synthetic_var_m_1_test": (4, 8, 16, 32, 64, 128, 256, 512)
   }

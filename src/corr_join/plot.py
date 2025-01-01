@@ -317,7 +317,13 @@ def main():
   df = pd.read_csv('./src/corr_join/logs/performance_log.csv')
 
   # Experimentation chapter
-  t_runtime_pr(df, "synthetic", 500, util.get_params("t_runtime_pr_plot"))
+  m = 200
+  t_runtime_pr(df, "synthetic", m, util.get_params("t_runtime_pr_plot"))
+  t_runtime_pr(df, "chlorine", m, util.get_params("t_runtime_pr_plot"))
+  t_runtime_pr(df, "gas", m, util.get_params("t_runtime_pr_plot"))
+  m_runtime(df, "synthetic", util.get_params("m_params"))
+  n_runtime_pr(df, "synthetic", m, util.get_params("n_runtime_pr_plot"))
+  h_runtime(df, "synthetic", m, util.get_params("h_runtime_plot"))
 
   # Other
   # t_runtime_pr(df, "chlorine", 50, util.get_params("chlorine_0_plot_0"))

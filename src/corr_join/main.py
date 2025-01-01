@@ -71,27 +71,29 @@ def gen_t_runtime_pr_data(dataset: str, m, perf_logger):
     corr_join_wrapper_loop(df, dataset, f"t_runtime_pr_run_{i}", perf_logger, algorithm_1=corr_join_unoptimized)
 
 
-def gen_n_runtime_pr_data(dataset: str, perf_logger):
+def gen_n_runtime_pr_data(dataset: str, m, perf_logger):
   """
   Generate performance data for the runtime vs. n and pruning rate vs. n
   plots.
   """
   print(f"log info: dataset: {dataset}")
-  df = load_data(dataset, m=200)
+  df = load_data(dataset, m=m)
   for i in range(4):
-    corr_join_wrapper_loop(df, dataset, f"chlorine_1_run_{i}", perf_logger)
-    corr_join_wrapper_loop(df, dataset, f"chlorine_1_run_{i}", perf_logger, algorithm_1=brute_force_euc_dist)
+    corr_join_wrapper_loop(df, dataset, f"n_runtime_pr_run_{i}", perf_logger)
+    corr_join_wrapper_loop(df, dataset, f"n_runtime_pr_run_{i}", perf_logger, algorithm_1=brute_force_euc_dist)
+    corr_join_wrapper_loop(df, dataset, f"n_runtime_pr_run_{i}", perf_logger, algorithm_1=corr_join_unoptimized)
 
 
-def gen_h_runtime(dataset: str, perf_logger):
+def gen_h_runtime(dataset: str, m, perf_logger):
   """
   Generate performance data for the runtime vs. h plots.
   """
   print(f"log info: dataset: {dataset}")
-  df = load_data(dataset, m=200)
+  df = load_data(dataset, m=m)
   for i in range(5):
-    corr_join_wrapper_loop(df, dataset, f"chlorine_var_h_run_{i}", perf_logger)
-    corr_join_wrapper_loop(df, dataset, f"chlorine_var_h_run_{i}", perf_logger, algorithm_1=brute_force_euc_dist)
+    corr_join_wrapper_loop(df, dataset, f"h_runtime_run_{i}", perf_logger)
+    corr_join_wrapper_loop(df, dataset, f"h_runtime_run_{i}", perf_logger, algorithm_1=brute_force_euc_dist)
+    corr_join_wrapper_loop(df, dataset, f"h_runtime_run_{i}", perf_logger, algorithm_1=corr_join_unoptimized)
 
 
 def gen_m_runtime(dataset: str, perf_logger):
@@ -139,6 +141,11 @@ if __name__ == '__main__':
   # gen_all(perf_logger)
 
   # Calls for chapter experimentation
-  gen_t_runtime_pr_data("synthetic", 500, perf_logger)
+  m = 200
+  gen_t_runtime_pr_data("synthetic", m, perf_logger)
+  gen_t_runtime_pr_data("chlorine", m, perf_logger)
+  gen_t_runtime_pr_data("gas", m, perf_logger)
   gen_m_runtime("synthetic", perf_logger)
+  gen_n_runtime_pr_data("synthetic", m, perf_logger)
+  gen_h_runtime("synthetic", m, perf_logger)
 
