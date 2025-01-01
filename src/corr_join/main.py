@@ -145,7 +145,7 @@ if __name__ == '__main__':
   gen_t_runtime_pr_data("synthetic", m, perf_logger)
   gen_t_runtime_pr_data("chlorine", m, perf_logger)
   gen_t_runtime_pr_data("gas", m, perf_logger)
-  gen_m_runtime("synthetic", perf_logger)
   gen_n_runtime_pr_data("synthetic", m, perf_logger)
   gen_h_runtime("synthetic", m, perf_logger)
+  gen_m_runtime("synthetic", perf_logger)
 
