@@ -1,1 +1,32 @@
-# Bachelor Thesis
+# CorrJoin in Python
+
+## Overview
+This repository contains the codebase for my bachelor's thesis. Follow the instructions below to set up and run the program.
+
+## Prerequisites
+- [Anaconda](https://docs.anaconda.com/anaconda/install/#basic-install-instructions)
+
+## Setup Instructions
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/felixmerz00/bachelor-thesis.git
+   cd bachelor-thesis
+   ```
+
+2. **Set Up the Conda Environment**
+   [Create a Conda environment](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file) using the provided environment file:
+   ```bash
+   conda env create -f environment.yml
+   conda activate conda-env-ba
+   ```
+
+3. **Run the Program**
+   Start the program by executing the main script:
+   ```bash
+   python3 src/corr_join/main.py
+   ```
+   or
+   ```bash
+   python src/corr_join/main.py
+   ```
