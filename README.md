@@ -17,6 +17,7 @@ This repository contains the codebase for my bachelor's thesis. Follow the instr
 2. [**Set Up the Conda Environment**](#create_conda_env)
 
 <a id="run_main"></a>
+
 3. **Run the Program**
    Start the program by executing the main script:
    ```bash
@@ -58,6 +59,6 @@ This repository contains the codebase for my bachelor's thesis. Follow the instr
    ```
 
 2. **Install Dependencies Manually**
-   [Run the main program](#run_main), and install any missing modules as they appear via conda, if available, otherwise via pip.
+   [Run the main program](#run_main), and install any missing modules via conda as they appear. If a module is not available via Conda install it using pip.
 
 3. **Repeat Step 2** until all dependencies are installed and the program runs successfully.
