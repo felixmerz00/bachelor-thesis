@@ -35,6 +35,6 @@ This repository contains the codebase for my bachelor's thesis. Follow the instr
 
 ## Customization
 
-- **Change Run Parameters**: You can inspect or modify the configuration of the program in the file [main.py](https://github.com/felixmerz00/bachelor-thesis/blob/main/src/corr_join/main.py) and configuration of the parameters in the file [util.py](https://github.com/felixmerz00/bachelor-thesis/blob/main/src/corr_join/util.py).
+- **Change Run Parameters**: You can inspect or modify the configuration of the program in the file [main.py](https://github.com/felixmerz00/bachelor-thesis/blob/main/src/corr_join/main.py) and the configuration of the parameters in the file [util.py](https://github.com/felixmerz00/bachelor-thesis/blob/main/src/corr_join/util.py).
 
 - **Customize Plots**: To edit the plotting logic, modify the file [plot.py](https://github.com/felixmerz00/bachelor-thesis/blob/main/src/corr_join/plot.py).
