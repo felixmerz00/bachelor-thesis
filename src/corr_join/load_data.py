@@ -68,61 +68,6 @@ def audio(dataset: str, _):
   return time_series
 
 
-def custom_financial(_, __):
-  print('log info: loading financial data')
-  time_series = []
-
-  for ticker in ("AMD", "AVGO", "GE", "INTC", "LLY", "NVDA", "V", "WMT", "XOM"):
-    df = pd.read_csv(f"./data/finance/manual/{ticker}.csv")
-    close_prices = df["Close"].to_numpy()
-    time_series.append(close_prices)
-
-  time_series = trim_length(time_series, round_by=100)
-  return time_series
-
-
-def automated_financial(_, m: int):
-  """
-  When running CorrJoin with this dataset, paa.py, line 22
-  data_reduced_s = paa_s.transform(data_reshaped)
-  has issues with NaN values somewhere inside their computation, even though
-  my data contains no Nan values, so don't use this dataset.
-
-  Load the financial data I scraped from Yahoo Finance.
-
-  Parameters:
-  m (int): Number of desired time series.
-
-  Returns:
-  list: A list containing time series for m stocks.
-  """
-  print('log info: loading financial data')
-  raise NotImplementedError
-  time_series = []
-  scraped_symbols = []
-
-  # List all files in the specified directory
-  for filename in os.listdir("data/finance/automated"):
-    if filename.endswith('.csv'):
-      # Extract the ticker symbol by removing the '.csv' extension
-      symbol = filename[:-4]
-      scraped_symbols.append(symbol)
-
-  m = len(scraped_symbols) if m == -1 else min(m, len(scraped_symbols))
-  i = 0
-  while len(time_series) < m and i < len(scraped_symbols):
-    filename = f"./data/finance/automated/{scraped_symbols[i]}.csv"
-    df = pd.read_csv(filename)
-    close_prices = df["Close"].to_numpy()
-    if len(close_prices) >= 2510 and not np.isnan(close_prices).any():
-      time_series.append(close_prices)
-      # print(f"added {scraped_symbols[i]} to the time_series: {len(time_series[-1])}")
-    i += 1
-
-  time_series = trim_length(time_series, round_by=100)
-  return time_series
-
-
 def gdrive(dataset: str, m: int = -1):
   """
   Load one of the given datasets: chlorine, gas, random, stock, synthetic.
@@ -157,26 +102,8 @@ def load_data(name: str, m: int = -1):
     "audio": audio,
     "audio_drums": audio,
     "audio_drums_8k": audio,
-    "custom_financial": custom_financial,
-    "automated_financial": automated_financial,
   }
   return datasets[name](name, m)
-
-
-# Functions for testing and debugging
-
-def load_short_custom_financial_data(length: int):
-  print('log info: loading financial data')
-  time_series = []
-
-  for ticker in ("AMD", "AVGO", "GE", "INTC", "LLY", "NVDA", "V", "WMT", "XOM"):
-    df = pd.read_csv(f"./data/finance/manual/{ticker}.csv")
-    close_prices = df["Close"].to_numpy()
-    time_series.append(close_prices)
-
-  for m in range(len(time_series)):
-    time_series[m] = time_series[m][:length]
-  return time_series
 
 
 if __name__ == '__main__':
