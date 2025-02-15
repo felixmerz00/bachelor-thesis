@@ -4,7 +4,6 @@ from time import perf_counter_ns
 # Third-party imports
 # Local imports
 from brute_force_euc_dist import brute_force_euc_dist
-from brute_force_p_corr import brute_force_p_corr
 from corr_join import corr_join, corr_join_unoptimized
 from load_data import load_data
 import util
@@ -129,10 +128,19 @@ def gen_all(perf_logger):
   gen_m_runtime("synthetic", perf_logger)
 
 
+def quick_trial_run(dataset: str, m: int, perf_logger):
+  df = load_data(dataset, m)
+  corr_join_wrapper_loop(df, dataset, f"t_runtime_pr_run_5", perf_logger)
+  corr_join_wrapper_loop(df, dataset, f"t_runtime_pr_run_5", perf_logger, algorithm_1=brute_force_euc_dist)
+  corr_join_wrapper_loop(df, dataset, f"t_runtime_pr_run_5", perf_logger, algorithm_1=corr_join_unoptimized)
+
+
 if __name__ == '__main__':
   # Use the same logger for all runs to avoid duplicate entries
   perf_logger = util.create_csv_logger("performance_logger", logging.INFO,
     "performance_log.csv")
+
+  # quick_trial_run("synthetic", 50, perf_logger)
 
   # Calls for chapter experimentation
   m = 200

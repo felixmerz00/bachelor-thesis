@@ -4,8 +4,6 @@ from math import floor, sqrt
 from time import perf_counter_ns
 # Third-party imports
 import numpy as np
-import pandas as pd
-from scipy.stats import pearsonr
 # Local imports
 from bucketing_filter import bucketing_filter, bucketing_filter_unoptimized
 from paa import paa_pyts, paa_pyts_unoptimized

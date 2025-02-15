@@ -28,17 +28,5 @@ def test_gdrive_data_type():
   assert isinstance(result, pd.DataFrame), f"Expected result to be a pandas DataFrame, but got {type(result)}"
 
 
-# def test_gdrive_num_corr_pairs():
-#   """
-#   Test if Corr Join yields the same result for gdrive as well as for gdrive_np.
-#   """
-#   np_ndarray = ld.load_data("chlorine_np", m=10)
-#   pd_df = ld.load_data("chlorine", m=10)
-#   n, h, T, k_s, k_e, k_b = util.get_params("chlorine_params_1")
-#   num_corr_pairs_np, _ = corr_join(np_ndarray, n, h, T, k_s, k_e, k_b)
-#   num_corr_pairs_pd, _ = corr_join(pd_df, n, h, T, k_s, k_e, k_b)
-#   assert num_corr_pairs_np == num_corr_pairs_pd, f"Corr Join reported a different number of correlated window pairs. np ndarray: {num_corr_pairs_np}, pd df: {num_corr_pairs_pd}"
-
-
 if __name__ == '__main__':
   pytest.main()

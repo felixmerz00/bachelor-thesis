@@ -11,8 +11,7 @@ import numpy as np
 def get_params(params_name: str):
   """
   Provide the requested parameters for running correlation join.
-  Note: Alizade Nikoo et al. recommend these parameters: n = 300, h = 10, T = 0.85,
-  k_s = 15, k_e = 30, k_b = 3.
+  Note: Alizade Nikoo et al. recommend these parameters: k_s = 15, k_e = 30, k_b = 3.
 
   Parameters:
   params_name : The name of the parameter tuple.
@@ -85,8 +84,8 @@ def get_params(params_name: str):
     "chlorine_var_h_run_3": (1200, 400, 0.85, 15, 30, 3),
     "chlorine_var_h_run_4": (1200, 500, 0.85, 15, 30, 3),
     # New params for runtime vs. m plots,
-    # For this plot the variable parameter is defined somewhere else, thus I
-    # need only one set of parameters
+    # For this plot the variable parameter, i.e. m, is defined somewhere else, 
+    # thus I only need one set of parameters
     "synthetic_var_m_0": (300, 10, 0.85, 15, 30, 3),
     "m_vals_alizade_nikoo": (50, 5000, 10000, 15000, 20000, 25000), 
     "synthetic_var_m_0_test": (4, 8, 16, 32, 64),
@@ -131,36 +130,3 @@ def create_csv_logger(logger_name: str, loggerlevel, file_name: str, writing_mod
     logger.info(f"dataset,m,n,h,T,k_s,k_e,k_b,algorithm,pruning_rate,num_corr_pairs,runtime [s],window shift time [ns],SVD time [ns],bucketing filter time [ns],Euclidean distance filter time [ns],Pearson correlation computation time [ns]")
 
   return logger
-
-
-# Functions for testing and debugging
-
-def corr_euc_d(norm_x, norm_y):
-  """
-  Calculate the Pearson correlation between x and y based on the Euclidean
-  distance between normalized x and normalized y.
-
-  Parameters:
-    norm_x, norm_y (array-like): The normalized version of two vectors x and
-    y.
-
-  Returns:
-    float: The Pearson correlation between x and y.
-  """
-  return 1-(1/2)*pow(np.linalg.norm(norm_x - norm_y), 2)
-
-
-def euc_dist_manual(x: np.ndarray, y: np.ndarray):
-  """
-  Calculate Euclidean distance manually according to Alizade Nikoo.
-
-  Parameters:
-    x, y: Two vectors of same length to compare to each other.
-
-  Returns:
-    The euclidean distance between x and y.
-  """
-  diff = np.subtract(x, y)   # Subtract arguments, element-wise.
-  sq = diff ** 2  # Square each element
-  s = np.sum(sq)
-  return sqrt(s)

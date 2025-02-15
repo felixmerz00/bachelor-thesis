@@ -6,7 +6,6 @@ from typing import List
 # Third-party imports
 import numpy as np
 # Local imports
-from inc_p import incp
 import util
 
 
