@@ -14,17 +14,19 @@ This repository contains the codebase for my bachelor's thesis. Follow the instr
    cd bachelor-thesis
    ```
 
-2. [**Set Up the Conda Environment**](#create_conda_env)
+2. **Prepare Data** You can start with one of the [datasets](https://drive.google.com/drive/folders/1skrE2x2DMgIms5lZR04kiOlLvvna2zNs) provided by Alizade Nikoo et al.: *synthetic*, *chlorine*, *gas*, *stock*. Download the data and store the text files in `data/google-drive/`, i.e. `data/google-drive/synthetic.txt`.
+
+3. [**Set Up the Conda Environment**](#create_conda_env)
 
 <a id="run_main"></a>
 
-3. **Run the Program**
+4. **Run the Program**
    Start the program by executing the main script:
    ```bash
    python src/corr_join/main.py
    ```
 
-4. **Generate Plots**
+5. **Generate Plots**
    To generate plots, run the following command:
    ```bash
    python3 src/corr_join/plot.py
